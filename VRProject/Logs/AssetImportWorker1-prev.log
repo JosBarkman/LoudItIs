@@ -22,7 +22,7 @@ AssetImportWorker1
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-51088
+52054
 Successfully changed project path to: /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject
 /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -54,8 +54,8 @@ Successfully changed project path to: /Users/nepnepjunior/Desktop/School/School 
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 109.63 ms, found 3 plugins.
-Preloading 1 native plugins for Editor in 5.99 ms.
+Refreshing native plugins compatible for Editor in 159.65 ms, found 3 plugins.
+Preloading 1 native plugins for Editor in 8.55 ms.
 Initialize engine version: 2021.3.11f1 (0a5ca18544bf)
 [Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/Resources/UnitySubsystems
 [Subsystems] Discovering subsystems at path /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject/Assets
@@ -70,97 +70,97 @@ Initialize mono
 Mono path[0] = '/Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/Managed'
 Mono path[1] = '/Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit-macos'
 Mono config path = '/Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56065
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56206
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: /Applications/Unity/Hub/Editor/2021.3.11f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
-Registered in 0.001897 seconds.
+Registered in 0.002557 seconds.
 [usbmuxd] Start listen thread
 [usbmuxd] Listen thread started
 [usbmuxd] Send listen message
 Native extension for iOS target not found
 Native extension for OSXStandalone target not found
-Refreshing native plugins compatible for Editor in 110.26 ms, found 3 plugins.
-Preloading 1 native plugins for Editor in 0.52 ms.
+Refreshing native plugins compatible for Editor in 160.70 ms, found 3 plugins.
+Preloading 1 native plugins for Editor in 0.67 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.840 seconds
+- Completed reload, in  1.240 seconds
 Domain Reload Profiling:
-	ReloadAssembly (841ms)
-		BeginReloadAssembly (68ms)
+	ReloadAssembly (1241ms)
+		BeginReloadAssembly (101ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (635ms)
-			LoadAssemblies (67ms)
+		EndReloadAssembly (952ms)
+			LoadAssemblies (100ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (151ms)
+			SetupTypeCache (225ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (37ms)
-			SetupLoadedEditorAssemblies (387ms)
+			RebuildScriptCaches (54ms)
+			SetupLoadedEditorAssemblies (586ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (53ms)
+				InitializePlatformSupportModulesInManaged (71ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (111ms)
-				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (170ms)
-				ProcessInitializeOnLoadMethodAttributes (52ms)
+				RefreshPlugins (161ms)
+				BeforeProcessingInitializeOnLoad (2ms)
+				ProcessInitializeOnLoadAttributes (269ms)
+				ProcessInitializeOnLoadMethodAttributes (82ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.005781 seconds.
+Registered in 0.008653 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject/Library/PackageCache/com.unity.visualscripting@1.7.8/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
 Symbol file LoadedFromMemory doesn't match image /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject/Library/PackageCache/com.unity.visualscripting@1.7.8/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
 Native extension for iOS target not found
 Native extension for OSXStandalone target not found
-Refreshing native plugins compatible for Editor in 107.07 ms, found 3 plugins.
-Preloading 1 native plugins for Editor in 0.52 ms.
+Refreshing native plugins compatible for Editor in 205.61 ms, found 3 plugins.
+Preloading 1 native plugins for Editor in 0.81 ms.
 Package Manager log level set to [2]
 Mono: successfully reloaded assembly
-- Completed reload, in  1.584 seconds
+- Completed reload, in  2.894 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1585ms)
-		BeginReloadAssembly (135ms)
+	ReloadAssembly (2895ms)
+		BeginReloadAssembly (209ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (7ms)
+			DisableScriptedObjects (13ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (36ms)
-		EndReloadAssembly (1303ms)
-			LoadAssemblies (89ms)
+			CreateAndSetChildDomain (55ms)
+		EndReloadAssembly (2429ms)
+			LoadAssemblies (139ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (411ms)
+			SetupTypeCache (741ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (80ms)
-			SetupLoadedEditorAssemblies (657ms)
+			RebuildScriptCaches (141ms)
+			SetupLoadedEditorAssemblies (1240ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (24ms)
+				InitializePlatformSupportModulesInManaged (43ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (108ms)
-				BeforeProcessingInitializeOnLoad (103ms)
-				ProcessInitializeOnLoadAttributes (378ms)
-				ProcessInitializeOnLoadMethodAttributes (41ms)
-				AfterProcessingInitializeOnLoad (2ms)
+				RefreshPlugins (206ms)
+				BeforeProcessingInitializeOnLoad (220ms)
+				ProcessInitializeOnLoadAttributes (703ms)
+				ProcessInitializeOnLoadMethodAttributes (63ms)
+				AfterProcessingInitializeOnLoad (4ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (5ms)
+			AwakeInstancesAfterBackupRestoration (8ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
 Launching external process: /Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/Tools/UnityShaderCompiler
-Launched and connected shader compiler UnityShaderCompiler after 0.01 seconds
-Refreshing native plugins compatible for Editor in 0.80 ms, found 3 plugins.
-Preloading 1 native plugins for Editor in 0.53 ms.
+Launched and connected shader compiler UnityShaderCompiler after 0.03 seconds
+Refreshing native plugins compatible for Editor in 1.52 ms, found 3 plugins.
+Preloading 1 native plugins for Editor in 0.98 ms.
 Unloading 4084 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 49 unused Assets / (97.9 KB). Loaded Objects now: 4525.
-Memory consumption went from 265.2 MB to 265.1 MB.
-Total: 4.544921 ms (FindLiveObjects: 0.350856 ms CreateObjectMapping: 0.319778 ms MarkObjects: 3.730297 ms  DeleteObjects: 0.142919 ms)
+Memory consumption went from 266.4 MB to 266.3 MB.
+Total: 6.406539 ms (FindLiveObjects: 0.407309 ms CreateObjectMapping: 0.377375 ms MarkObjects: 5.418919 ms  DeleteObjects: 0.201098 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -174,70 +174,16 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 9824.548530 seconds.
-  path: Assets/ExampleAssets
-  artifactKey: Guid(83b7bbecd9fac4db9824039903a1eea8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ExampleAssets using Guid(83b7bbecd9fac4db9824039903a1eea8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f57ea3c6930e4f9eff9d5d54d89a161') in 0.009787 seconds 
+  Time since last request: 18918.939243 seconds.
+  path: Assets/Test_ASSets_Louis/Corpse/texture/Material__57_Metallic.png
+  artifactKey: Guid(fd7674baa7c524a048d61d6040a29ab0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Corpse/texture/Material__57_Metallic.png using Guid(fd7674baa7c524a048d61d6040a29ab0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b4cc0c152ed3d1fa02faf2b405d3c06') in 1.476969 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 149.564131 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_AO.jpg
-  artifactKey: Guid(9bde8921db5f348f8b89ac4d46c1699d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_AO.jpg using Guid(9bde8921db5f348f8b89ac4d46c1699d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cbd2a774c02d511b4ebbc325580a7702') in 2.099640 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.002826 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_Normal(OpenGL).jpg
-  artifactKey: Guid(81f77f5186e2f454e8f791107d473fc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_Normal(OpenGL).jpg using Guid(81f77f5186e2f454e8f791107d473fc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f955a275a0d9705774ef966f46eaee8') in 0.016855 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000094 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_Normal(.jpg
-  artifactKey: Guid(3ead6056672aa4e29b3f30242898af06) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_Normal(.jpg using Guid(3ead6056672aa4e29b3f30242898af06) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '448363e0e656b8206ca7c3352b2eaa8d') in 0.021602 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000079 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_Metalli.jpg
-  artifactKey: Guid(1591d45186d5a4244b9b72be333823ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_Metalli.jpg using Guid(1591d45186d5a4244b9b72be333823ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9453c4fd3064784629e8244d0d2fc0fb') in 0.016552 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000079 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_BaseColor.jpg
-  artifactKey: Guid(5325bd52b82494ef1a0deee21cb4a7f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_BaseColor.jpg using Guid(5325bd52b82494ef1a0deee21cb4a7f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec91c3308815fba00b01b7a6cd60e3e4') in 0.022809 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000096 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_Roughne.jpg
-  artifactKey: Guid(09b0b5f3a80d8459182ebf993cfd8e66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_Roughne.jpg using Guid(09b0b5f3a80d8459182ebf993cfd8e66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd16f84b65323604dac788a2fb5e10094') in 0.017996 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000085 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_SpecularLvl.jpg
-  artifactKey: Guid(30f5dd14fc72048699294adfd0d80629) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_SpecularLvl.jpg using Guid(30f5dd14fc72048699294adfd0d80629) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '212972a48ef452a7efa7174152bea41c') in 0.022960 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000093 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_Roughness.jpg
-  artifactKey: Guid(82a07226f97a54e65aa329e42f364ddf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Mat_Roughness.jpg using Guid(82a07226f97a54e65aa329e42f364ddf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '19ff7f2ca831cd7ebd979a25869a0113') in 0.015520 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000168 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_BaseCol.jpg
-  artifactKey: Guid(0920168aef00a4eeba632b5c17222859) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_BaseCol.jpg using Guid(0920168aef00a4eeba632b5c17222859) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3fb6c90b20ed673702343a5286b4bf00') in 0.021365 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000148 seconds.
-  path: Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_Opacity.jpg
-  artifactKey: Guid(1f330257209b54c30ad0c2ed9a846039) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Test_ASSets_Louis/Bookshelf/textures/Old_Dusty_Bookshelf_Spiderwebs_Mat_Opacity.jpg using Guid(1f330257209b54c30ad0c2ed9a846039) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec66224bd00fb8c5f8a9416faa47af77') in 0.021312 seconds 
+  Time since last request: 0.002583 seconds.
+  path: Assets/Test_ASSets_Louis/Corpse/texture/Material__57_Mixed_AO.png
+  artifactKey: Guid(bbf90402c7fb3411fa70d21be2b327e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Corpse/texture/Material__57_Mixed_AO.png using Guid(bbf90402c7fb3411fa70d21be2b327e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '45c1a18a5bb9a013575c71710fc23c5c') in 0.015751 seconds 
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
 AssetImportWorker is now disconnected from the server
 Process exiting
