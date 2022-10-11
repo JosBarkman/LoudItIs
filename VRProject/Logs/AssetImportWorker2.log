@@ -1,0 +1,240 @@
+Unity Editor version:    2021.3.11f1 (0a5ca18544bf)
+Branch:                  2021.3/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 11.6 (Build 20G165)
+Darwin version:          20.6.0
+Architecture:            x86_64
+Running under Rosetta:   NO
+Available memory:        16384 MB
+Using pre-set license
+Pro License: YES
+
+COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/MacOS/Unity
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker2
+-projectPath
+/Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject
+-logFile
+Logs/AssetImportWorker2.log
+-srvPort
+52054
+Successfully changed project path to: /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject
+/Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Refreshing native plugins compatible for Editor in 118.28 ms, found 3 plugins.
+Preloading 1 native plugins for Editor in 6.66 ms.
+Initialize engine version: 2021.3.11f1 (0a5ca18544bf)
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Color LCD preferred device: AMD Radeon Pro 555X (high power)
+Metal devices available: 2
+0: AMD Radeon Pro 555X (high power)
+1: Intel(R) UHD Graphics 630 (low power)
+Using device AMD Radeon Pro 555X (high power)
+Initializing Metal device caps: AMD Radeon Pro 555X
+Initialize mono
+Mono path[0] = '/Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit-macos'
+Mono config path = '/Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56251
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /Applications/Unity/Hub/Editor/2021.3.11f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
+Registered in 0.001982 seconds.
+[usbmuxd] Start listen thread
+[usbmuxd] Listen thread started
+[usbmuxd] Send listen message
+Native extension for iOS target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 111.95 ms, found 3 plugins.
+Preloading 1 native plugins for Editor in 0.51 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.901 seconds
+Domain Reload Profiling:
+	ReloadAssembly (901ms)
+		BeginReloadAssembly (87ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (669ms)
+			LoadAssemblies (86ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (168ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (37ms)
+			SetupLoadedEditorAssemblies (399ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (48ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (113ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (179ms)
+				ProcessInitializeOnLoadMethodAttributes (57ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.005419 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject/Library/PackageCache/com.unity.visualscripting@1.7.8/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory doesn't match image /Users/nepnepjunior/Desktop/School/School Projects/IMT&S/LoudItIs/VRProject/Library/PackageCache/com.unity.visualscripting@1.7.8/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Native extension for iOS target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 99.29 ms, found 3 plugins.
+Preloading 1 native plugins for Editor in 0.47 ms.
+Package Manager log level set to [2]
+Mono: successfully reloaded assembly
+- Completed reload, in  1.441 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1442ms)
+		BeginReloadAssembly (124ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (7ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (32ms)
+		EndReloadAssembly (1178ms)
+			LoadAssemblies (83ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (377ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (69ms)
+			SetupLoadedEditorAssemblies (595ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (22ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (100ms)
+				BeforeProcessingInitializeOnLoad (95ms)
+				ProcessInitializeOnLoadAttributes (345ms)
+				ProcessInitializeOnLoadMethodAttributes (32ms)
+				AfterProcessingInitializeOnLoad (2ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launching external process: /Applications/Unity/Hub/Editor/2021.3.11f1/Unity.app/Contents/Tools/UnityShaderCompiler
+Launched and connected shader compiler UnityShaderCompiler after 0.01 seconds
+Refreshing native plugins compatible for Editor in 0.84 ms, found 3 plugins.
+Preloading 1 native plugins for Editor in 0.51 ms.
+Unloading 4084 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 49 unused Assets / (105.3 KB). Loaded Objects now: 4526.
+Memory consumption went from 266.8 MB to 266.7 MB.
+Total: 3.932069 ms (FindLiveObjects: 0.350491 ms CreateObjectMapping: 0.238086 ms MarkObjects: 3.217863 ms  DeleteObjects: 0.124772 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 18943.372592 seconds.
+  path: Assets/Test_ASSets_Louis/Corpse/texture/Corpse.mat
+  artifactKey: Guid(4bcdafc43c8344d408d0c7d473effc11) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Corpse/texture/Corpse.mat using Guid(4bcdafc43c8344d408d0c7d473effc11) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dedd177bdd4d393f2caa04c1339a8c26') in 2.672792 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 102.537629 seconds.
+  path: Assets/Test_ASSets_Louis/Corpse/BodyLow.fbx
+  artifactKey: Guid(6631f1527d7ba47de85611b182bb9833) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Corpse/BodyLow.fbx using Guid(6631f1527d7ba47de85611b182bb9833) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a82480233d69f096f901de5826433cf') in 3.113039 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 12.825860 seconds.
+  path: Assets/Test_ASSets_Louis/Corpse/texture/Material__57_Normal_DirectX.png
+  artifactKey: Guid(96c704d67e6a54ebdb859c8eb573b0e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Corpse/texture/Material__57_Normal_DirectX.png using Guid(96c704d67e6a54ebdb859c8eb573b0e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3bc6f99b216e56d829ddba6062bedd94') in 0.913632 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 22.814352 seconds.
+  path: Assets/Test_ASSets_Louis/Corpse/texture/Corpse.mat
+  artifactKey: Guid(4bcdafc43c8344d408d0c7d473effc11) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Corpse/texture/Corpse.mat using Guid(4bcdafc43c8344d408d0c7d473effc11) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '26fb6d1be0c6cd5b2e0ac124a11ef06f') in 0.028799 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 70.249373 seconds.
+  path: Assets/Test_ASSets_Louis/Ceiling
+  artifactKey: Guid(b52ab4885fad146728e5cb06c8e89a1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Ceiling using Guid(b52ab4885fad146728e5cb06c8e89a1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bc365a99b27b04d9e273c518fc9ad25a') in 0.001104 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 14.041547 seconds.
+  path: Assets/Test_ASSets_Louis/Ceiling/sostrePlaça_final.obj
+  artifactKey: Guid(37dd9a1adc1f04aef940a32589579ba9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Ceiling/sostrePlaça_final.obj using Guid(37dd9a1adc1f04aef940a32589579ba9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7efa6a0e9f532a5c915fd2a88d392bfa') in 2.152194 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 14.495629 seconds.
+  path: Assets/Test_ASSets_Louis/Ceiling/difuse.png
+  artifactKey: Guid(b5c5bae1a64ea4fbcba6def6424d3994) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Ceiling/difuse.png using Guid(b5c5bae1a64ea4fbcba6def6424d3994) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b93a6b92187ec7e7531fa83ddabdd939') in 0.021297 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 12.891363 seconds.
+  path: Assets/Test_ASSets_Louis/Ceiling/Ceiling.mat
+  artifactKey: Guid(dd1cd46f98c064b30930bc58445bacc3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Ceiling/Ceiling.mat using Guid(dd1cd46f98c064b30930bc58445bacc3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '217b3be589005c8d80106b492871ae1f') in 0.010947 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 11.911850 seconds.
+  path: Assets/Test_ASSets_Louis/Ceiling/normal.png
+  artifactKey: Guid(fb86108b2e32d4789bdaa2750f6d3276) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Ceiling/normal.png using Guid(fb86108b2e32d4789bdaa2750f6d3276) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f022e68144edbea528a7024c44dac1a7') in 0.022415 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 18.989920 seconds.
+  path: Assets/Test_ASSets_Louis/Ceiling/sostrePlaça_final.obj
+  artifactKey: Guid(37dd9a1adc1f04aef940a32589579ba9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Ceiling/sostrePlaça_final.obj using Guid(37dd9a1adc1f04aef940a32589579ba9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7154724866d8bcd47b275d1742cc4108') in 0.066565 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 74.283371 seconds.
+  path: Assets/Test_ASSets_Louis/Ceiling/Ceiling.mat
+  artifactKey: Guid(dd1cd46f98c064b30930bc58445bacc3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Test_ASSets_Louis/Ceiling/Ceiling.mat using Guid(dd1cd46f98c064b30930bc58445bacc3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'afa3c2f2250e95ba54f890814628b67a') in 0.074104 seconds 
