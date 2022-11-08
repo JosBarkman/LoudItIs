@@ -396,6 +396,8 @@ MonoBehaviour:
     RotBlendStart: 0.1
     RotBlendEnd: 0.5
     RotTeleportRadians: 1.5
+  UseLegacySharedModeInterpolation: 0
+  TargetInterpolationDelay: 0.03
 --- !u!114 &2051342607668886953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,6 +412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   headFeetOffset: -1.600754
+  _networkedHeadFeetOffset: 0
   headset: {fileID: 1065154923149488444}
   leftHand: {fileID: 7197135607370011599}
   rightHand: {fileID: 2694407212418443977}
@@ -837,6 +840,8 @@ MonoBehaviour:
     RotBlendStart: 0.1
     RotBlendEnd: 0.5
     RotTeleportRadians: 1.5
+  UseLegacySharedModeInterpolation: 0
+  TargetInterpolationDelay: 0.03
 --- !u!1 &1106054187886202696
 GameObject:
   m_ObjectHideFlags: 0
@@ -2384,6 +2389,8 @@ MonoBehaviour:
     RotBlendStart: 0.1
     RotBlendEnd: 0.5
     RotTeleportRadians: 1.5
+  UseLegacySharedModeInterpolation: 0
+  TargetInterpolationDelay: 0.03
 --- !u!1 &5971116672712360700
 GameObject:
   m_ObjectHideFlags: 0
@@ -3183,6 +3190,8 @@ MonoBehaviour:
     RotBlendStart: 0.1
     RotBlendEnd: 0.5
     RotTeleportRadians: 1.5
+  UseLegacySharedModeInterpolation: 0
+  TargetInterpolationDelay: 0.03
 --- !u!1 &8560723343450750281
 GameObject:
   m_ObjectHideFlags: 0
