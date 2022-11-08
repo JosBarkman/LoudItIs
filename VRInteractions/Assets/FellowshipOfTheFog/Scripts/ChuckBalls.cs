@@ -1,6 +1,6 @@
 using System.Linq;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 
 public class ChuckBalls : MonoBehaviour {
     [SerializeField]
@@ -29,7 +29,7 @@ public class ChuckBalls : MonoBehaviour {
 
 
     private void Update() {
-        if ( Input.GetKeyDown( KeyCode.Space ) ) {
+        if (Keyboard.current[Key.Space].wasPressedThisFrame) {
             _cannonActive = !_cannonActive;
             _cooldown = _minMaxTimeBetweenShots.y;
         }

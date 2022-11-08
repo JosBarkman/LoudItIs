@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 
 public class EnableGravity : MonoBehaviour {
     [SerializeField]
@@ -21,7 +21,7 @@ public class EnableGravity : MonoBehaviour {
 
 
     private void Update() {
-        if ( !_enabled && Input.GetKeyDown( KeyCode.Space ) ) {
+        if ( !_enabled && Keyboard.current[Key.Space].wasPressedThisFrame) {
             SetEnabled( true );
         }
     }
