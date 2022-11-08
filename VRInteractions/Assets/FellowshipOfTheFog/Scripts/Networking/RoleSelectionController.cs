@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.XR;
 
 public enum Role
 {
@@ -18,6 +19,12 @@ public class RoleSelectionController : NetworkBehaviour
     [Header("External components")]
     [SerializeField]
     private LocalPlayerRig playerRig;
+
+    [SerializeField]
+    private GameObject vrMenu;
+    
+    [SerializeField]
+    private GameObject defaultMenu;
 
     private NetworkManager manager;
 
@@ -40,7 +47,7 @@ public class RoleSelectionController : NetworkBehaviour
         if (role == Role.Character)
         {
             // We use playerref.none to target the rpc call to the server
-            RPC_PickRoleAndCharacter(PlayerRef.None, sheet.name, playerRig.headset.position.y / playerRig.cameraOffset.cameraYOffset);
+            RPC_PickRoleAndCharacter(PlayerRef.None, sheet.name, playerRig.headset.position.y / playerRig.xrOrigin.CameraYOffset);
 
             playerRig.transform.position = sheet.spawnPosition;
             playerRig.transform.rotation = Quaternion.Euler(sheet.spawnRotation);
@@ -71,6 +78,23 @@ public class RoleSelectionController : NetworkBehaviour
         if (playerRig == null)
         {
             playerRig = FindObjectOfType<LocalPlayerRig>();
+        }
+    }
+
+    private void Start()
+    {
+        List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
+        SubsystemManager.GetInstances<XRDisplaySubsystem>(displaySubsystems);
+
+        if (displaySubsystems.Count != 0)
+        {
+            vrMenu.SetActive(true);
+            defaultMenu.SetActive(false);
+        }
+        else
+        {
+            vrMenu.SetActive(false);
+            defaultMenu.SetActive(true);
         }
     }
 

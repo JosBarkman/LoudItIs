@@ -2,10 +2,10 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
+using Unity.XR.CoreUtils;
 using UnityEditor.XR.LegacyInputHelpers;
 using UnityEngine;
 using UnityEngine.SpatialTracking;
-using UnityEngine.XR;
 
 /// <summary>
 /// Network input strcut
@@ -36,7 +36,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     public Transform leftHand;
     public Transform rightHand;
 
-    public CameraOffset cameraOffset;
+    public XROrigin xrOrigin;
 
     [SerializeField]
     private Transform leftHandVisuals;
@@ -76,9 +76,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
             trackedPoseDriver = GetComponentInChildren<TrackedPoseDriver>();
         }
 
-        if (cameraOffset == null)
+        if (xrOrigin == null)
         {
-            cameraOffset = GetComponentInChildren<CameraOffset>();
+            xrOrigin = GetComponentInChildren<XROrigin>();
         }
     }
 
@@ -87,6 +87,14 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         if (runner != null)
         {
             runner.AddCallbacks(this);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (runner != null)
+        {
+            runner.RemoveCallbacks(this);
         }
     }
 
