@@ -32,7 +32,7 @@ public class RoleSelectionController : NetworkBehaviour
 
     #region Public Methods
 
-    [Rpc(sources: RpcSources.All, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_PickRoleAndCharacter([RpcTarget] PlayerRef targetPlayer, string characterName, float scale, RpcInfo info = default)
     {
         CharacterSheet sheet = characters.Find(x => x.name == characterName);
@@ -46,7 +46,7 @@ public class RoleSelectionController : NetworkBehaviour
         // So we don't need to call the rpc
         if (role == Role.Character)
         {
-            // We use playerref.none to target the rpc call to the server
+            // We use playerref.none to target the rpc call to the server even though the target is already server, so this should not be necesary.
             RPC_PickRoleAndCharacter(PlayerRef.None, sheet.name, playerRig.headset.position.y / playerRig.xrOrigin.CameraYOffset);
 
             playerRig.transform.position = sheet.spawnPosition;

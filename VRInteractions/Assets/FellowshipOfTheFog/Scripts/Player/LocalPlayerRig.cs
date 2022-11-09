@@ -71,7 +71,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         leftHandVisuals.gameObject.SetActive(false);
         rightHandVIsuals.gameObject.SetActive(false);
-
     }
 
     #endregion
