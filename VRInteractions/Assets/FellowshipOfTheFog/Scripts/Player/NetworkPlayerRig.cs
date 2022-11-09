@@ -1,6 +1,7 @@
 using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [System.Serializable]
 public class IKConstraint
@@ -25,6 +26,7 @@ public class IKConstraint
 [OrderAfter(typeof(NetworkTransform), typeof(NetworkRigidbody))]
 public class NetworkPlayerRig : NetworkBehaviour
 {
+
     #region Properties
 
     [Header("Settings")]
@@ -76,6 +78,7 @@ public class NetworkPlayerRig : NetworkBehaviour
         base.FixedUpdateNetwork();
 
         // update the rig at each network tick
+        // if true means that we are on the server
         if (GetInput<RigInput>(out var input))
         {
             leftHand.transform.position = input.leftHandPosition;
@@ -114,4 +117,5 @@ public class NetworkPlayerRig : NetworkBehaviour
     }
 
     #endregion
+
 }

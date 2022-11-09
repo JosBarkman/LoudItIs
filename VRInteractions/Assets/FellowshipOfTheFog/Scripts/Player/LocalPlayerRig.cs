@@ -3,15 +3,21 @@ using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
 using Unity.XR.CoreUtils;
-using UnityEditor.XR.LegacyInputHelpers;
 using UnityEngine;
 using UnityEngine.SpatialTracking;
+using UnityEngine.XR;
 
 /// <summary>
 /// Network input strcut
 /// </summary>
 public struct RigInput : INetworkInput
 {
+    public enum VrControllerButtons : byte
+    {
+        None = 0,
+        Trigger = 1 << 7,
+    }
+
     public Vector3 position;
     public Vector3 headsetPosition;
     public Vector3 leftHandPosition;
@@ -21,6 +27,9 @@ public struct RigInput : INetworkInput
     public Quaternion headsetRotation;
     public Quaternion leftHandRotation;
     public Quaternion rightHandRotation;
+
+    public byte leftControllerButtonsPressed;
+    public byte rightControllerButtonsPressed;
 }
 
 /// <summary>
@@ -48,6 +57,8 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private TrackedPoseDriver trackedPoseDriver;
 
     private NetworkRunner runner;
+    private InputDevice leftHardwareController;
+    private InputDevice rightHardwareController;
 
     #endregion
 
@@ -88,6 +99,20 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         {
             runner.AddCallbacks(this);
         }
+
+        List<InputDevice> devices = new List<InputDevice>();
+
+        InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Left, devices);
+        if (devices.Count != 0)
+        {
+            leftHardwareController= devices[0];
+        }
+
+        InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Right, devices);
+        if (devices.Count != 0)
+        {
+            rightHardwareController = devices[0];
+        }
     }
 
     private void OnDestroy()
@@ -117,6 +142,19 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         rigInput.rightHandPosition = rightHand.position;
         rigInput.rightHandRotation = rightHand.rotation;
+
+        rigInput.leftControllerButtonsPressed = 0;
+        rigInput.rightControllerButtonsPressed = 0;
+
+        bool buttonPressed = false;
+
+        if (leftHardwareController != null)
+        {
+            leftHardwareController.TryGetFeatureValue(CommonUsages.triggerButton, out buttonPressed);
+            rigInput.leftControllerButtonsPressed |= (byte) (buttonPressed ? RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
+        }
+
+        Debug.Log(string.Format("@Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.leftControllerButtonsPressed, 2).PadLeft(8, '0')));
 
         input.Set(rigInput);
     }
