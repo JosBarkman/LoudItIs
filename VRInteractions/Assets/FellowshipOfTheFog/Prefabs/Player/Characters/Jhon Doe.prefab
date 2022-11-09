@@ -444,11 +444,17 @@ MonoBehaviour:
   _interpolationDataSource: 0
   headFeetOffset: -1.600754
   _networkedHeadFeetOffset: 0
+  _leftHandState:
+    _value: 0
+  _rightHandState:
+    _value: 0
   headset: {fileID: 1065154923149488444}
   leftHand: {fileID: 7197135607370011599}
   rightHand: {fileID: 2694407212418443977}
-  leftHandXRController: {fileID: 0}
-  rightHandXRController: {fileID: 0}
+  leftHandXRController: {fileID: 197619390}
+  rightHandXRController: {fileID: 6529235846099225826}
+  leftHandRigContraints: {fileID: 9198094865978858782}
+  rightHandRigContraints: {fileID: 5759045430782938072}
   rigVisuals: {fileID: 4180079624101087284}
   leftHandConstraint:
     track: {fileID: 8870280559582821179}

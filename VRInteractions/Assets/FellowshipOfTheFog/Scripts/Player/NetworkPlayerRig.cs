@@ -1,6 +1,6 @@
 using Fusion;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [System.Serializable]
@@ -35,6 +35,12 @@ public class NetworkPlayerRig : NetworkBehaviour
     [HideInInspector]
     [Networked()] public float networkedHeadFeetOffset { get; set; }
 
+    [HideInInspector]
+    [Networked(OnChanged = "OnLeftHandStateChanegd", OnChangedTargets = OnChangedTargets.All)] public NetworkBool leftHandState { get; set; }
+
+    [HideInInspector]
+    [Networked(OnChanged = "OnRightHandStateChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool rightHandState { get; set; }
+
     [Header("Components")]
     [SerializeField]
     private NetworkTransform headset;
@@ -50,6 +56,9 @@ public class NetworkPlayerRig : NetworkBehaviour
 
     [SerializeField]
     private ActionBasedController rightHandXRController;
+
+    public Rig leftHandRigContraints;
+    public Rig rightHandRigContraints;
 
     [SerializeField]
     private Transform rigVisuals;
@@ -124,6 +133,9 @@ public class NetworkPlayerRig : NetworkBehaviour
 
             leftHandXRController.currentControllerState = leftControllerState;
 
+            // Update left hand state
+            leftHandState = leftControllerState.selectInteractionState.active;
+
             // Right controller
             XRControllerState rightControllerState = new XRControllerState();
             rightControllerState.selectInteractionState = new InteractionState();
@@ -131,6 +143,9 @@ public class NetworkPlayerRig : NetworkBehaviour
             rightControllerState.selectInteractionState.active = ((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
 
             rightHandXRController.currentControllerState = rightControllerState;
+
+            // Update right hand state
+            rightHandState = leftControllerState.selectInteractionState.active;
         }
 
         leftHandConstraint.Update();
@@ -152,6 +167,32 @@ public class NetworkPlayerRig : NetworkBehaviour
 
             headset.InterpolationTarget.position = playerRig.headset.transform.position;
             headset.InterpolationTarget.rotation = playerRig.headset.transform.rotation;
+        }
+    }
+
+    #endregion
+
+    #region Property Changed Callbacks
+
+    public static void OnLeftHandStateChanegd(Changed<NetworkPlayerRig> changed)
+    {
+        changed.Behaviour.leftHandRigContraints.weight = changed.Behaviour.leftHandState ? 1.0f : 0.0f;
+
+        // Player rig will be just valid on the local client
+        if (changed.Behaviour.playerRig != null)
+        {
+            changed.Behaviour.playerRig.UpdateLeftHandContraint(changed.Behaviour.leftHandState);
+        }
+    }
+
+    public static void OnRightHandStateChanged(Changed<NetworkPlayerRig> changed)
+    {
+        changed.Behaviour.rightHandRigContraints.weight = changed.Behaviour.rightHandState ? 1.0f : 0.0f;
+
+        // Player rig will be just valid on the local client
+        if (changed.Behaviour.playerRig != null)
+        {
+            changed.Behaviour.playerRig.UpdateRightHandConstraint(changed.Behaviour.rightHandState);
         }
     }
 
