@@ -46,6 +46,12 @@ public class NetworkPlayerRig : NetworkBehaviour
     private NetworkTransform rightHand;
 
     [SerializeField]
+    private ActionBasedController leftHandXRController;
+
+    [SerializeField]
+    private ActionBasedController rightHandXRController;
+
+    [SerializeField]
     private Transform rigVisuals;
 
     private LocalPlayerRig playerRig;
@@ -57,6 +63,23 @@ public class NetworkPlayerRig : NetworkBehaviour
     private IKConstraint rightHandConstraint;
     [SerializeField]
     private IKConstraint headConstraint;
+
+    #endregion
+
+    #region Unity Events
+
+    private void Awake()
+    {
+        if (leftHandXRController == null)
+        {
+            leftHandXRController = leftHand.GetComponentInChildren<ActionBasedController>();
+        }
+
+        if (rightHandXRController == null)
+        {
+            rightHandXRController = rightHand.GetComponentInChildren<ActionBasedController>();
+        }
+    }
 
     #endregion
 
@@ -92,6 +115,22 @@ public class NetworkPlayerRig : NetworkBehaviour
 
             transform.position = headset.transform.position + Vector3.up * networkedHeadFeetOffset;
             transform.forward = Vector3.ProjectOnPlane(headset.transform.forward, Vector3.up);
+
+            // Left controller
+            XRControllerState leftControllerState = new XRControllerState();
+            leftControllerState.selectInteractionState = new InteractionState();
+
+            leftControllerState.selectInteractionState.active = ((byte) (input.leftControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Trigger)) == (byte) RigInput.VrControllerButtons.Trigger;
+
+            leftHandXRController.currentControllerState = leftControllerState;
+
+            // Right controller
+            XRControllerState rightControllerState = new XRControllerState();
+            rightControllerState.selectInteractionState = new InteractionState();
+
+            rightControllerState.selectInteractionState.active = ((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
+
+            rightHandXRController.currentControllerState = rightControllerState;
         }
 
         leftHandConstraint.Update();

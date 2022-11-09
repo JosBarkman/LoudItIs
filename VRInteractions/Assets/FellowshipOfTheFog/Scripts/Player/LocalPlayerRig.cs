@@ -14,7 +14,7 @@ public struct RigInput : INetworkInput
 {
     public enum VrControllerButtons : byte
     {
-        None = 0,
+        None = 0x0,
         Trigger = 1 << 7,
     }
 
@@ -105,7 +105,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Left, devices);
         if (devices.Count != 0)
         {
-            leftHardwareController= devices[0];
+            leftHardwareController = devices[0];
         }
 
         InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Right, devices);
@@ -152,6 +152,12 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         {
             leftHardwareController.TryGetFeatureValue(CommonUsages.triggerButton, out buttonPressed);
             rigInput.leftControllerButtonsPressed |= (byte) (buttonPressed ? RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
+        }
+
+        if (rightHardwareController != null)
+        {
+            rightHardwareController.TryGetFeatureValue(CommonUsages.triggerButton, out buttonPressed);
+            rigInput.rightControllerButtonsPressed |= (byte)(buttonPressed ? RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
         }
 
         Debug.Log(string.Format("@Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.leftControllerButtonsPressed, 2).PadLeft(8, '0')));
