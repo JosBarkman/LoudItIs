@@ -97,6 +97,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     public override void Spawned()
     {
         base.Spawned();
+
         if (Object.HasInputAuthority)
         {
             playerRig = FindObjectOfType<LocalPlayerRig>();
