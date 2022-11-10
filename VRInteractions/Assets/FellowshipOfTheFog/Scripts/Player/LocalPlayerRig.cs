@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.SpatialTracking;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 /// <summary>
 /// Network input strcut
@@ -60,12 +61,16 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField]
     private Transform rightHandVisuals;
 
+
+
     [SerializeField]
     private TrackedPoseDriver trackedPoseDriver;
 
     private NetworkRunner runner;
     private InputDevice leftHardwareController;
     private InputDevice rightHardwareController;
+    private ActionBasedController leftHandXRController;
+    private ActionBasedController rightHandXRController;
 
     #endregion
 
@@ -107,6 +112,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         {
             rightHandRigConstraints = rightHand.GetComponentInChildren<Rig>();
         }
+
+        leftHandXRController = leftHand.GetComponentInChildren<ActionBasedController>();
+        rightHandXRController = rightHand.GetComponentInChildren<ActionBasedController>();
     }
 
     private void Start()
