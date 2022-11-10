@@ -58,7 +58,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private Transform leftHandVisuals;
     
     [SerializeField]
-    private Transform rightHandVIsuals;
+    private Transform rightHandVisuals;
 
     [SerializeField]
     private TrackedPoseDriver trackedPoseDriver;
@@ -77,7 +77,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         GetComponentInChildren<SpectatorCamera>().enabled = true;
 
         leftHandVisuals.gameObject.SetActive(false);
-        rightHandVIsuals.gameObject.SetActive(false);
+        rightHandVisuals.gameObject.SetActive(false);
     }
 
     #endregion

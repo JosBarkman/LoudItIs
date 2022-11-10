@@ -54,6 +54,11 @@ public class MenuControllerSessionList : MonoBehaviour
         mainMenuController.JoinSession(info);
     }
 
+    public void AAAA()
+    {
+        Debug.Log("AAAA");
+    }
+
     #endregion
 
     #region Private Methods

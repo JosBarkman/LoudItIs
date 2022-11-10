@@ -145,7 +145,7 @@ public class NetworkPlayerRig : NetworkBehaviour
             rightHandXRController.currentControllerState = rightControllerState;
 
             // Update right hand state
-            rightHandState = leftControllerState.selectInteractionState.active;
+            rightHandState = rightControllerState.selectInteractionState.active;
         }
 
         leftHandConstraint.Update();
@@ -156,6 +156,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     public override void Render()
     {
         base.Render();
+
         if (Object.HasInputAuthority)
         {
             leftHand.InterpolationTarget.position = playerRig.leftHand.transform.position;
