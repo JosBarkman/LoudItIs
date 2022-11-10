@@ -30,7 +30,6 @@ public class MenuControllerRoleSelector : MonoBehaviour
     public void SelectCharacter(CharacterSheet sheet)
     {
         roleSelectionController.PickRoleAndCharacter(Role.Character, sheet);
-        gameObject.SetActive(false);
     }
 
     #endregion

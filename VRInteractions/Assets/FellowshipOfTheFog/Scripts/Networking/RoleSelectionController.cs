@@ -64,6 +64,9 @@ public class RoleSelectionController : NetworkBehaviour
         // Bad
         Cursor.lockState = CursorLockMode.Locked;
 
+        vrMenu.SetActive(false);
+        defaultMenu.SetActive(false);
+
         return;
     }
 
