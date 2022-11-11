@@ -111,7 +111,8 @@ public class NetworkPlayerRig : NetworkBehaviour
         base.FixedUpdateNetwork();
 
         // update the rig at each network tick
-        // if true means that we are on the server
+        // if true means that we are on the server (actually this is not true)
+        // client with InputAuthority can run this code too
         if (GetInput<RigInput>(out var input))
         {
             leftHand.transform.position = input.leftHandPosition;
@@ -126,27 +127,31 @@ public class NetworkPlayerRig : NetworkBehaviour
             transform.position = headset.transform.position + Vector3.up * networkedHeadFeetOffset;
             transform.forward = Vector3.ProjectOnPlane(headset.transform.forward, Vector3.up);
 
-            // Left controller
-            XRControllerState leftControllerState = new XRControllerState();
-            leftControllerState.selectInteractionState = new InteractionState();
+            // We update server controller state so that he is the one selecting the objects
+            if (Runner.IsServer)
+            {
+                // Left controller
+                XRControllerState leftControllerState = new XRControllerState();
+                leftControllerState.selectInteractionState = new InteractionState();
 
-            leftControllerState.selectInteractionState.active = ((byte) (input.leftControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Trigger)) == (byte) RigInput.VrControllerButtons.Trigger;
+                leftControllerState.selectInteractionState.active = ((byte)(input.leftControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
 
-            leftHandXRController.currentControllerState = leftControllerState;
+                leftHandXRController.currentControllerState = leftControllerState;
 
-            // Update left hand state
-            leftHandState = leftControllerState.selectInteractionState.active;
+                // Update left hand state
+                leftHandState = leftControllerState.selectInteractionState.active;
 
-            // Right controller
-            XRControllerState rightControllerState = new XRControllerState();
-            rightControllerState.selectInteractionState = new InteractionState();
+                // Right controller
+                XRControllerState rightControllerState = new XRControllerState();
+                rightControllerState.selectInteractionState = new InteractionState();
 
-            rightControllerState.selectInteractionState.active = ((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
+                rightControllerState.selectInteractionState.active = ((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
 
-            rightHandXRController.currentControllerState = rightControllerState;
+                rightHandXRController.currentControllerState = rightControllerState;
 
-            // Update right hand state
-            rightHandState = rightControllerState.selectInteractionState.active;
+                // Update right hand state
+                rightHandState = rightControllerState.selectInteractionState.active;
+            }            
         }
 
         leftHandConstraint.Update();
