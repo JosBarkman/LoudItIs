@@ -180,35 +180,38 @@ public class NetworkPlayerRig : NetworkBehaviour
                 {
                     FingerGrababble grababble = selectedInteractable.colliders[0].GetComponentInParent<FingerGrababble>();
 
-                    fingersState |= grababble.indexIKPosition != null ? (byte) FingerIKFlags.Index : (byte) FingerIKFlags.None;
-                    fingersState |= grababble.middleIKPosition != null ? (byte) FingerIKFlags.Middle : (byte) FingerIKFlags.None;
-                    fingersState |= grababble.ringIKPosition != null ? (byte) FingerIKFlags.Ring : (byte) FingerIKFlags.None;
-                    fingersState |= grababble.pinkyIKPosition != null ? (byte) FingerIKFlags.Pinky : (byte) FingerIKFlags.None;
-                    fingersState |= grababble.thumbIKPosition != null ? (byte) FingerIKFlags.Thumb : (byte) FingerIKFlags.None;
-
-                    if (grababble.indexIKPosition != null)
+                    if (grababble != null)
                     {
-                        leftHandIndexConstraint.track = grababble.indexIKPosition;
-                    }
+                        fingersState |= grababble.indexIKPosition != null ? (byte)FingerIKFlags.Index : (byte)FingerIKFlags.None;
+                        fingersState |= grababble.middleIKPosition != null ? (byte)FingerIKFlags.Middle : (byte)FingerIKFlags.None;
+                        fingersState |= grababble.ringIKPosition != null ? (byte)FingerIKFlags.Ring : (byte)FingerIKFlags.None;
+                        fingersState |= grababble.pinkyIKPosition != null ? (byte)FingerIKFlags.Pinky : (byte)FingerIKFlags.None;
+                        fingersState |= grababble.thumbIKPosition != null ? (byte)FingerIKFlags.Thumb : (byte)FingerIKFlags.None;
 
-                    if (grababble.middleIKPosition != null)
-                    {
-                        leftHandMiddleConstraint.track = grababble.middleIKPosition;
-                    }
+                        if (grababble.indexIKPosition != null)
+                        {
+                            leftHandIndexConstraint.track = grababble.indexIKPosition;
+                        }
 
-                    if (grababble.ringIKPosition != null)
-                    {
-                        leftHandRingConstraint.track = grababble.ringIKPosition;
-                    }
+                        if (grababble.middleIKPosition != null)
+                        {
+                            leftHandMiddleConstraint.track = grababble.middleIKPosition;
+                        }
 
-                    if (grababble.pinkyIKPosition != null)
-                    {
-                        leftHandPinkyConstraint.track = grababble.pinkyIKPosition;
-                    }
+                        if (grababble.ringIKPosition != null)
+                        {
+                            leftHandRingConstraint.track = grababble.ringIKPosition;
+                        }
 
-                    if (grababble.thumbIKPosition != null)
-                    {
-                        leftHandThumbConstraint.track = grababble.thumbIKPosition;
+                        if (grababble.pinkyIKPosition != null)
+                        {
+                            leftHandPinkyConstraint.track = grababble.pinkyIKPosition;
+                        }
+
+                        if (grababble.thumbIKPosition != null)
+                        {
+                            leftHandThumbConstraint.track = grababble.thumbIKPosition;
+                        }
                     }
                 }
 
@@ -247,35 +250,39 @@ public class NetworkPlayerRig : NetworkBehaviour
                 if (selectedInteractable != null)
                 {
                     FingerGrababble grababble = selectedInteractable.colliders[0].GetComponentInParent<FingerGrababble>();
-                    fingersState |= grababble.indexIKPosition != null ? (byte)FingerIKFlags.Index : (byte)FingerIKFlags.None;
-                    fingersState |= grababble.middleIKPosition != null ? (byte)FingerIKFlags.Middle : (byte)FingerIKFlags.None;
-                    fingersState |= grababble.ringIKPosition != null ? (byte)FingerIKFlags.Ring : (byte)FingerIKFlags.None;
-                    fingersState |= grababble.pinkyIKPosition != null ? (byte)FingerIKFlags.Pinky : (byte)FingerIKFlags.None;
-                    fingersState |= grababble.thumbIKPosition != null ? (byte)FingerIKFlags.Thumb : (byte)FingerIKFlags.None;
 
-                    if (grababble.indexIKPosition != null)
+                    if (grababble != null)
                     {
-                        rightHandIndexConstraint.track = grababble.indexIKPosition;
-                    }
+                        fingersState |= grababble.indexIKPosition != null ? (byte)FingerIKFlags.Index : (byte)FingerIKFlags.None;
+                        fingersState |= grababble.middleIKPosition != null ? (byte)FingerIKFlags.Middle : (byte)FingerIKFlags.None;
+                        fingersState |= grababble.ringIKPosition != null ? (byte)FingerIKFlags.Ring : (byte)FingerIKFlags.None;
+                        fingersState |= grababble.pinkyIKPosition != null ? (byte)FingerIKFlags.Pinky : (byte)FingerIKFlags.None;
+                        fingersState |= grababble.thumbIKPosition != null ? (byte)FingerIKFlags.Thumb : (byte)FingerIKFlags.None;
 
-                    if (grababble.middleIKPosition != null)
-                    {
-                        rightHandMiddleConstraint.track = grababble.middleIKPosition;
-                    }
+                        if (grababble.indexIKPosition != null)
+                        {
+                            rightHandIndexConstraint.track = grababble.indexIKPosition;
+                        }
 
-                    if (grababble.ringIKPosition != null)
-                    {
-                        rightHandRingConstraint.track = grababble.ringIKPosition;
-                    }
+                        if (grababble.middleIKPosition != null)
+                        {
+                            rightHandMiddleConstraint.track = grababble.middleIKPosition;
+                        }
 
-                    if (grababble.pinkyIKPosition != null)
-                    {
-                        rightHandPinkyConstraint.track = grababble.pinkyIKPosition;
-                    }
+                        if (grababble.ringIKPosition != null)
+                        {
+                            rightHandRingConstraint.track = grababble.ringIKPosition;
+                        }
 
-                    if (grababble.thumbIKPosition != null)
-                    {
-                        rightHandThumbConstraint.track = grababble.thumbIKPosition;
+                        if (grababble.pinkyIKPosition != null)
+                        {
+                            rightHandPinkyConstraint.track = grababble.pinkyIKPosition;
+                        }
+
+                        if (grababble.thumbIKPosition != null)
+                        {
+                            rightHandThumbConstraint.track = grababble.thumbIKPosition;
+                        }
                     }
                 }
 
