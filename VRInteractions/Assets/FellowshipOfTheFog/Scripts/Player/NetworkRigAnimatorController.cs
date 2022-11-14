@@ -38,7 +38,7 @@ public class NetworkRigAnimatorController : MonoBehaviour
             animator.SetIKRotation(AvatarIKGoal.RightFoot, footRotation);
         }
         else
-            {
+        {
             animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 0.0f);
             animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, 0.0f);
         }
