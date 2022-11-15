@@ -8,6 +8,7 @@ using UnityEngine.Animations.Rigging;
 using UnityEngine.SpatialTracking;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using static FingerGrababble;
 
 /// <summary>
 /// Network input strcut
@@ -34,6 +35,35 @@ public struct RigInput : INetworkInput
     public byte rightControllerButtonsPressed;
 }
 
+[System.Serializable]
+public class FingersIK
+{
+    public ChainIKConstraint indexIKConstraint;
+    public ChainIKConstraint middleIKConstraint;
+    public ChainIKConstraint ringIKConstraint;
+    public ChainIKConstraint pinkyIKConstraint;
+    public ChainIKConstraint thumbIKConstraint;
+
+    public void UpdateWeights(byte state)
+    {
+        indexIKConstraint.weight = (state & (int) FingerIKFlags.Index) == (int) FingerIKFlags.Index ? 1.0f : 0.0f;
+        middleIKConstraint.weight = (state & (int) FingerIKFlags.Middle) == (int) FingerIKFlags.Middle ? 1.0f : 0.0f;
+        ringIKConstraint.weight = (state & (int) FingerIKFlags.Ring) == (int) FingerIKFlags.Ring ? 1.0f : 0.0f;
+        pinkyIKConstraint.weight = (state & (int) FingerIKFlags.Pinky) == (int) FingerIKFlags.Pinky ? 1.0f : 0.0f;
+        thumbIKConstraint.weight = (state & (int) FingerIKFlags.Thumb) == (int) FingerIKFlags.Thumb ? 1.0f : 0.0f;
+    }
+
+    public void UpdateTargets(Vector3 indexPosition, Vector3 middlePosition, 
+        Vector3 ringPosition, Vector3 pinkyPosition, Vector3 thumbPosition)
+    {
+        indexIKConstraint.data.target.position = indexPosition;
+        middleIKConstraint.data.target.position = middlePosition;
+        ringIKConstraint.data.target.position = ringPosition;
+        thumbIKConstraint.data.target.position = thumbPosition;
+        pinkyIKConstraint.data.target.position = pinkyPosition;
+    }
+}
+
 /// <summary>
 /// Represents the local player, the network player which will be replicated will track this rig.
 /// </summary>
@@ -49,8 +79,8 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
     public XROrigin xrOrigin;
 
-    [SerializeField]
-    private Rig leftHandRigConstraints;
+    public FingersIK leftFingers;
+    public FingersIK rightFingers;
 
     [SerializeField]
     private Rig rightHandRigConstraints;
@@ -61,28 +91,51 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField]
     private Transform rightHandVisuals;
 
-
-
     [SerializeField]
     private TrackedPoseDriver trackedPoseDriver;
 
     private NetworkRunner runner;
     private InputDevice leftHardwareController;
     private InputDevice rightHardwareController;
-    private ActionBasedController leftHandXRController;
-    private ActionBasedController rightHandXRController;
 
     #endregion
 
     #region Public Methods
 
-    public void SetSpectator()
+    public void SetSpectator(bool vr)
     {
+        if (vr)
+        {
+            return;
+        }
+
         trackedPoseDriver.enabled = false;
         GetComponentInChildren<SpectatorCamera>().enabled = true;
 
-        leftHandVisuals.gameObject.SetActive(false);
-        rightHandVisuals.gameObject.SetActive(false);
+        leftHand.gameObject.SetActive(false);
+        rightHand.gameObject.SetActive(false);
+    }
+
+    public void UpdateLeftHandContraint(byte leftHandFingerStateBitfield)
+    {
+        leftFingers.UpdateWeights(leftHandFingerStateBitfield);
+    }
+
+    public void UpdateRightHandConstraint(byte righttHandFingerStateBitfield)
+    {
+        rightFingers.UpdateWeights(righttHandFingerStateBitfield);
+    }
+
+    public void SetCharacter(CharacterSheet sheet)
+    {
+        transform.position = sheet.spawnPosition;
+        transform.rotation = Quaternion.Euler(sheet.spawnRotation);
+
+        leftHandVisuals.GetComponent<MeshFilter>().mesh = sheet.handsMesh;
+        leftHandVisuals.GetComponent<MeshRenderer>().material = new Material(sheet.handsMaterial);
+
+        rightHandVisuals.GetComponent<MeshFilter>().mesh = sheet.handsMesh;
+        rightHandVisuals.GetComponent<MeshRenderer>().material = new Material(sheet.handsMaterial);
     }
 
     #endregion
@@ -102,19 +155,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         {
             xrOrigin = GetComponentInChildren<XROrigin>();
         }
-
-        if (leftHandRigConstraints == null)
-        {
-            leftHandRigConstraints = leftHand.GetComponentInChildren<Rig>();
-        }
-
-        if (rightHandRigConstraints == null)
-        {
-            rightHandRigConstraints = rightHand.GetComponentInChildren<Rig>();
-        }
-
-        leftHandXRController = leftHand.GetComponentInChildren<ActionBasedController>();
-        rightHandXRController = rightHand.GetComponentInChildren<ActionBasedController>();
     }
 
     private void Start()
@@ -145,20 +185,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         {
             runner.RemoveCallbacks(this);
         }
-    }
-
-    #endregion
-
-    #region Public Methods
-
-    public void UpdateLeftHandContraint(bool leftHandState)
-    {
-        leftHandRigConstraints.weight = leftHandState ? 1.0f : 0.0f;
-    }
-
-    public void UpdateRightHandConstraint(bool rightHandState)
-    {
-        rightHandRigConstraints.weight = rightHandState ? 1.0f : 0.0f;
     }
 
     #endregion
