@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// TODO: COnsider making this a scriptable object if characters are going to share goals
+// TODO: Consider making this a scriptable object if characters are going to share goals
 [System.Serializable]
 public class CharacterGoal
 {
@@ -26,4 +26,6 @@ public class CharacterSheet : ScriptableObject
     public GameObject prefab;
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;
+    public Mesh handsMesh;
+    public Material handsMaterial;
 }
