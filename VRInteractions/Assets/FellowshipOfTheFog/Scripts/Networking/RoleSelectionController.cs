@@ -49,16 +49,11 @@ public class RoleSelectionController : NetworkBehaviour
             // We use playerref.none to target the rpc call to the server even though the target is already server, so this should not be necesary.
             RPC_PickRoleAndCharacter(PlayerRef.None, sheet.name, playerRig.headset.position.y / playerRig.xrOrigin.CameraYOffset);
 
-            playerRig.transform.position = sheet.spawnPosition;
-            playerRig.transform.rotation = Quaternion.Euler(sheet.spawnRotation);
+            playerRig.SetCharacter(sheet);            
         }
         else
         {
-            // TODO: if we define the spectator as someone who can see the "play" in vr or computer
-            // what we have to do should be something like: playerRig.SetVR(isVREnabled)
-            // there configure a spectator for vr or for mouse/keyboard.
-            // if we take an step further we could also have non vr actors.
-            playerRig.SetSpectator();
+            playerRig.SetSpectator(vrMenu.activeInHierarchy);
         }
 
         // Bad

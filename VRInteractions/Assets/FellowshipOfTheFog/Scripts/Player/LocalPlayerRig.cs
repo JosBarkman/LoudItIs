@@ -102,13 +102,40 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
     #region Public Methods
 
-    public void SetSpectator()
+    public void SetSpectator(bool vr)
     {
+        if (vr)
+        {
+            return;
+        }
+
         trackedPoseDriver.enabled = false;
         GetComponentInChildren<SpectatorCamera>().enabled = true;
 
-        leftHandVisuals.gameObject.SetActive(false);
-        rightHandVisuals.gameObject.SetActive(false);
+        leftHand.gameObject.SetActive(false);
+        rightHand.gameObject.SetActive(false);
+    }
+
+    public void UpdateLeftHandContraint(byte leftHandFingerStateBitfield)
+    {
+        leftFingers.UpdateWeights(leftHandFingerStateBitfield);
+    }
+
+    public void UpdateRightHandConstraint(byte righttHandFingerStateBitfield)
+    {
+        rightFingers.UpdateWeights(righttHandFingerStateBitfield);
+    }
+
+    public void SetCharacter(CharacterSheet sheet)
+    {
+        transform.position = sheet.spawnPosition;
+        transform.rotation = Quaternion.Euler(sheet.spawnRotation);
+
+        leftHandVisuals.GetComponent<MeshFilter>().mesh = sheet.handsMesh;
+        leftHandVisuals.GetComponent<MeshRenderer>().material = new Material(sheet.handsMaterial);
+
+        rightHandVisuals.GetComponent<MeshFilter>().mesh = sheet.handsMesh;
+        rightHandVisuals.GetComponent<MeshRenderer>().material = new Material(sheet.handsMaterial);
     }
 
     #endregion
@@ -158,20 +185,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         {
             runner.RemoveCallbacks(this);
         }
-    }
-
-    #endregion
-
-    #region Public Methods
-
-    public void UpdateLeftHandContraint(byte leftHandFingerStateBitfield)
-    {
-        leftFingers.UpdateWeights(leftHandFingerStateBitfield);
-    }
-
-    public void UpdateRightHandConstraint(byte righttHandFingerStateBitfield)
-    {
-        rightFingers.UpdateWeights(righttHandFingerStateBitfield);
     }
 
     #endregion
