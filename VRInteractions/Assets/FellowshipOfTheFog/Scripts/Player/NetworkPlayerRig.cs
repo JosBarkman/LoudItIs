@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.XR.Interaction.Toolkit;
-using static FingerGrababble;
+using static FingerGrabable;
 
 [System.Serializable]
 public class IKConstraint
@@ -178,7 +178,7 @@ public class NetworkPlayerRig : NetworkBehaviour
                 IXRSelectInteractable selectedInteractable = leftHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
                 {
-                    FingerGrababble grababble = selectedInteractable.colliders[0].GetComponentInParent<FingerGrababble>();
+                    FingerGrabable grababble = selectedInteractable.colliders[0].GetComponentInParent<FingerGrabable>();
 
                     if (grababble != null)
                     {
@@ -249,7 +249,7 @@ public class NetworkPlayerRig : NetworkBehaviour
                 selectedInteractable = righttHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
                 {
-                    FingerGrababble grababble = selectedInteractable.colliders[0].GetComponentInParent<FingerGrababble>();
+                    FingerGrabable grababble = selectedInteractable.colliders[0].GetComponentInParent<FingerGrabable>();
 
                     if (grababble != null)
                     {

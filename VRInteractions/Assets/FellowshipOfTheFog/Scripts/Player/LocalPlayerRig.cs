@@ -8,7 +8,7 @@ using UnityEngine.Animations.Rigging;
 using UnityEngine.SpatialTracking;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
-using static FingerGrababble;
+using static FingerGrabable;
 
 /// <summary>
 /// Network input strcut

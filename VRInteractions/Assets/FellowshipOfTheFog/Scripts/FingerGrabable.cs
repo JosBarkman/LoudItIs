@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FingerGrababble : MonoBehaviour
+public class FingerGrabable : MonoBehaviour
 {
     public enum FingerIKFlags : byte
     {
