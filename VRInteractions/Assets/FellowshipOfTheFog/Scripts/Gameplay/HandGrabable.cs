@@ -23,10 +23,11 @@ public class FingerTargetPositions
     public Transform pinkyIKPosition;
     public Transform thumbIKPosition;
 
-    public void Copy(FingerTargetPositions positions, Vector3 axis)
+    public void Copy(FingerTargetPositions positions, Vector3 axis, Vector3 rotationAxis)
     {
         attachPoint = new GameObject().transform;
         attachPoint.parent = positions.attachPoint.parent;
+        attachPoint.localRotation = Quaternion.Euler(positions.attachPoint.localRotation * rotationAxis);
         attachPoint.localPosition = Vector3.Scale(positions.attachPoint.localPosition, axis);
 
         if (positions.indexIKPosition != null)
@@ -71,6 +72,7 @@ public class HandGrabable : XRGrabInteractable
     [Header("Hand Settings")]
     public bool left = true;
     public Vector3 axis;
+    public Vector3 rotationAxis;
 
     public FingerTargetPositions rightHandFignersPosition = new FingerTargetPositions();
     public FingerTargetPositions leftHandFignersPosition = new FingerTargetPositions();
@@ -79,11 +81,11 @@ public class HandGrabable : XRGrabInteractable
     {
         if (left)
         {
-            rightHandFignersPosition.Copy(leftHandFignersPosition, axis);
+            rightHandFignersPosition.Copy(leftHandFignersPosition, axis, rotationAxis);
         }
         else
         {
-            leftHandFignersPosition.Copy(rightHandFignersPosition, axis);
+            leftHandFignersPosition.Copy(rightHandFignersPosition, axis, rotationAxis);
         }
     }
 
