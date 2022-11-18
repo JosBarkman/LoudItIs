@@ -157,8 +157,9 @@ public class NetworkPlayerRig : NetworkBehaviour
             headset.transform.position = input.headsetPosition;
             headset.transform.rotation = input.headsetRotation;
 
-            transform.parent.position = headset.transform.position + Vector3.up * networkedHeadFeetOffset;
-            transform.parent.forward = Vector3.ProjectOnPlane(headset.transform.forward, Vector3.up);
+            // HEHE
+            transform.parent.parent.position = headset.transform.position + Vector3.up * networkedHeadFeetOffset;
+            transform.parent.parent.forward = Vector3.ProjectOnPlane(headset.transform.forward, Vector3.up);
 
             // We update server controller state so that he is the one selecting the objects
             if (Runner.IsServer)
