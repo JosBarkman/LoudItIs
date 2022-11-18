@@ -132,11 +132,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         leftHandVisuals.sharedMesh = sheet.handsMesh;
         leftHandVisuals.material = new Material(sheet.handsMaterial);
-        leftHandVisuals.sharedMesh.RecalculateBounds();
 
         rightHandVisuals.sharedMesh = sheet.handsMesh;
         rightHandVisuals.material = new Material(sheet.handsMaterial);
-        rightHandVisuals.sharedMesh.RecalculateBounds();
     }
 
     #endregion
