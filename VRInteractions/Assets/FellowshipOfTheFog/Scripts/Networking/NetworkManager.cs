@@ -83,7 +83,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         NetworkObject networkPlayerObject = runner.Spawn(prefab, new Vector3(999.0f, 999.0f, 999.0f), Quaternion.identity, source);
         networkPlayerObject.transform.localScale = Vector3.one * scale;
 
-        NetworkPlayerRig networkRig = networkPlayerObject.GetComponent<NetworkPlayerRig>();
+        NetworkPlayerRig networkRig = networkPlayerObject.GetComponentInChildren<NetworkPlayerRig>();
 
         networkRig.networkedHeadFeetOffset = networkRig.headFeetOffset * scale;
 

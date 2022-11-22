@@ -8,7 +8,6 @@ using UnityEngine.Animations.Rigging;
 using UnityEngine.SpatialTracking;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
-using static FingerGrababble;
 
 /// <summary>
 /// Network input strcut
@@ -86,10 +85,10 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private Rig rightHandRigConstraints;
 
     [SerializeField]
-    private Transform leftHandVisuals;
+    private SkinnedMeshRenderer leftHandVisuals;
     
     [SerializeField]
-    private Transform rightHandVisuals;
+    private SkinnedMeshRenderer rightHandVisuals;
 
     [SerializeField]
     private TrackedPoseDriver trackedPoseDriver;
@@ -131,11 +130,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         transform.position = sheet.spawnPosition;
         transform.rotation = Quaternion.Euler(sheet.spawnRotation);
 
-        leftHandVisuals.GetComponent<MeshFilter>().mesh = sheet.handsMesh;
-        leftHandVisuals.GetComponent<MeshRenderer>().material = new Material(sheet.handsMaterial);
+        leftHandVisuals.sharedMesh = sheet.handsMesh;
+        leftHandVisuals.material = new Material(sheet.handsMaterial);
 
-        rightHandVisuals.GetComponent<MeshFilter>().mesh = sheet.handsMesh;
-        rightHandVisuals.GetComponent<MeshRenderer>().material = new Material(sheet.handsMaterial);
+        rightHandVisuals.sharedMesh = sheet.handsMesh;
+        rightHandVisuals.material = new Material(sheet.handsMaterial);
     }
 
     #endregion
