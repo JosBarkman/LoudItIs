@@ -739,6 +739,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Value"",
+                    ""id"": ""d987f026-f751-4636-be8a-175f099b887e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -772,6 +781,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Generic XR Controller"",
                     ""action"": ""Teleport Mode Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1410f38-0593-4f0e-810d-0aa7f2dcccde"",
+                    ""path"": ""<XRController>{RightHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Generic XR Controller"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1047,6 +1067,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_XRIRightHandLocomotion_TeleportModeCancel = m_XRIRightHandLocomotion.FindAction("Teleport Mode Cancel", throwIfNotFound: true);
         m_XRIRightHandLocomotion_Turn = m_XRIRightHandLocomotion.FindAction("Turn", throwIfNotFound: true);
         m_XRIRightHandLocomotion_Move = m_XRIRightHandLocomotion.FindAction("Move", throwIfNotFound: true);
+        m_XRIRightHandLocomotion_Dash = m_XRIRightHandLocomotion.FindAction("Dash", throwIfNotFound: true);
         // Spectator
         m_Spectator = asset.FindActionMap("Spectator", throwIfNotFound: true);
         m_Spectator_Movement = m_Spectator.FindAction("Movement", throwIfNotFound: true);
@@ -1513,6 +1534,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_XRIRightHandLocomotion_TeleportModeCancel;
     private readonly InputAction m_XRIRightHandLocomotion_Turn;
     private readonly InputAction m_XRIRightHandLocomotion_Move;
+    private readonly InputAction m_XRIRightHandLocomotion_Dash;
     public struct XRIRightHandLocomotionActions
     {
         private @PlayerInput m_Wrapper;
@@ -1522,6 +1544,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @TeleportModeCancel => m_Wrapper.m_XRIRightHandLocomotion_TeleportModeCancel;
         public InputAction @Turn => m_Wrapper.m_XRIRightHandLocomotion_Turn;
         public InputAction @Move => m_Wrapper.m_XRIRightHandLocomotion_Move;
+        public InputAction @Dash => m_Wrapper.m_XRIRightHandLocomotion_Dash;
         public InputActionMap Get() { return m_Wrapper.m_XRIRightHandLocomotion; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1546,6 +1569,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnMove;
+                @Dash.started -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnDash;
             }
             m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface = instance;
             if (instance != null)
@@ -1565,6 +1591,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
         }
     }
@@ -1693,6 +1722,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnTeleportModeCancel(InputAction.CallbackContext context);
         void OnTurn(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface ISpectatorActions
     {
