@@ -25,10 +25,13 @@ public class FingerTargetPositions
 
     public void Copy(FingerTargetPositions positions, Vector3 axis, Vector3 rotationAxis)
     {
-        attachPoint = new GameObject().transform;
-        attachPoint.parent = positions.attachPoint.parent;
-        attachPoint.localRotation = Quaternion.Euler(positions.attachPoint.localRotation * rotationAxis);
-        attachPoint.localPosition = Vector3.Scale(positions.attachPoint.localPosition, axis);
+        if (positions.attachPoint != null)
+        {
+            attachPoint = new GameObject().transform;
+            attachPoint.parent = positions.attachPoint.parent;
+            attachPoint.localRotation = Quaternion.Euler(positions.attachPoint.localRotation * rotationAxis);
+            attachPoint.localPosition = Vector3.Scale(positions.attachPoint.localPosition, axis);
+        }
 
         if (positions.indexIKPosition != null)
         {
@@ -71,6 +74,7 @@ public class HandGrabable : XRGrabInteractable
 {
     [Header("Hand Settings")]
     public bool left = true;
+    public bool useAttachPoint = true;
     public Vector3 axis;
     public Vector3 rotationAxis;
 
@@ -93,11 +97,11 @@ public class HandGrabable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
 
-        if (args.interactorObject.transform.CompareTag("LeftController"))
+        if (args.interactorObject.transform.CompareTag("LeftController") && useAttachPoint)
         {
             attachTransform = leftHandFignersPosition.attachPoint;
         }
-        else if (args.interactorObject.transform.CompareTag("RightController"))
+        else if (args.interactorObject.transform.CompareTag("RightController") && useAttachPoint)
         {
             attachTransform = rightHandFignersPosition.attachPoint;
         }
