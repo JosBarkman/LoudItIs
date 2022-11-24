@@ -73,13 +73,22 @@ public class FingerTargetPositions
 public class HandGrabable : XRGrabInteractable
 {
     [Header("Hand Settings")]
-    public bool left = true;
+    public bool left = false;
     public bool useAttachPoint = true;
+    public bool doorHandling = false;
     public Vector3 axis;
     public Vector3 rotationAxis;
 
     public FingerTargetPositions rightHandFignersPosition = new FingerTargetPositions();
     public FingerTargetPositions leftHandFignersPosition = new FingerTargetPositions();
+
+    [Header("Door Handling")]
+    public Transform temporalHandAttachPoint;
+    public Transform upAxisAttackTransform;
+    public float angleOfAttackDegrees = 95.0f;
+
+    private Vector3 oldHandAttachPointLocalPosition;
+    private float angleOfAttackRadians = 0.0f;
 
     private void Start()
     {
@@ -91,6 +100,8 @@ public class HandGrabable : XRGrabInteractable
         {
             leftHandFignersPosition.Copy(rightHandFignersPosition, axis, rotationAxis);
         }
+
+        angleOfAttackRadians = angleOfAttackDegrees * Mathf.Deg2Rad;
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -104,6 +115,33 @@ public class HandGrabable : XRGrabInteractable
         else if (args.interactorObject.transform.CompareTag("RightController") && useAttachPoint)
         {
             attachTransform = rightHandFignersPosition.attachPoint;
+        }
+
+        if (doorHandling)
+        {
+            Debug.Log(Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f, upAxisAttackTransform.up)) * Mathf.Rad2Deg);
+            // Check conditions for selecting
+            if (Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f, upAxisAttackTransform.up)) > angleOfAttackDegrees * Mathf.Deg2Rad)
+            {
+                Debug.Log("NANAI");
+                args.manager.SelectCancel(args.interactorObject, args.interactableObject);
+                return;
+            }
+                Debug.Log("YESYES");
+
+            Transform handAttachTransform = args.interactorObject.GetAttachTransform(args.interactableObject);
+            oldHandAttachPointLocalPosition = handAttachTransform.localPosition;
+            handAttachTransform.position = temporalHandAttachPoint.position;
+        }
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+
+        if (doorHandling)
+        {
+            args.interactorObject.GetAttachTransform(args.interactableObject).localPosition = oldHandAttachPointLocalPosition;
         }
     }
 }
