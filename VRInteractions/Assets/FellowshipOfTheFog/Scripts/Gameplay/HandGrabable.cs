@@ -90,6 +90,8 @@ public class HandGrabable : XRGrabInteractable
     private Vector3 oldHandAttachPointLocalPosition;
     private float angleOfAttackRadians = 0.0f;
 
+    private SelectEnterEventArgs selectArgs = null;
+
     private void Start()
     {
         if (left)
@@ -102,6 +104,23 @@ public class HandGrabable : XRGrabInteractable
         }
 
         angleOfAttackRadians = angleOfAttackDegrees * Mathf.Deg2Rad;
+    }
+
+    public void Update()
+    {
+        if (selectArgs == null)
+        {
+            return;
+        }
+
+        selectArgs.interactorObject.transform.position = Vector3.zero;
+
+        if (Mathf.Acos(Vector3.Dot(selectArgs.interactorObject.transform.right * -1.0f, upAxisAttackTransform.up)) > angleOfAttackRadians)
+        {
+            selectArgs.manager.SelectCancel(selectArgs.interactorObject, selectArgs.interactableObject);
+            selectArgs = null;
+            return;
+        }
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -119,19 +138,19 @@ public class HandGrabable : XRGrabInteractable
 
         if (doorHandling)
         {
-            Debug.Log(Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f, upAxisAttackTransform.up)) * Mathf.Rad2Deg);
             // Check conditions for selecting
-            if (Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f, upAxisAttackTransform.up)) > angleOfAttackDegrees * Mathf.Deg2Rad)
+            // We use right becvause hand is rotated and red axis is facing down
+            if (Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f, upAxisAttackTransform.up)) > angleOfAttackRadians)
             {
-                Debug.Log("NANAI");
                 args.manager.SelectCancel(args.interactorObject, args.interactableObject);
                 return;
             }
-                Debug.Log("YESYES");
 
             Transform handAttachTransform = args.interactorObject.GetAttachTransform(args.interactableObject);
             oldHandAttachPointLocalPosition = handAttachTransform.localPosition;
             handAttachTransform.position = temporalHandAttachPoint.position;
+
+            selectArgs = args;
         }
     }
 
@@ -142,6 +161,7 @@ public class HandGrabable : XRGrabInteractable
         if (doorHandling)
         {
             args.interactorObject.GetAttachTransform(args.interactableObject).localPosition = oldHandAttachPointLocalPosition;
+            selectArgs = null;
         }
     }
 }
