@@ -31,6 +31,7 @@ public class FingerTargetPositions
             attachPoint.parent = positions.attachPoint.parent;
             attachPoint.localRotation = Quaternion.Euler(positions.attachPoint.localRotation * rotationAxis);
             attachPoint.localPosition = Vector3.Scale(positions.attachPoint.localPosition, axis);
+            attachPoint.localScale = positions.attachPoint.localScale;
         }
 
         if (positions.indexIKPosition != null)
@@ -38,6 +39,8 @@ public class FingerTargetPositions
             indexIKPosition = new GameObject().transform;
             indexIKPosition.parent = positions.indexIKPosition.parent;
             indexIKPosition.localPosition = Vector3.Scale(positions.indexIKPosition.localPosition, axis);
+            indexIKPosition.localRotation = positions.indexIKPosition.localRotation;
+            indexIKPosition.localScale = positions.indexIKPosition.localScale;
         }
 
         if (positions.middleIKPosition != null)
@@ -45,6 +48,8 @@ public class FingerTargetPositions
             middleIKPosition = new GameObject().transform;
             middleIKPosition.parent = positions.middleIKPosition.parent;
             middleIKPosition.localPosition = Vector3.Scale(positions.middleIKPosition.localPosition, axis);
+            middleIKPosition.localRotation = positions.middleIKPosition.localRotation;
+            middleIKPosition.localScale = positions.middleIKPosition.localScale;
         }
 
         if (positions.ringIKPosition != null)
@@ -52,6 +57,8 @@ public class FingerTargetPositions
             ringIKPosition = new GameObject().transform;
             ringIKPosition.parent = positions.ringIKPosition.parent;
             ringIKPosition.localPosition = Vector3.Scale(positions.ringIKPosition.localPosition, axis);
+            ringIKPosition.localRotation = positions.ringIKPosition.localRotation;
+            ringIKPosition.localScale = positions.ringIKPosition.localScale;
         }
 
         if (positions.pinkyIKPosition != null)
@@ -59,6 +66,8 @@ public class FingerTargetPositions
             pinkyIKPosition = new GameObject().transform;
             pinkyIKPosition.parent = positions.pinkyIKPosition.parent;
             pinkyIKPosition.localPosition = Vector3.Scale(positions.pinkyIKPosition.localPosition, axis);
+            pinkyIKPosition.localRotation = positions.pinkyIKPosition.localRotation;
+            pinkyIKPosition.localScale = positions.pinkyIKPosition.localScale;
         }
 
         if (positions.thumbIKPosition != null)
@@ -66,16 +75,20 @@ public class FingerTargetPositions
             thumbIKPosition = new GameObject().transform;
             thumbIKPosition.parent = positions.thumbIKPosition.parent;
             thumbIKPosition.localPosition = Vector3.Scale(positions.thumbIKPosition.localPosition, axis);
+            thumbIKPosition.localRotation = positions.thumbIKPosition.localRotation;
+            thumbIKPosition.localScale = positions.thumbIKPosition.localScale;
         }
     }
 }
 
 public class HandGrabable : XRGrabInteractable
 {
-    [Header("Hand Settings")]
-    public bool left = false;
+    [Header("Settings")]
     public bool useAttachPoint = true;
     public bool doorHandling = false;
+    public bool leftHand = false;
+
+    [Header("Hand Settings")]
     public Vector3 axis;
     public Vector3 rotationAxis;
 
@@ -83,6 +96,7 @@ public class HandGrabable : XRGrabInteractable
     public FingerTargetPositions leftHandFignersPosition = new FingerTargetPositions();
 
     [Header("Door Handling")]
+    public bool inverseHandHandling = true; 
     public Transform temporalHandAttachPoint;
     public Transform upAxisAttackTransform;
     public float angleOfAttackDegrees = 95.0f;
@@ -94,7 +108,9 @@ public class HandGrabable : XRGrabInteractable
 
     private void Start()
     {
-        if (left)
+        angleOfAttackRadians = angleOfAttackDegrees * Mathf.Deg2Rad;
+
+        if (leftHand)
         {
             rightHandFignersPosition.Copy(leftHandFignersPosition, axis, rotationAxis);
         }
@@ -102,8 +118,6 @@ public class HandGrabable : XRGrabInteractable
         {
             leftHandFignersPosition.Copy(rightHandFignersPosition, axis, rotationAxis);
         }
-
-        angleOfAttackRadians = angleOfAttackDegrees * Mathf.Deg2Rad;
     }
 
     public void Update()
@@ -113,9 +127,22 @@ public class HandGrabable : XRGrabInteractable
             return;
         }
 
-        selectArgs.interactorObject.transform.position = Vector3.zero;
+        float radians = 1.0f;
 
-        if (Mathf.Acos(Vector3.Dot(selectArgs.interactorObject.transform.right * -1.0f, upAxisAttackTransform.up)) > angleOfAttackRadians)
+        // Left controller interacts facing the green axis
+        // Right cotroller interacts facing the back of green axis
+        if (inverseHandHandling)
+        {
+            if (selectArgs.interactorObject.transform.CompareTag("LeftController"))
+            {
+                radians = -1.0f;
+            }
+        }
+
+        // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
+        radians = Mathf.Acos(Vector3.Dot(selectArgs.interactorObject.transform.right * -1.0f * radians, upAxisAttackTransform.up * radians));
+
+        if (radians > angleOfAttackRadians)
         {
             selectArgs.manager.SelectCancel(selectArgs.interactorObject, selectArgs.interactableObject);
             selectArgs = null;
@@ -138,15 +165,31 @@ public class HandGrabable : XRGrabInteractable
 
         if (doorHandling)
         {
+            float radians = 1.0f;
+
+            // Left controller interacts facing the green axis
+            // Right cotroller interacts facing the back of green axis
+            if (inverseHandHandling)
+            {
+                if (args.interactorObject.transform.CompareTag("LeftController"))
+                {
+                    radians = -1.0f;
+                }
+            }
+
+            // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
+            radians = Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f * radians, upAxisAttackTransform.up * radians));
+
             // Check conditions for selecting
             // We use right becvause hand is rotated and red axis is facing down
-            if (Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f, upAxisAttackTransform.up)) > angleOfAttackRadians)
+            if (radians > angleOfAttackRadians)
             {
                 args.manager.SelectCancel(args.interactorObject, args.interactableObject);
                 return;
             }
 
             Transform handAttachTransform = args.interactorObject.GetAttachTransform(args.interactableObject);
+
             oldHandAttachPointLocalPosition = handAttachTransform.localPosition;
             handAttachTransform.position = temporalHandAttachPoint.position;
 
