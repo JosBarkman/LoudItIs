@@ -130,19 +130,22 @@ public class HandGrabable : XRGrabInteractable
         }
 
         float radians = 1.0f;
+        float hand = -1.0f;
+
+        if (selectArgs.interactorObject.transform.CompareTag("LeftController"))
+        {
+            hand = 1.0f;
+        }
 
         // Left controller interacts facing the green axis
         // Right cotroller interacts facing the back of green axis
         if (inverseHandHandling)
         {
-            if (selectArgs.interactorObject.transform.CompareTag("LeftController"))
-            {
-                radians = -1.0f;
-            }
+            radians = hand;
         }
 
         // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
-        radians = Mathf.Acos(Vector3.Dot(selectArgs.interactorObject.transform.right * -1.0f * radians, upAxisAttackTransform.up * radians));
+        radians = Mathf.Acos(Vector3.Dot(selectArgs.interactorObject.transform.right * hand, upAxisAttackTransform.up * radians));
 
         float currentDistance = Vector3.Distance(selectArgs.interactorObject.transform.position, upAxisAttackTransform.position);
 
@@ -175,19 +178,22 @@ public class HandGrabable : XRGrabInteractable
         }
 
         float radians = 1.0f;
+        float hand = -1.0f;
+
+        if (args.interactorObject.transform.CompareTag("LeftController"))
+        {
+            hand = 1.0f;
+        }
 
         // Left controller interacts facing the green axis
         // Right cotroller interacts facing the back of green axis
         if (inverseHandHandling)
         {
-            if (args.interactorObject.transform.CompareTag("LeftController"))
-            {
-                radians = -1.0f;
-            }
+            radians = hand;
         }
 
         // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
-        radians = Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f * radians, upAxisAttackTransform.up * radians));
+        radians = Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * hand, upAxisAttackTransform.up * radians));
 
         // Check conditions for selecting
         // We use right becvause hand is rotated and red axis is facing down
