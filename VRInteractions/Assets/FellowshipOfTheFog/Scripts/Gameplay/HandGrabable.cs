@@ -100,11 +100,13 @@ public class HandGrabable : XRGrabInteractable
     public Transform temporalHandAttachPoint;
     public Transform upAxisAttackTransform;
     public float angleOfAttackDegrees = 95.0f;
+    public float distanceThreshold = .05f;
 
     private Vector3 oldHandAttachPointLocalPosition;
     private float angleOfAttackRadians = 0.0f;
 
     private SelectEnterEventArgs selectArgs = null;
+    private float startingDistance = 0.0f;
 
     private void Start()
     {
@@ -142,7 +144,11 @@ public class HandGrabable : XRGrabInteractable
         // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
         radians = Mathf.Acos(Vector3.Dot(selectArgs.interactorObject.transform.right * -1.0f * radians, upAxisAttackTransform.up * radians));
 
-        if (radians > angleOfAttackRadians)
+        float currentDistance = Vector3.Distance(selectArgs.interactorObject.transform.position, upAxisAttackTransform.position);
+
+        Debug.Log(string.Format(@"Start distance: {0}, Current distance: {1}", startingDistance, currentDistance));
+
+        if (radians > angleOfAttackRadians || currentDistance >= startingDistance + distanceThreshold)
         {
             selectArgs.manager.SelectCancel(selectArgs.interactorObject, selectArgs.interactableObject);
             selectArgs = null;
@@ -163,38 +169,42 @@ public class HandGrabable : XRGrabInteractable
             attachTransform = rightHandFignersPosition.attachPoint;
         }
 
-        if (doorHandling)
+        if (!doorHandling)
         {
-            float radians = 1.0f;
-
-            // Left controller interacts facing the green axis
-            // Right cotroller interacts facing the back of green axis
-            if (inverseHandHandling)
-            {
-                if (args.interactorObject.transform.CompareTag("LeftController"))
-                {
-                    radians = -1.0f;
-                }
-            }
-
-            // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
-            radians = Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f * radians, upAxisAttackTransform.up * radians));
-
-            // Check conditions for selecting
-            // We use right becvause hand is rotated and red axis is facing down
-            if (radians > angleOfAttackRadians)
-            {
-                args.manager.SelectCancel(args.interactorObject, args.interactableObject);
-                return;
-            }
-
-            Transform handAttachTransform = args.interactorObject.GetAttachTransform(args.interactableObject);
-
-            oldHandAttachPointLocalPosition = handAttachTransform.localPosition;
-            handAttachTransform.position = temporalHandAttachPoint.position;
-
-            selectArgs = args;
+            return;
         }
+
+        float radians = 1.0f;
+
+        // Left controller interacts facing the green axis
+        // Right cotroller interacts facing the back of green axis
+        if (inverseHandHandling)
+        {
+            if (args.interactorObject.transform.CompareTag("LeftController"))
+            {
+                radians = -1.0f;
+            }
+        }
+
+        // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
+        radians = Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * -1.0f * radians, upAxisAttackTransform.up * radians));
+
+        // Check conditions for selecting
+        // We use right becvause hand is rotated and red axis is facing down
+        if (radians > angleOfAttackRadians)
+        {
+            args.manager.SelectCancel(args.interactorObject, args.interactableObject);
+            return;
+        }
+
+        Transform handAttachTransform = args.interactorObject.GetAttachTransform(args.interactableObject);
+
+        oldHandAttachPointLocalPosition = handAttachTransform.localPosition;
+        handAttachTransform.position = temporalHandAttachPoint.position;
+
+        startingDistance = Vector3.Distance(args.interactorObject.transform.position, upAxisAttackTransform.position);
+
+        selectArgs = args;
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
