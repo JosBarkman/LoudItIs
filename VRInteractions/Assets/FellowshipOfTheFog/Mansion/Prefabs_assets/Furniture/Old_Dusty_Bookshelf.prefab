@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 4083349082228407751}
   - component: {fileID: 1598077563210145661}
   - component: {fileID: 8302487877179400817}
+  - component: {fileID: 6951444066521717725}
+  - component: {fileID: 4658259780723183148}
+  - component: {fileID: 2262298328058318127}
   m_Layer: 0
   m_Name: Old_Dusty_Bookshelf
   m_TagString: Untagged
@@ -83,3 +86,42 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6951444066521717725
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4729748937656581319}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.008228423, y: 0.0033591455, z: 0.0017816959}
+  m_Center: {x: 0.00002083753, y: -0.00024241298, z: 0.0013773474}
+--- !u!65 &4658259780723183148
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4729748937656581319}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.008157494, y: 0.0033635432, z: 0.00642138}
+  m_Center: {x: -0.000008924691, y: -0.00024021506, z: 0.007965503}
+--- !u!65 &2262298328058318127
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4729748937656581319}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.008006875, y: 0.003393393, z: 0.003291859}
+  m_Center: {x: -0.00002981773, y: -0.00022528954, z: 0.015678342}

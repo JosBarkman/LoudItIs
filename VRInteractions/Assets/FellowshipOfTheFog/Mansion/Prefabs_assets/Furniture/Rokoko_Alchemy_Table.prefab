@@ -727,6 +727,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2733965388200435660}
+  - component: {fileID: 8106696063681556272}
   m_Layer: 0
   m_Name: Rokoko_Alchemy_Table
   m_TagString: Untagged
@@ -752,6 +753,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!65 &8106696063681556272
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3367337534611129718}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.09, y: -0.01, z: 0.18}
+  m_Center: {x: 0, y: 0.08, z: 0}
 --- !u!1 &3412575055295449834
 GameObject:
   m_ObjectHideFlags: 0
