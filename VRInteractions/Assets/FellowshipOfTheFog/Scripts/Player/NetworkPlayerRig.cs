@@ -178,7 +178,8 @@ public class NetworkPlayerRig : NetworkBehaviour
                 IXRSelectInteractable selectedInteractable = leftHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
                 {
-                    HandGrabable grababble = (HandGrabable) selectedInteractable;
+
+                    HandGrabable grababble = selectedInteractable as HandGrabable;
 
                     if (grababble != null)
                     {
@@ -249,7 +250,7 @@ public class NetworkPlayerRig : NetworkBehaviour
                 selectedInteractable = righttHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
                 {
-                    HandGrabable grababble = (HandGrabable) selectedInteractable;
+                    HandGrabable grababble = selectedInteractable as HandGrabable;
 
                     if (grababble != null)
                     {
