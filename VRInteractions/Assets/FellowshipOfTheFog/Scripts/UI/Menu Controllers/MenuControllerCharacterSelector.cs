@@ -75,7 +75,12 @@ public class MenuControllerCharacterSelector : MonoBehaviour
         for (i = goalItemList.Count; i > sheet.goals.Length; i--)
         {
             goalItemList[i - 1].gameObject.SetActive(false);
-        }        
+        }
+
+        // Hack to ensure that the goal list resizes properly, prabably not best solution
+        Canvas.ForceUpdateCanvases();
+        goalItemList[0].gameObject.SetActive(false);
+        goalItemList[0].gameObject.SetActive(true);
     }
 
     public void PickCurrentCharacter()
