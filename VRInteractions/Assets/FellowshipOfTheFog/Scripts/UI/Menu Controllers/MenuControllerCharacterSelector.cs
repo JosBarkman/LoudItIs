@@ -81,6 +81,8 @@ public class MenuControllerCharacterSelector : MonoBehaviour
         Canvas.ForceUpdateCanvases();
         goalItemList[0].gameObject.SetActive(false);
         goalItemList[0].gameObject.SetActive(true);
+        characterBackground.gameObject.SetActive(false);
+        characterBackground.gameObject.SetActive(true);
     }
 
     public void PickCurrentCharacter()
