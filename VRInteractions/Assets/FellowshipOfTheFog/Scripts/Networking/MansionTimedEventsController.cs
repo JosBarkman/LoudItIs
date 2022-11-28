@@ -8,9 +8,13 @@ public class MansionTimedEventsController : NetworkBehaviour
 
     #region Properties
 
+    [Header("Settings")]
+    [SerializeField]
+    private float activationTimeInSeconds = 600.0f;
+
     [Header("External Components")]
     [SerializeField]
-    private GameObject tenMinuteClue;
+    private GameObject activationGameObject;
 
     [Networked] private TickTimer timer { get; set; }
 
@@ -23,7 +27,7 @@ public class MansionTimedEventsController : NetworkBehaviour
         if (Runner.IsServer)
         {
             // 10 minutes
-            timer = TickTimer.CreateFromSeconds(Runner, 600.0f);
+            timer = TickTimer.CreateFromSeconds(Runner, activationTimeInSeconds);
         }
     }
 
@@ -39,7 +43,7 @@ public class MansionTimedEventsController : NetworkBehaviour
             timer = TickTimer.None;
         }
 
-        tenMinuteClue.SetActive(true);
+        activationGameObject.SetActive(true);
     }
 
     #endregion
