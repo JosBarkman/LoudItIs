@@ -296,16 +296,6 @@ public class NetworkPlayerRig : NetworkBehaviour
                 rightHandRingConstraint.Update();
                 rightHandPinkyConstraint.Update();
                 rightHandThumbConstraint.Update();
-
-                if (playerRig != null)
-                {
-                    playerRig.rightFingers.UpdateTargets(
-                        rightHandIndexConstraint.track != null ? rightHandIndexConstraint.track.position : Vector3.zero,
-                        rightHandMiddleConstraint.track != null ? rightHandMiddleConstraint.track.position : Vector3.zero,
-                        rightHandRingConstraint.track != null ? rightHandRingConstraint.track.position : Vector3.zero,
-                        rightHandPinkyConstraint.track != null ? rightHandPinkyConstraint.track.position : Vector3.zero,
-                        rightHandThumbConstraint.track != null ? rightHandThumbConstraint.track.position : Vector3.zero);
-                }
             }
         }
 
