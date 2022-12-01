@@ -136,6 +136,18 @@ public class NetworkPlayerRig : NetworkBehaviour
             playerRig = FindObjectOfType<LocalPlayerRig>();
 
             rigVisuals.gameObject.SetActive(false);
+
+            playerRig.leftHandIndexConstraint.track = leftHandIndexConstraint.target;
+            playerRig.leftHandMiddleConstraint.track = leftHandMiddleConstraint.target;
+            playerRig.leftHandRingConstraint.track = leftHandRingConstraint.target;
+            playerRig.leftHandPinkyConstraint.track = leftHandPinkyConstraint.target;
+            playerRig.leftHandThumbConstraint.track = leftHandThumbConstraint.target;            
+
+            playerRig.rightHandIndexConstraint.track = rightHandIndexConstraint.target;
+            playerRig.rightHandMiddleConstraint.track = rightHandMiddleConstraint.target;
+            playerRig.rightHandRingConstraint.track = rightHandRingConstraint.target;
+            playerRig.rightHandPinkyConstraint.track = rightHandPinkyConstraint.target;
+            playerRig.rightHandThumbConstraint.track = rightHandThumbConstraint.target;
         }
     }
 
@@ -178,7 +190,6 @@ public class NetworkPlayerRig : NetworkBehaviour
                 IXRSelectInteractable selectedInteractable = leftHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
                 {
-
                     HandGrabable grababble = selectedInteractable as HandGrabable;
 
                     if (grababble != null)
@@ -225,16 +236,6 @@ public class NetworkPlayerRig : NetworkBehaviour
                 leftHandRingConstraint.Update();
                 leftHandPinkyConstraint.Update();
                 leftHandThumbConstraint.Update();
-
-                if (playerRig != null)
-                {
-                    playerRig.leftFingers.UpdateTargets(
-                        leftHandIndexConstraint.track != null ? leftHandIndexConstraint.track.position : Vector3.zero,
-                        leftHandMiddleConstraint.track != null ? leftHandMiddleConstraint.track.position : Vector3.zero,
-                        leftHandRingConstraint.track != null ? leftHandRingConstraint.track.position : Vector3.zero,
-                        leftHandPinkyConstraint.track != null ? leftHandPinkyConstraint.track.position : Vector3.zero,
-                        leftHandThumbConstraint.track != null ? leftHandThumbConstraint.track.position : Vector3.zero);
-                }
 
                 // ---- Right controller ----
                 XRControllerState rightControllerState = new XRControllerState();

@@ -54,7 +54,7 @@ public class MenuControllerMainMenu : MonoBehaviour
         if (displaySubsystems.Count != 0)
         {
             vrMenu.SetActive(true);
-            defaultMenu.SetActive(false);
+            defaultMenu.SetActive(true);
         }
         else
         {
