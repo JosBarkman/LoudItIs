@@ -263,7 +263,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         bool buttonPressed = false;
 
-        if (leftHardwareController == null)
+        if (leftHardwareController == null || (leftHardwareController != null && !leftHardwareController.isValid))
         {
             List<UnityEngine.XR.InputDevice> devices = new List<UnityEngine.XR.InputDevice>();
 
@@ -289,7 +289,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         Debug.Log(string.Format("@Left Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.leftControllerButtonsPressed, 2).PadLeft(8, '0')));
 
-        if (rightHardwareController == null)
+        if (rightHardwareController == null || (rightHardwareController != null && !rightHardwareController.isValid))
         {
             List<UnityEngine.XR.InputDevice> devices = new List<UnityEngine.XR.InputDevice>();
 
