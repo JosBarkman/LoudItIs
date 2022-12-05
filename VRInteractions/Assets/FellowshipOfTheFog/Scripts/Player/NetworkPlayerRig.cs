@@ -1,7 +1,9 @@
 using Fusion;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.XR.Interaction.Toolkit;
+using Photon.Voice.Unity;
 
 [System.Serializable]
 public class IKConstraint
@@ -70,6 +72,9 @@ public class NetworkPlayerRig : NetworkBehaviour
     [SerializeField]
     private XRBaseControllerInteractor righttHandInteractor;
 
+    [SerializeField]
+    private Image talkingIcon;
+
     public FingersIK leftFingers;
     public FingersIK rightFingers;
 
@@ -77,6 +82,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     private Transform rigVisuals;
 
     private LocalPlayerRig playerRig;
+    private Speaker speaker;
 
     [Header("IK Contraints")]
     [SerializeField]
@@ -151,6 +157,8 @@ public class NetworkPlayerRig : NetworkBehaviour
             playerRig.rightHandPinkyConstraint.track = rightHandPinkyConstraint.target;
             playerRig.rightHandThumbConstraint.track = rightHandThumbConstraint.target;
         }
+
+        speaker = GetComponentInParent<Speaker>();
     }
 
     public override void FixedUpdateNetwork()
@@ -320,6 +328,15 @@ public class NetworkPlayerRig : NetworkBehaviour
         leftHandConstraint.Update();
         rightHandConstraint.Update();
         headConstraint.Update();
+
+        if (speaker.IsPlaying)
+        {
+            talkingIcon.gameObject.SetActive(true);
+        }
+        else
+        {
+            talkingIcon.gameObject.SetActive(false);
+        }
     }
 
     public override void Render()

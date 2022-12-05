@@ -10,7 +10,6 @@ public class Memory
 
     [TextArea(3, 9)]
     public string memory;
-
 }
 
 public class Memories : MonoBehaviour
