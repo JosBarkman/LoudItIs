@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class MenuControllerCharacterDescription : MonoBehaviour
 {
-
     #region Properties
 
     [Header("Settings")]
