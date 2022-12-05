@@ -31,7 +31,6 @@ public class IKConstraint
 [OrderAfter(typeof(NetworkTransform), typeof(NetworkRigidbody))]
 public class NetworkPlayerRig : NetworkBehaviour
 {
-
     #region Properties
 
     [Header("Settings")]
@@ -45,6 +44,9 @@ public class NetworkPlayerRig : NetworkBehaviour
 
     [HideInInspector]
     [Networked(OnChanged = "OnRightHandStateChanged", OnChangedTargets = OnChangedTargets.All)] public byte rightHandState { get; set; }
+
+    private NetworkObject leftHandSelectedObject = null;
+    private NetworkObject rightHandSelectedObject = null;
 
     [Header("Components")]
     [SerializeField]
@@ -225,6 +227,14 @@ public class NetworkPlayerRig : NetworkBehaviour
                             leftHandThumbConstraint.track = grababble.leftHandFignersPosition.thumbIKPosition;
                         }
                     }
+
+                    leftHandSelectedObject = selectedInteractable.transform.GetComponentInParent<NetworkObject>();
+                    RPC_ShowMemoryClue(leftHandSelectedObject.Id);
+                }
+                else if (leftHandSelectedObject != null)
+                {
+                    RPC_HideMemoryClue(leftHandSelectedObject.Id);
+                    leftHandSelectedObject = null;
                 }
 
                 // Update left hand figners state based on the grabbed object
@@ -286,6 +296,14 @@ public class NetworkPlayerRig : NetworkBehaviour
                             rightHandThumbConstraint.track = grababble.rightHandFignersPosition.thumbIKPosition;
                         }
                     }
+
+                    rightHandSelectedObject = selectedInteractable.transform.GetComponentInParent<NetworkObject>();
+                    RPC_ShowMemoryClue(rightHandSelectedObject.Id);
+                }
+                else if (rightHandSelectedObject != null)
+                {
+                    RPC_HideMemoryClue(rightHandSelectedObject.Id);
+                    rightHandSelectedObject = null;
                 }
 
                 // Update left hand figners state based on the grabbed object
@@ -345,6 +363,36 @@ public class NetworkPlayerRig : NetworkBehaviour
         {
             changed.Behaviour.playerRig.UpdateRightHandConstraint(changed.Behaviour.rightHandState);
         }
+    }
+
+    #endregion
+
+    #region RPCs
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_ShowMemoryClue(NetworkId selectedObject)
+    {
+        Memories memories = Runner.FindObject(selectedObject).GetComponentInChildren<Memories>();
+
+        if (memories == null)
+        {
+            return;
+        }
+
+        memories.ShowMemory(playerRig.GetCharacter());
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_HideMemoryClue(NetworkId selectedObject)
+    {
+        Memories memories = Runner.FindObject(selectedObject).GetComponentInChildren<Memories>();
+
+        if (memories == null)
+        {
+            return;
+        }
+
+        memories.HideMemory();
     }
 
     #endregion

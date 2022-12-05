@@ -164,6 +164,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         this.sheet = sheet;
     }
 
+    public CharacterSheet GetCharacter()
+    {
+        return sheet;
+    }
+
     #endregion
 
     #region Unity Events
