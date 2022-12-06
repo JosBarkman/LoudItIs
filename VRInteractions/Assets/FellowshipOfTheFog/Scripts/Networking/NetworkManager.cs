@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Sockets;
+using Photon.Voice.Unity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     #region Properties
 
+    [Header("Settings")]
+    [SerializeField]
+    private float voiceDetectionThreshold = .1f;
+
     private NetworkRunner runner;
+    private Recorder recorder;
 
     public delegate void SessionListUpdatedEvent(List<SessionInfo> sessionInfos);
     public event SessionListUpdatedEvent OnSessionListUpdatedEvent;
@@ -26,11 +32,20 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         runner = gameObject.GetComponent<NetworkRunner>();
         runner.ProvideInput = true;
+        recorder = GetComponentInChildren<Recorder>();
     }
 
     private async void Start()
     {
         var result = await runner.JoinSessionLobby(SessionLobby.ClientServer);
+    }
+
+    private void Update()
+    {
+        if (recorder.VoiceDetectionThreshold != voiceDetectionThreshold)
+        {
+            recorder.VoiceDetectionThreshold = voiceDetectionThreshold;
+        }
     }
 
     #endregion

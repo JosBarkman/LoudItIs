@@ -1,7 +1,9 @@
 using Fusion;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.XR.Interaction.Toolkit;
+using Photon.Voice.Unity;
 
 [System.Serializable]
 public class IKConstraint
@@ -31,7 +33,6 @@ public class IKConstraint
 [OrderAfter(typeof(NetworkTransform), typeof(NetworkRigidbody))]
 public class NetworkPlayerRig : NetworkBehaviour
 {
-
     #region Properties
 
     [Header("Settings")]
@@ -45,6 +46,9 @@ public class NetworkPlayerRig : NetworkBehaviour
 
     [HideInInspector]
     [Networked(OnChanged = "OnRightHandStateChanged", OnChangedTargets = OnChangedTargets.All)] public byte rightHandState { get; set; }
+
+    private NetworkObject leftHandSelectedObject = null;
+    private NetworkObject rightHandSelectedObject = null;
 
     [Header("Components")]
     [SerializeField]
@@ -68,6 +72,9 @@ public class NetworkPlayerRig : NetworkBehaviour
     [SerializeField]
     private XRBaseControllerInteractor righttHandInteractor;
 
+    [SerializeField]
+    private Image talkingIcon;
+
     public FingersIK leftFingers;
     public FingersIK rightFingers;
 
@@ -75,6 +82,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     private Transform rigVisuals;
 
     private LocalPlayerRig playerRig;
+    private Speaker speaker;
 
     [Header("IK Contraints")]
     [SerializeField]
@@ -136,7 +144,21 @@ public class NetworkPlayerRig : NetworkBehaviour
             playerRig = FindObjectOfType<LocalPlayerRig>();
 
             rigVisuals.gameObject.SetActive(false);
+
+            playerRig.leftHandIndexConstraint.track = leftHandIndexConstraint.target;
+            playerRig.leftHandMiddleConstraint.track = leftHandMiddleConstraint.target;
+            playerRig.leftHandRingConstraint.track = leftHandRingConstraint.target;
+            playerRig.leftHandPinkyConstraint.track = leftHandPinkyConstraint.target;
+            playerRig.leftHandThumbConstraint.track = leftHandThumbConstraint.target;            
+
+            playerRig.rightHandIndexConstraint.track = rightHandIndexConstraint.target;
+            playerRig.rightHandMiddleConstraint.track = rightHandMiddleConstraint.target;
+            playerRig.rightHandRingConstraint.track = rightHandRingConstraint.target;
+            playerRig.rightHandPinkyConstraint.track = rightHandPinkyConstraint.target;
+            playerRig.rightHandThumbConstraint.track = rightHandThumbConstraint.target;
         }
+
+        speaker = GetComponentInParent<Speaker>();
     }
 
     public override void FixedUpdateNetwork()
@@ -178,7 +200,6 @@ public class NetworkPlayerRig : NetworkBehaviour
                 IXRSelectInteractable selectedInteractable = leftHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
                 {
-
                     HandGrabable grababble = selectedInteractable as HandGrabable;
 
                     if (grababble != null)
@@ -214,6 +235,14 @@ public class NetworkPlayerRig : NetworkBehaviour
                             leftHandThumbConstraint.track = grababble.leftHandFignersPosition.thumbIKPosition;
                         }
                     }
+
+                    leftHandSelectedObject = selectedInteractable.transform.GetComponentInParent<NetworkObject>();
+                    RPC_ShowMemoryClue(leftHandSelectedObject.Id);
+                }
+                else if (leftHandSelectedObject != null)
+                {
+                    RPC_HideMemoryClue(leftHandSelectedObject.Id);
+                    leftHandSelectedObject = null;
                 }
 
                 // Update left hand figners state based on the grabbed object
@@ -225,16 +254,6 @@ public class NetworkPlayerRig : NetworkBehaviour
                 leftHandRingConstraint.Update();
                 leftHandPinkyConstraint.Update();
                 leftHandThumbConstraint.Update();
-
-                if (playerRig != null)
-                {
-                    playerRig.leftFingers.UpdateTargets(
-                        leftHandIndexConstraint.track != null ? leftHandIndexConstraint.track.position : Vector3.zero,
-                        leftHandMiddleConstraint.track != null ? leftHandMiddleConstraint.track.position : Vector3.zero,
-                        leftHandRingConstraint.track != null ? leftHandRingConstraint.track.position : Vector3.zero,
-                        leftHandPinkyConstraint.track != null ? leftHandPinkyConstraint.track.position : Vector3.zero,
-                        leftHandThumbConstraint.track != null ? leftHandThumbConstraint.track.position : Vector3.zero);
-                }
 
                 // ---- Right controller ----
                 XRControllerState rightControllerState = new XRControllerState();
@@ -285,6 +304,14 @@ public class NetworkPlayerRig : NetworkBehaviour
                             rightHandThumbConstraint.track = grababble.rightHandFignersPosition.thumbIKPosition;
                         }
                     }
+
+                    rightHandSelectedObject = selectedInteractable.transform.GetComponentInParent<NetworkObject>();
+                    RPC_ShowMemoryClue(rightHandSelectedObject.Id);
+                }
+                else if (rightHandSelectedObject != null)
+                {
+                    RPC_HideMemoryClue(rightHandSelectedObject.Id);
+                    rightHandSelectedObject = null;
                 }
 
                 // Update left hand figners state based on the grabbed object
@@ -295,22 +322,21 @@ public class NetworkPlayerRig : NetworkBehaviour
                 rightHandRingConstraint.Update();
                 rightHandPinkyConstraint.Update();
                 rightHandThumbConstraint.Update();
-
-                if (playerRig != null)
-                {
-                    playerRig.rightFingers.UpdateTargets(
-                        rightHandIndexConstraint.track != null ? rightHandIndexConstraint.track.position : Vector3.zero,
-                        rightHandMiddleConstraint.track != null ? rightHandMiddleConstraint.track.position : Vector3.zero,
-                        rightHandRingConstraint.track != null ? rightHandRingConstraint.track.position : Vector3.zero,
-                        rightHandPinkyConstraint.track != null ? rightHandPinkyConstraint.track.position : Vector3.zero,
-                        rightHandThumbConstraint.track != null ? rightHandThumbConstraint.track.position : Vector3.zero);
-                }
             }
         }
 
         leftHandConstraint.Update();
         rightHandConstraint.Update();
         headConstraint.Update();
+
+        if (speaker.IsPlaying)
+        {
+            talkingIcon.gameObject.SetActive(true);
+        }
+        else
+        {
+            talkingIcon.gameObject.SetActive(false);
+        }
     }
 
     public override void Render()
@@ -354,6 +380,36 @@ public class NetworkPlayerRig : NetworkBehaviour
         {
             changed.Behaviour.playerRig.UpdateRightHandConstraint(changed.Behaviour.rightHandState);
         }
+    }
+
+    #endregion
+
+    #region RPCs
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_ShowMemoryClue(NetworkId selectedObject)
+    {
+        Memories memories = Runner.FindObject(selectedObject).GetComponentInChildren<Memories>();
+
+        if (memories == null)
+        {
+            return;
+        }
+
+        memories.ShowMemory(playerRig.GetCharacter());
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_HideMemoryClue(NetworkId selectedObject)
+    {
+        Memories memories = Runner.FindObject(selectedObject).GetComponentInChildren<Memories>();
+
+        if (memories == null)
+        {
+            return;
+        }
+
+        memories.HideMemory();
     }
 
     #endregion

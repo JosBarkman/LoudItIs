@@ -100,6 +100,19 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField]
     private MenuControllerCharacterDescription rightHandCharacterDescription;
 
+    [Header("IK Contraints")]
+    public IKConstraint leftHandIndexConstraint = new IKConstraint();
+    public IKConstraint leftHandMiddleConstraint = new IKConstraint();
+    public IKConstraint leftHandRingConstraint = new IKConstraint();
+    public IKConstraint leftHandPinkyConstraint = new IKConstraint();
+    public IKConstraint leftHandThumbConstraint = new IKConstraint();
+
+    public IKConstraint rightHandIndexConstraint = new IKConstraint();
+    public IKConstraint rightHandMiddleConstraint = new IKConstraint();
+    public IKConstraint rightHandRingConstraint = new IKConstraint();
+    public IKConstraint rightHandPinkyConstraint = new IKConstraint();
+    public IKConstraint rightHandThumbConstraint = new IKConstraint();
+
     private NetworkRunner runner;
     private UnityEngine.XR.InputDevice leftHardwareController;
     private UnityEngine.XR.InputDevice rightHardwareController;
@@ -149,6 +162,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         rightHandCharacterDescription.UpdateDescription(sheet);
 
         this.sheet = sheet;
+    }
+
+    public CharacterSheet GetCharacter()
+    {
+        return sheet;
     }
 
     #endregion
@@ -202,6 +220,21 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
+    private void Update()
+    {
+        leftHandIndexConstraint.Update();
+        leftHandMiddleConstraint.Update();
+        leftHandRingConstraint.Update();
+        leftHandPinkyConstraint.Update();
+        leftHandThumbConstraint.Update();
+
+        rightHandIndexConstraint.Update();
+        rightHandMiddleConstraint.Update();
+        rightHandRingConstraint.Update();
+        rightHandPinkyConstraint.Update();
+        rightHandThumbConstraint.Update();
+    }
+
     private void OnDestroy()
     {
         if (runner != null)
@@ -235,6 +268,17 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         bool buttonPressed = false;
 
+        if (leftHardwareController == null || (leftHardwareController != null && !leftHardwareController.isValid))
+        {
+            List<UnityEngine.XR.InputDevice> devices = new List<UnityEngine.XR.InputDevice>();
+
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Left, devices);
+            if (devices.Count != 0)
+            {
+                leftHardwareController = devices[0];
+            }
+        }
+
         if (leftHardwareController != null)
         {
             leftHardwareController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out buttonPressed);
@@ -249,6 +293,17 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         Debug.Log(string.Format("@Left Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.leftControllerButtonsPressed, 2).PadLeft(8, '0')));
+
+        if (rightHardwareController == null || (rightHardwareController != null && !rightHardwareController.isValid))
+        {
+            List<UnityEngine.XR.InputDevice> devices = new List<UnityEngine.XR.InputDevice>();
+
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Right, devices);
+            if (devices.Count != 0)
+            {
+                rightHardwareController = devices[0];
+            }
+        }
 
         if (rightHardwareController != null)
         {

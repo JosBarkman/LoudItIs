@@ -29,6 +29,8 @@ public class MansionTimedEventsController : NetworkBehaviour
             // 10 minutes
             timer = TickTimer.CreateFromSeconds(Runner, activationTimeInSeconds);
         }
+
+        activationGameObject.SetActive(timer.IsRunning ? false : true);
     }
 
     public override void FixedUpdateNetwork()
