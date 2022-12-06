@@ -6,8 +6,12 @@ public class NetworkRigAnimatorController : MonoBehaviour
 {
     #region Properties
 
+    [Header("Settings")]
     [SerializeField]
     private float fixFootOffset = .25f;
+
+    [SerializeField]
+    private LayerMask raycastMask;
 
     private Animator animator;
 
@@ -27,7 +31,7 @@ public class NetworkRigAnimatorController : MonoBehaviour
         Quaternion footRotation = animator.GetIKRotation(AvatarIKGoal.RightFoot);
 
         RaycastHit hit;
-        if (Physics.Raycast(footPosition + Vector3.up, Vector3.down, out hit))
+        if (Physics.Raycast(footPosition + Vector3.up, Vector3.down, out hit, float.MaxValue, raycastMask))
         {
             animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1.0f);
             animator.SetIKPosition(AvatarIKGoal.RightFoot, hit.point + fixFootOffset * Vector3.up);
@@ -46,7 +50,7 @@ public class NetworkRigAnimatorController : MonoBehaviour
         footPosition = animator.GetIKPosition(AvatarIKGoal.LeftFoot);
         footRotation = animator.GetIKRotation(AvatarIKGoal.LeftFoot);
 
-        if (Physics.Raycast(footPosition + Vector3.up, Vector3.down, out hit))
+        if (Physics.Raycast(footPosition + Vector3.up, Vector3.down, out hit, float.MaxValue, raycastMask))
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1.0f);
             animator.SetIKPosition(AvatarIKGoal.LeftFoot, hit.point + fixFootOffset * Vector3.up);
