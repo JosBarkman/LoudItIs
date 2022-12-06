@@ -47,6 +47,9 @@ public class NetworkPlayerRig : NetworkBehaviour
     [HideInInspector]
     [Networked(OnChanged = "OnRightHandStateChanged", OnChangedTargets = OnChangedTargets.All)] public byte rightHandState { get; set; }
 
+    [HideInInspector]
+    [Networked(OnChanged = "OnShowingMapStateChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool showingMap { get; set; }
+
     private NetworkObject leftHandSelectedObject = null;
     private NetworkObject rightHandSelectedObject = null;
 
@@ -73,6 +76,9 @@ public class NetworkPlayerRig : NetworkBehaviour
     private XRBaseControllerInteractor righttHandInteractor;
 
     [SerializeField]
+    private GameplayMapController gameplayMapController;
+
+    [SerializeField]
     private Image talkingIcon;
 
     public FingersIK leftFingers;
@@ -81,6 +87,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     [SerializeField]
     private Transform rigVisuals;
 
+    // This variables are only useful in the machine of the player controling this rig
     private LocalPlayerRig playerRig;
     private Speaker speaker;
 
@@ -128,6 +135,11 @@ public class NetworkPlayerRig : NetworkBehaviour
         if (righttHandInteractor == null)
         {
             righttHandInteractor = rightHand.GetComponentInChildren<XRBaseControllerInteractor>();
+        }
+
+        if (gameplayMapController == null)
+        {
+            gameplayMapController = GetComponentInChildren<GameplayMapController>();
         }
     }
 
@@ -256,12 +268,17 @@ public class NetworkPlayerRig : NetworkBehaviour
                 leftHandThumbConstraint.Update();
 
                 // ---- Right controller ----
-                XRControllerState rightControllerState = new XRControllerState();
-                rightControllerState.selectInteractionState = new InteractionState();
 
-                rightControllerState.selectInteractionState.active = ((byte) (input.rightControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Trigger)) == (byte) RigInput.VrControllerButtons.Trigger;
+                // We just have to select when not showing map
+                if (!showingMap)
+                {
+                    XRControllerState rightControllerState = new XRControllerState();
+                    rightControllerState.selectInteractionState = new InteractionState();
 
-                rightHandXRController.currentControllerState = rightControllerState;
+                    rightControllerState.selectInteractionState.active = ((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
+
+                    rightHandXRController.currentControllerState = rightControllerState;
+                }                
 
                 // Update right hand state
                 fingersState = (byte) FingerIKFlags.None;
@@ -312,6 +329,10 @@ public class NetworkPlayerRig : NetworkBehaviour
                 {
                     RPC_HideMemoryClue(rightHandSelectedObject.Id);
                     rightHandSelectedObject = null;
+                }
+                else if (((byte) (input.rightControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Menu)) == (byte) RigInput.VrControllerButtons.Menu)
+                {
+                    showingMap = !showingMap;
                 }
 
                 // Update left hand figners state based on the grabbed object
@@ -372,6 +393,26 @@ public class NetworkPlayerRig : NetworkBehaviour
     }
 
     public static void OnRightHandStateChanged(Changed<NetworkPlayerRig> changed)
+    {
+        changed.Behaviour.rightFingers.UpdateWeights(changed.Behaviour.rightHandState);
+
+        // Player rig will be just valid on the local client
+        if (changed.Behaviour.playerRig != null)
+        {
+            changed.Behaviour.playerRig.UpdateRightHandConstraint(changed.Behaviour.rightHandState);
+        }
+
+        if (changed.Behaviour.showingMap)
+        {
+            changed.Behaviour.gameplayMapController.ShowMap(0);
+        }
+        else
+        {
+            changed.Behaviour.gameplayMapController.HideMap();
+        }
+    }
+
+    public static void OnShowingMapStateChanged(Changed<NetworkPlayerRig> changed)
     {
         changed.Behaviour.rightFingers.UpdateWeights(changed.Behaviour.rightHandState);
 
