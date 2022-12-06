@@ -120,6 +120,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
     private CharacterSheet sheet = null;
 
+    private bool lastLeftMenuButtonPressed = false;
+    private bool lastRightMenuButtonPressed = false;
+
     #endregion
 
     #region Public Methods
@@ -286,11 +289,13 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
             rigInput.leftControllerButtonsPressed |= (byte) (buttonPressed ? RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
 
             leftHardwareController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out buttonPressed);
-            if (buttonPressed && sheet != null)
+            if (buttonPressed && sheet != null && lastLeftMenuButtonPressed == false)
             {
                  leftHandCharacterDescription.transform.parent.gameObject.SetActive(!leftHandCharacterDescription.transform.parent.gameObject.activeInHierarchy);
                  leftHandCharacterDescription.UpdateDescription(sheet);
             }
+
+            lastLeftMenuButtonPressed = buttonPressed;
         }
 
         Debug.Log(string.Format("@Left Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.leftControllerButtonsPressed, 2).PadLeft(8, '0')));
@@ -312,7 +317,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
             rigInput.rightControllerButtonsPressed |= (byte)(buttonPressed ? RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
 
             rightHardwareController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out buttonPressed);
-            rigInput.rightControllerButtonsPressed |= (byte)(buttonPressed ? RigInput.VrControllerButtons.Menu : RigInput.VrControllerButtons.None);
+            rigInput.rightControllerButtonsPressed |= (byte)(buttonPressed && lastRightMenuButtonPressed == false ? RigInput.VrControllerButtons.Menu : RigInput.VrControllerButtons.None);
+
+            lastRightMenuButtonPressed = buttonPressed;
         }
 
         Debug.Log(string.Format("@Right Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.rightControllerButtonsPressed, 2).PadLeft(8, '0')));
