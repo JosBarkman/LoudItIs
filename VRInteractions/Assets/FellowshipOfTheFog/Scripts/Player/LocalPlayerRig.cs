@@ -19,6 +19,7 @@ public struct RigInput : INetworkInput
     {
         None = 0x0,
         Trigger = 1 << 7,
+        Menu = 1 << 6,
     }
 
     public Vector3 position;
@@ -311,11 +312,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
             rigInput.rightControllerButtonsPressed |= (byte)(buttonPressed ? RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
 
             rightHardwareController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out buttonPressed);
-            if (buttonPressed && sheet != null)
-            {
-                rightHandCharacterDescription.transform.parent.gameObject.SetActive(!rightHandCharacterDescription.transform.parent.gameObject.activeInHierarchy);
-                rightHandCharacterDescription.UpdateDescription(sheet);
-            }
+            rigInput.rightControllerButtonsPressed |= (byte)(buttonPressed ? RigInput.VrControllerButtons.Menu : RigInput.VrControllerButtons.None);
         }
 
         Debug.Log(string.Format("@Right Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.rightControllerButtonsPressed, 2).PadLeft(8, '0')));
