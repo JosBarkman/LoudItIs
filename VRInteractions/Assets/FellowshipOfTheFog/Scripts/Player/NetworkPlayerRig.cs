@@ -48,7 +48,10 @@ public class NetworkPlayerRig : NetworkBehaviour
     [Networked(OnChanged = "OnRightHandStateChanged", OnChangedTargets = OnChangedTargets.All)] public byte rightHandState { get; set; }
 
     [HideInInspector]
-    [Networked(OnChanged = "OnShowingMapStateChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool showingMap { get; set; }
+    [Networked(OnChanged = "OnShowingMapChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool showingMap { get; set; }
+
+    [HideInInspector]
+    [Networked(OnChanged = "OnMapFloorChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool mapFloor { get; set; }
 
     private NetworkObject leftHandSelectedObject = null;
     private NetworkObject rightHandSelectedObject = null;
@@ -280,7 +283,11 @@ public class NetworkPlayerRig : NetworkBehaviour
                     rightControllerState.selectInteractionState.active = ((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
 
                     rightHandXRController.currentControllerState = rightControllerState;
-                }                
+                }
+                else if (((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger)
+                {
+                    mapFloor = !mapFloor;
+                }
 
                 // Update right hand state
                 selectedInteractable = righttHandInteractor.firstInteractableSelected;
@@ -411,9 +418,9 @@ public class NetworkPlayerRig : NetworkBehaviour
         {
             changed.Behaviour.playerRig.UpdateRightHandConstraint(changed.Behaviour.rightHandState);
         }
-    }
+    }    
 
-    public static void OnShowingMapStateChanged(Changed<NetworkPlayerRig> changed)
+    public static void OnShowingMapChanged(Changed<NetworkPlayerRig> changed)
     {
         if (changed.Behaviour.showingMap)
         {
@@ -439,6 +446,14 @@ public class NetworkPlayerRig : NetworkBehaviour
             byte fingersState = (byte)FingerIKFlags.None;
             changed.Behaviour.rightHandState = fingersState;
         }        
+    }
+
+    public static void OnMapFloorChanged(Changed<NetworkPlayerRig> changed)
+    {
+        if (changed.Behaviour.showingMap)
+        {
+            changed.Behaviour.gameplayMapController.SwitchFloor();
+        }
     }
 
     #endregion
