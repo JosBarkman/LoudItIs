@@ -26,21 +26,10 @@ public class GameplayMapController : MonoBehaviour
 
     #region Public Methods
 
-    public void ShowMap(float floor)
+    public void ShowMap()
     {
         animator.enabled = true;
-        if (floor == -1.0f)
-        {
-            firstFloorQuad.SetActive(true);
-            secondFloorQuad.SetActive(false);
-        }
-        else if (floor == 1.0f)
-        {
-            firstFloorQuad.SetActive(false);
-            secondFloorQuad.SetActive(true);
-        }
-
-        currentFloor = floor;
+        currentFloor = -1.0f;
     }
 
     public void HideMap()

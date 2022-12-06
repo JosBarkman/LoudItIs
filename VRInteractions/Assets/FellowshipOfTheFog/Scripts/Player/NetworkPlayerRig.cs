@@ -424,7 +424,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     {
         if (changed.Behaviour.showingMap)
         {
-            changed.Behaviour.gameplayMapController.ShowMap(-1.0f);
+            changed.Behaviour.gameplayMapController.ShowMap();
 
             NetworkRunner runner = FindObjectOfType<NetworkRunner>();
 
