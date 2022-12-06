@@ -136,11 +136,6 @@ public class NetworkPlayerRig : NetworkBehaviour
         {
             righttHandInteractor = rightHand.GetComponentInChildren<XRBaseControllerInteractor>();
         }
-
-        if (gameplayMapController == null)
-        {
-            gameplayMapController = GetComponentInChildren<GameplayMapController>();
-        }
     }
 
     #endregion
@@ -171,6 +166,11 @@ public class NetworkPlayerRig : NetworkBehaviour
         }
 
         speaker = GetComponentInParent<Speaker>();
+
+        if (gameplayMapController == null)
+        {
+            gameplayMapController = GetComponentInChildren<GameplayMapController>();
+        }
     }
 
     public override void FixedUpdateNetwork()
@@ -401,25 +401,17 @@ public class NetworkPlayerRig : NetworkBehaviour
         {
             changed.Behaviour.playerRig.UpdateRightHandConstraint(changed.Behaviour.rightHandState);
         }
-
-        if (changed.Behaviour.showingMap)
-        {
-            changed.Behaviour.gameplayMapController.ShowMap(0);
-        }
-        else
-        {
-            changed.Behaviour.gameplayMapController.HideMap();
-        }
     }
 
     public static void OnShowingMapStateChanged(Changed<NetworkPlayerRig> changed)
     {
-        changed.Behaviour.rightFingers.UpdateWeights(changed.Behaviour.rightHandState);
-
-        // Player rig will be just valid on the local client
-        if (changed.Behaviour.playerRig != null)
+        if (changed.Behaviour.showingMap)
         {
-            changed.Behaviour.playerRig.UpdateRightHandConstraint(changed.Behaviour.rightHandState);
+            changed.Behaviour.gameplayMapController.ShowMap(-1.0f);
+        }
+        else
+        {
+            changed.Behaviour.gameplayMapController.HideMap();
         }
     }
 

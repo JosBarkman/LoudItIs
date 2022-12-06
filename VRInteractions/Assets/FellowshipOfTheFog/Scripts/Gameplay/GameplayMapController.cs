@@ -21,7 +21,8 @@ public class GameplayMapController : MonoBehaviour
 
     public void ShowMap(float floor)
     {
-        if (floor == 0.0f)
+        animator.enabled = true;
+        if (floor == -1.0f)
         {
             firstFloorQuad.SetActive(true);
             secondFloorQuad.SetActive(false);
@@ -37,6 +38,7 @@ public class GameplayMapController : MonoBehaviour
 
     public void HideMap()
     {
+        animator.enabled = false;
         firstFloorQuad.SetActive(false);
         secondFloorQuad.SetActive(false);
     }
