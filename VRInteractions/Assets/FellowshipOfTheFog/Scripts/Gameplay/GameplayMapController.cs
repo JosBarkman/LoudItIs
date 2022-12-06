@@ -13,23 +13,26 @@ public class GameplayMapController : MonoBehaviour
     private GameObject secondFloorQuad;
 
     private Animator animator;
+    private float currentFloor = 0.0f;
 
     #endregion
 
     #region Public Methods
 
-    public void ShowMap(int floor = 0)
+    public void ShowMap(float floor)
     {
-        if (floor == 0)
+        if (floor == 0.0f)
         {
             firstFloorQuad.SetActive(true);
             secondFloorQuad.SetActive(false);
         }
-        else if (floor == 1)
+        else if (floor == 1.0f)
         {
             firstFloorQuad.SetActive(false);
             secondFloorQuad.SetActive(true);
         }
+
+        currentFloor = floor;
     }
 
     public void HideMap()
@@ -40,7 +43,13 @@ public class GameplayMapController : MonoBehaviour
 
     public void SwitchFloor()
     {
-        animator.SetFloat("Floor", 0);
+        currentFloor = currentFloor == -1.0f ? 1.0f : -1.0f;
+        animator.SetFloat("Floor", currentFloor);
+    }
+
+    public void ResetFloor()
+    {
+        animator.SetFloat("Floor", 0.0f);
     }
 
     #endregion
