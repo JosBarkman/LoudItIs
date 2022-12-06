@@ -15,6 +15,13 @@ public class GameplayMapController : MonoBehaviour
     private Animator animator;
     private float currentFloor = 0.0f;
 
+    [Header("Fingers")]
+    public Transform indexPosition;
+    public Transform middlePosition;
+    public Transform ringPosition;
+    public Transform pinkyPosition;
+    public Transform thumbPosition;
+
     #endregion
 
     #region Public Methods
