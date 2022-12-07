@@ -30,7 +30,6 @@ public class GameplayMapController : MonoBehaviour
     public void ShowMap()
     {
         animator.enabled = true;
-        currentFloor = 0.0f;
         switchingMap = false;
     }
 
