@@ -14,6 +14,7 @@ public class GameplayMapController : MonoBehaviour
 
     private Animator animator;
     private float currentFloor = 0.0f;
+    private bool switchingMap = false;
 
     [Header("Fingers")]
     public Transform indexPosition;
@@ -29,7 +30,8 @@ public class GameplayMapController : MonoBehaviour
     public void ShowMap()
     {
         animator.enabled = true;
-        currentFloor = -1.0f;
+        currentFloor = 0.0f;
+        switchingMap = false;
     }
 
     public void HideMap()
@@ -37,17 +39,24 @@ public class GameplayMapController : MonoBehaviour
         animator.enabled = false;
         firstFloorQuad.SetActive(false);
         secondFloorQuad.SetActive(false);
+        switchingMap = false;
     }
 
     public void SwitchFloor()
     {
+        if (switchingMap)
+        {
+            return;
+        }
+
         currentFloor = currentFloor == -1.0f ? 1.0f : -1.0f;
         animator.SetFloat("Floor", currentFloor);
+        switchingMap = true;
     }
 
     public void ResetFloor()
     {
-        animator.SetFloat("Floor", 0.0f);
+        switchingMap = false;
     }
 
     #endregion
