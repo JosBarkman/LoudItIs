@@ -13,7 +13,7 @@ public class GameplayMapController : MonoBehaviour
     private GameObject secondFloorQuad;
 
     private Animator animator;
-    private float currentFloor = 0.0f;
+    private float currentFloor = -1.0f;
     private bool switchingMap = false;
 
     [Header("Fingers")]
