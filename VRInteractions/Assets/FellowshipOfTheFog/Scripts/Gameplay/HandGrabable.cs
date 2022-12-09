@@ -127,31 +127,13 @@ public class HandGrabable : XRGrabInteractable
         if (selectArgs == null)
         {
             return;
-        }
-
-        float radians = 1.0f;
-        float hand = -1.0f;
-
-        if (selectArgs.interactorObject.transform.CompareTag("LeftController"))
-        {
-            hand = 1.0f;
-        }
-
-        // Left controller interacts facing the green axis
-        // Right cotroller interacts facing the back of green axis
-        if (inverseHandHandling)
-        {
-            radians = hand;
-        }
-
-        // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
-        radians = Mathf.Acos(Vector3.Dot(selectArgs.interactorObject.transform.right * hand, upAxisAttackTransform.up * radians));
+        }      
 
         float currentDistance = Vector3.Distance(selectArgs.interactorObject.transform.position, upAxisAttackTransform.position);
 
         Debug.Log(string.Format(@"Start distance: {0}, Current distance: {1}", startingDistance, currentDistance));
 
-        if (radians > angleOfAttackRadians || currentDistance >= startingDistance + distanceThreshold)
+        if (currentDistance >= startingDistance + distanceThreshold)
         {
             selectArgs.manager.SelectCancel(selectArgs.interactorObject, selectArgs.interactableObject);
             selectArgs = null;
