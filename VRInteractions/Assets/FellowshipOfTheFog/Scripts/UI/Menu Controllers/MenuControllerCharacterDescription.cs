@@ -29,6 +29,9 @@ public class MenuControllerCharacterDescription : MonoBehaviour
 
     [SerializeField]
     private Image characterPortrait;
+    
+    [SerializeField]
+    private Image characterFullBody;
 
     private List<ItemControllerGoal> goalItemList = new List<ItemControllerGoal>();
 
@@ -51,7 +54,15 @@ public class MenuControllerCharacterDescription : MonoBehaviour
             characterPrivateInfo.text = sheet.privateInfo;
         }
 
-        characterPortrait.sprite = sheet.portrait;
+        if (characterPortrait != null)
+        {
+            characterPortrait.sprite = sheet.portrait;
+        }
+
+        if (characterFullBody != null)
+        {
+            characterFullBody.sprite = sheet.fullBody;
+        }
 
         if (characterGoalsPanel != null)
         {

@@ -21,7 +21,9 @@ public class CharacterSheet : ScriptableObject
     [TextArea(3, 9)]
     public string privateInfo;
 
-    public Sprite portrait;    
+    public Sprite portrait;
+    public Sprite fullBody;
+
     public CharacterGoal[] goals;
 
     [Header("Settings")]
