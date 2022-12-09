@@ -501,8 +501,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 112489949554810471}
   m_HandleRect: {fileID: 1774865276077059384}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1.0000001
+  m_Size: 0.43515673
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -750,7 +750,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6149489496923299511}
   m_HandleRect: {fileID: 4068365663333269598}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 1.0000024
   m_Size: 0.9383313
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1438,7 +1438,6 @@ GameObject:
   - component: {fileID: 4122650100667664590}
   - component: {fileID: 8863143022544395453}
   - component: {fileID: 3550391965227448432}
-  - component: {fileID: 1518374404737028143}
   m_Layer: 5
   m_Name: Character Common Bio Info Panel
   m_TagString: Untagged
@@ -1465,8 +1464,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 222.14539, y: 0}
-  m_SizeDelta: {x: 444.29077, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 1627}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4122650100667664590
 CanvasRenderer:
@@ -1532,20 +1531,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1518374404737028143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6938201846066121125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
 --- !u!1 &7004942463658394721
 GameObject:
   m_ObjectHideFlags: 0
@@ -2241,7 +2226,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 461.29077, y: 0}
+  m_SizeDelta: {x: 564.0596, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &8765006967489837076
 CanvasRenderer:
