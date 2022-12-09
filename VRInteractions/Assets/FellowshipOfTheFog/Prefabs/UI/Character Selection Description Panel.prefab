@@ -666,6 +666,7 @@ MonoBehaviour:
   characterPrivateInfo: {fileID: 0}
   characterGoalsPanel: {fileID: 0}
   characterPortrait: {fileID: 4833004037540292398}
+  characterFullBody: {fileID: 4833004037540292398}
 --- !u!1 &4833004037169209485
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,11 +900,11 @@ RectTransform:
   m_Father: {fileID: 4833004037148151360}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 16, y: -16}
-  m_SizeDelta: {x: 192, y: 192}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -16, y: -20.081383}
+  m_SizeDelta: {x: 420, y: -211.83722}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4833004037540292399
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1206,9 +1207,9 @@ RectTransform:
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 16, y: -69.08139}
-  m_SizeDelta: {x: -32, y: -309.83722}
+  m_AnchorMax: {x: 0.7, y: 1}
+  m_AnchoredPosition: {x: 16, y: -20.08139}
+  m_SizeDelta: {x: -16, y: -211.83722}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3164253616285477034
 CanvasRenderer:

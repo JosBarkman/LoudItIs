@@ -501,8 +501,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 112489949554810471}
   m_HandleRect: {fileID: 1774865276077059384}
   m_Direction: 2
-  m_Value: 0.9999999
-  m_Size: 0.36363637
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 6839720203623381494}
   - component: {fileID: 4313542773030364195}
   - component: {fileID: 5156080675599733248}
-  - component: {fileID: 3685045280740708307}
+  - component: {fileID: 8622651799230304866}
   m_Layer: 5
   m_Name: Common Bio Info
   m_TagString: Untagged
@@ -543,8 +543,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 222.14539, y: 0}
-  m_SizeDelta: {x: 428.29077, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4313542773030364195
 CanvasRenderer:
@@ -609,7 +609,7 @@ MonoBehaviour:
     sem, sed suscipit mi consequat quis. Morbi condimentum, neque ut placerat faucibus,
     mi nunc suscipit ex, at placerat libero leo sit amet justo. Nam at dolor viverra
     felis iaculis congue."
---- !u!114 &3685045280740708307
+--- !u!114 &8622651799230304866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -618,11 +618,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4142713265349108784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &4215203702573505612
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,7 +751,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4068365663333269598}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.93833125
+  m_Size: 0.9383313
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -981,7 +987,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 36}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8334586532598480150
 CanvasRenderer:
@@ -1432,7 +1438,7 @@ GameObject:
   - component: {fileID: 4122650100667664590}
   - component: {fileID: 8863143022544395453}
   - component: {fileID: 3550391965227448432}
-  - component: {fileID: 440823564834615992}
+  - component: {fileID: 1518374404737028143}
   m_Layer: 5
   m_Name: Character Common Bio Info Panel
   m_TagString: Untagged
@@ -1522,11 +1528,11 @@ MonoBehaviour:
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
-  m_ChildControlHeight: 0
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &440823564834615992
+--- !u!114 &1518374404737028143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2099,6 +2105,7 @@ MonoBehaviour:
   characterPrivateInfo: {fileID: 1829577920466119377}
   characterGoalsPanel: {fileID: 8765006967489837290}
   characterPortrait: {fileID: 8765006966602307435}
+  characterFullBody: {fileID: 0}
 --- !u!1 &8765006966942605966
 GameObject:
   m_ObjectHideFlags: 0
