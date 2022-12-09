@@ -353,6 +353,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "LockRotation",
+                    "type": "Button",
+                    "id": "0ba8c43b-3ebe-4765-b437-f58a42fff97d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -408,6 +417,17 @@
                     "processors": "StickDeadzone",
                     "groups": "Continuous Move",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5f287fb-d578-454b-a9b8-3ce0cceb309f",
+                    "path": "<XRController>{LeftHand}/primary2DAxisClick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "LockRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -719,13 +739,13 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Dash",
-                    "type": "Value",
-                    "id": "d987f026-f751-4636-be8a-175f099b887e",
+                    "name": "LockRotation",
+                    "type": "Button",
+                    "id": "a33cf8f9-5a57-4358-8702-ca0b52cacc07",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -764,12 +784,12 @@
                 },
                 {
                     "name": "",
-                    "id": "a1410f38-0593-4f0e-810d-0aa7f2dcccde",
-                    "path": "<XRController>{RightHand}/triggerPressed",
+                    "id": "a13e3822-a605-4dba-9a57-e1487f6f9e60",
+                    "path": "<XRController>{RightHand}/secondary2DAxisClick",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
-                    "action": "Dash",
+                    "action": "LockRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
