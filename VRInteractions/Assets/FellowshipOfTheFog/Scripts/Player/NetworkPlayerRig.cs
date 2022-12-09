@@ -254,12 +254,21 @@ public class NetworkPlayerRig : NetworkBehaviour
                     }
 
                     leftHandSelectedObject = selectedInteractable.transform.GetComponentInParent<NetworkObject>();
-                    RPC_ShowMemoryClue(leftHandSelectedObject.Id);
+
+                    if (leftHandSelectedObject != null && selectedInteractable.transform.GetComponent<Memories>() != null)
+                    {
+                        RPC_ShowMemoryClue(leftHandSelectedObject.Id);
+                    }
+
                 }
-                else if (leftHandSelectedObject != null)
+                else
                 {
-                    RPC_HideMemoryClue(leftHandSelectedObject.Id);
-                    leftHandSelectedObject = null;
+                    if (leftHandSelectedObject != null)
+                    {
+                        RPC_HideMemoryClue(leftHandSelectedObject.Id);
+                        leftHandSelectedObject = null;
+                    }
+
                     leftHandState = (byte) FingerIKFlags.None;
                 }
 
@@ -334,23 +343,33 @@ public class NetworkPlayerRig : NetworkBehaviour
                     }
 
                     rightHandSelectedObject = selectedInteractable.transform.GetComponentInParent<NetworkObject>();
-                    RPC_ShowMemoryClue(rightHandSelectedObject.Id);
-                }
-                else if (rightHandSelectedObject != null)
-                {
-                    RPC_HideMemoryClue(rightHandSelectedObject.Id);
-                    rightHandSelectedObject = null;
-                    rightHandState = (byte) FingerIKFlags.None;
-                }
-                else if (((byte) (input.rightControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Menu)) == (byte) RigInput.VrControllerButtons.Menu)
-                {
-                    showingMap = !showingMap;
 
-                    rightHandIndexConstraint.track =  gameplayMapController.indexPosition;
-                    rightHandMiddleConstraint.track = gameplayMapController.middlePosition;
-                    rightHandRingConstraint.track =   gameplayMapController.ringPosition;
-                    rightHandPinkyConstraint.track =  gameplayMapController.pinkyPosition;
-                    rightHandThumbConstraint.track =  gameplayMapController.thumbPosition;
+                    if (rightHandSelectedObject != null & selectedInteractable.transform.GetComponent<Memories>())
+                    {
+                        RPC_ShowMemoryClue(rightHandSelectedObject.Id);
+                    }
+                }
+                else
+                {
+                    if (rightHandSelectedObject != null)
+                    {
+                        RPC_HideMemoryClue(rightHandSelectedObject.Id);
+                        rightHandSelectedObject = null;
+                    }
+                    else if (((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Menu)) == (byte)RigInput.VrControllerButtons.Menu)
+                    {
+                        showingMap = !showingMap;
+
+                        rightHandIndexConstraint.track = gameplayMapController.indexPosition;
+                        rightHandMiddleConstraint.track = gameplayMapController.middlePosition;
+                        rightHandRingConstraint.track = gameplayMapController.ringPosition;
+                        rightHandPinkyConstraint.track = gameplayMapController.pinkyPosition;
+                        rightHandThumbConstraint.track = gameplayMapController.thumbPosition;
+                    }
+                    else
+                    {
+                        rightHandState = (byte) FingerIKFlags.None;
+                    }
                 }
 
                 // Update left hand figners state based on the grabbed object
