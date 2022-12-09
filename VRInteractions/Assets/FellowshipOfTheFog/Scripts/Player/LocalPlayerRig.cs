@@ -98,9 +98,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField]
     private MenuControllerCharacterDescription leftHandCharacterDescription;
 
-    [SerializeField]
-    private MenuControllerCharacterDescription rightHandCharacterDescription;
-
     [Header("IK Contraints")]
     public IKConstraint leftHandIndexConstraint = new IKConstraint();
     public IKConstraint leftHandMiddleConstraint = new IKConstraint();
@@ -165,7 +162,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         rightHandVisuals.material = new Material(sheet.handsMaterial);
 
         leftHandCharacterDescription.UpdateDescription(sheet);
-        rightHandCharacterDescription.UpdateDescription(sheet);
 
         this.sheet = sheet;
     }
@@ -196,11 +192,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         if (leftHandCharacterDescription == null)
         {
             leftHandCharacterDescription = leftHand.GetComponentInChildren<MenuControllerCharacterDescription>();
-        }
-
-        if (rightHandCharacterDescription == null)
-        {
-            rightHandCharacterDescription = rightHand.GetComponentInChildren<MenuControllerCharacterDescription>();
         }
     }
 
