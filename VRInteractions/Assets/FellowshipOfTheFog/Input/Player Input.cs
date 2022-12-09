@@ -375,6 +375,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LockRotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ba8c43b-3ebe-4765-b437-f58a42fff97d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -430,6 +439,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": ""StickDeadzone"",
                     ""groups"": ""Continuous Move"",
                     ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5f287fb-d578-454b-a9b8-3ce0cceb309f"",
+                    ""path"": ""<XRController>{LeftHand}/primary2DAxisClick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Generic XR Controller"",
+                    ""action"": ""LockRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -739,6 +759,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LockRotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""a33cf8f9-5a57-4358-8702-ca0b52cacc07"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -772,6 +801,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Generic XR Controller"",
                     ""action"": ""Teleport Mode Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a13e3822-a605-4dba-9a57-e1487f6f9e60"",
+                    ""path"": ""<XRController>{RightHand}/secondary2DAxisClick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Generic XR Controller"",
+                    ""action"": ""LockRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1024,6 +1064,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_XRILeftHandLocomotion_TeleportModeCancel = m_XRILeftHandLocomotion.FindAction("Teleport Mode Cancel", throwIfNotFound: true);
         m_XRILeftHandLocomotion_Turn = m_XRILeftHandLocomotion.FindAction("Turn", throwIfNotFound: true);
         m_XRILeftHandLocomotion_Move = m_XRILeftHandLocomotion.FindAction("Move", throwIfNotFound: true);
+        m_XRILeftHandLocomotion_LockRotation = m_XRILeftHandLocomotion.FindAction("LockRotation", throwIfNotFound: true);
         // XRI RightHand
         m_XRIRightHand = asset.FindActionMap("XRI RightHand", throwIfNotFound: true);
         m_XRIRightHand_Position = m_XRIRightHand.FindAction("Position", throwIfNotFound: true);
@@ -1047,6 +1088,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_XRIRightHandLocomotion_TeleportModeCancel = m_XRIRightHandLocomotion.FindAction("Teleport Mode Cancel", throwIfNotFound: true);
         m_XRIRightHandLocomotion_Turn = m_XRIRightHandLocomotion.FindAction("Turn", throwIfNotFound: true);
         m_XRIRightHandLocomotion_Move = m_XRIRightHandLocomotion.FindAction("Move", throwIfNotFound: true);
+        m_XRIRightHandLocomotion_LockRotation = m_XRIRightHandLocomotion.FindAction("LockRotation", throwIfNotFound: true);
         // Spectator
         m_Spectator = asset.FindActionMap("Spectator", throwIfNotFound: true);
         m_Spectator_Movement = m_Spectator.FindAction("Movement", throwIfNotFound: true);
@@ -1302,6 +1344,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_XRILeftHandLocomotion_TeleportModeCancel;
     private readonly InputAction m_XRILeftHandLocomotion_Turn;
     private readonly InputAction m_XRILeftHandLocomotion_Move;
+    private readonly InputAction m_XRILeftHandLocomotion_LockRotation;
     public struct XRILeftHandLocomotionActions
     {
         private @PlayerInput m_Wrapper;
@@ -1311,6 +1354,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @TeleportModeCancel => m_Wrapper.m_XRILeftHandLocomotion_TeleportModeCancel;
         public InputAction @Turn => m_Wrapper.m_XRILeftHandLocomotion_Turn;
         public InputAction @Move => m_Wrapper.m_XRILeftHandLocomotion_Move;
+        public InputAction @LockRotation => m_Wrapper.m_XRILeftHandLocomotion_LockRotation;
         public InputActionMap Get() { return m_Wrapper.m_XRILeftHandLocomotion; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1335,6 +1379,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_XRILeftHandLocomotionActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_XRILeftHandLocomotionActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_XRILeftHandLocomotionActionsCallbackInterface.OnMove;
+                @LockRotation.started -= m_Wrapper.m_XRILeftHandLocomotionActionsCallbackInterface.OnLockRotation;
+                @LockRotation.performed -= m_Wrapper.m_XRILeftHandLocomotionActionsCallbackInterface.OnLockRotation;
+                @LockRotation.canceled -= m_Wrapper.m_XRILeftHandLocomotionActionsCallbackInterface.OnLockRotation;
             }
             m_Wrapper.m_XRILeftHandLocomotionActionsCallbackInterface = instance;
             if (instance != null)
@@ -1354,6 +1401,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @LockRotation.started += instance.OnLockRotation;
+                @LockRotation.performed += instance.OnLockRotation;
+                @LockRotation.canceled += instance.OnLockRotation;
             }
         }
     }
@@ -1513,6 +1563,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_XRIRightHandLocomotion_TeleportModeCancel;
     private readonly InputAction m_XRIRightHandLocomotion_Turn;
     private readonly InputAction m_XRIRightHandLocomotion_Move;
+    private readonly InputAction m_XRIRightHandLocomotion_LockRotation;
     public struct XRIRightHandLocomotionActions
     {
         private @PlayerInput m_Wrapper;
@@ -1522,6 +1573,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @TeleportModeCancel => m_Wrapper.m_XRIRightHandLocomotion_TeleportModeCancel;
         public InputAction @Turn => m_Wrapper.m_XRIRightHandLocomotion_Turn;
         public InputAction @Move => m_Wrapper.m_XRIRightHandLocomotion_Move;
+        public InputAction @LockRotation => m_Wrapper.m_XRIRightHandLocomotion_LockRotation;
         public InputActionMap Get() { return m_Wrapper.m_XRIRightHandLocomotion; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1546,6 +1598,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnMove;
+                @LockRotation.started -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnLockRotation;
+                @LockRotation.performed -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnLockRotation;
+                @LockRotation.canceled -= m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface.OnLockRotation;
             }
             m_Wrapper.m_XRIRightHandLocomotionActionsCallbackInterface = instance;
             if (instance != null)
@@ -1565,6 +1620,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @LockRotation.started += instance.OnLockRotation;
+                @LockRotation.performed += instance.OnLockRotation;
+                @LockRotation.canceled += instance.OnLockRotation;
             }
         }
     }
@@ -1667,6 +1725,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnTeleportModeCancel(InputAction.CallbackContext context);
         void OnTurn(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnLockRotation(InputAction.CallbackContext context);
     }
     public interface IXRIRightHandActions
     {
@@ -1693,6 +1752,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnTeleportModeCancel(InputAction.CallbackContext context);
         void OnTurn(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnLockRotation(InputAction.CallbackContext context);
     }
     public interface ISpectatorActions
     {
