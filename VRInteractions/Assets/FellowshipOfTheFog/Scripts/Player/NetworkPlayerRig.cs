@@ -47,6 +47,12 @@ public class NetworkPlayerRig : NetworkBehaviour
     [HideInInspector]
     [Networked(OnChanged = "OnRightHandStateChanged", OnChangedTargets = OnChangedTargets.All)] public byte rightHandState { get; set; }
 
+    [HideInInspector]
+    [Networked(OnChanged = "OnShowingMapChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool showingMap { get; set; }
+
+    [HideInInspector]
+    [Networked(OnChanged = "OnMapFloorChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool mapFloor { get; set; }
+
     private NetworkObject leftHandSelectedObject = null;
     private NetworkObject rightHandSelectedObject = null;
 
@@ -73,6 +79,9 @@ public class NetworkPlayerRig : NetworkBehaviour
     private XRBaseControllerInteractor righttHandInteractor;
 
     [SerializeField]
+    private GameplayMapController gameplayMapController;
+
+    [SerializeField]
     private Image talkingIcon;
 
     public FingersIK leftFingers;
@@ -81,6 +90,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     [SerializeField]
     private Transform rigVisuals;
 
+    // This variables are only useful in the machine of the player controling this rig
     private LocalPlayerRig playerRig;
     private Speaker speaker;
 
@@ -159,6 +169,11 @@ public class NetworkPlayerRig : NetworkBehaviour
         }
 
         speaker = GetComponentInParent<Speaker>();
+
+        if (gameplayMapController == null)
+        {
+            gameplayMapController = GetComponentInChildren<GameplayMapController>();
+        }
     }
 
     public override void FixedUpdateNetwork()
@@ -234,6 +249,8 @@ public class NetworkPlayerRig : NetworkBehaviour
                         {
                             leftHandThumbConstraint.track = grababble.leftHandFignersPosition.thumbIKPosition;
                         }
+
+                        leftHandState = fingersState;
                     }
 
                     leftHandSelectedObject = selectedInteractable.transform.GetComponentInParent<NetworkObject>();
@@ -243,10 +260,10 @@ public class NetworkPlayerRig : NetworkBehaviour
                 {
                     RPC_HideMemoryClue(leftHandSelectedObject.Id);
                     leftHandSelectedObject = null;
+                    leftHandState = (byte) FingerIKFlags.None;
                 }
 
                 // Update left hand figners state based on the grabbed object
-                leftHandState = fingersState;
 
                 // Update left hand fingers IK targets
                 leftHandIndexConstraint.Update();
@@ -256,16 +273,23 @@ public class NetworkPlayerRig : NetworkBehaviour
                 leftHandThumbConstraint.Update();
 
                 // ---- Right controller ----
-                XRControllerState rightControllerState = new XRControllerState();
-                rightControllerState.selectInteractionState = new InteractionState();
 
-                rightControllerState.selectInteractionState.active = ((byte) (input.rightControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Trigger)) == (byte) RigInput.VrControllerButtons.Trigger;
+                // We just have to select when not showing map
+                if (!showingMap)
+                {
+                    XRControllerState rightControllerState = new XRControllerState();
+                    rightControllerState.selectInteractionState = new InteractionState();
 
-                rightHandXRController.currentControllerState = rightControllerState;
+                    rightControllerState.selectInteractionState.active = ((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
+
+                    rightHandXRController.currentControllerState = rightControllerState;
+                }
+                else if (((byte)(input.rightControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger)
+                {
+                    mapFloor = !mapFloor;
+                }
 
                 // Update right hand state
-                fingersState = (byte) FingerIKFlags.None;
-
                 selectedInteractable = righttHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
                 {
@@ -273,6 +297,8 @@ public class NetworkPlayerRig : NetworkBehaviour
 
                     if (grababble != null)
                     {
+                        fingersState = (byte)FingerIKFlags.None;
+
                         fingersState |= grababble.rightHandFignersPosition.indexIKPosition != null ? (byte)FingerIKFlags.Index : (byte)FingerIKFlags.None;
                         fingersState |= grababble.rightHandFignersPosition.middleIKPosition != null ? (byte)FingerIKFlags.Middle : (byte)FingerIKFlags.None;
                         fingersState |= grababble.rightHandFignersPosition.ringIKPosition != null ? (byte)FingerIKFlags.Ring : (byte)FingerIKFlags.None;
@@ -303,6 +329,8 @@ public class NetworkPlayerRig : NetworkBehaviour
                         {
                             rightHandThumbConstraint.track = grababble.rightHandFignersPosition.thumbIKPosition;
                         }
+
+                        rightHandState = fingersState;
                     }
 
                     rightHandSelectedObject = selectedInteractable.transform.GetComponentInParent<NetworkObject>();
@@ -312,10 +340,20 @@ public class NetworkPlayerRig : NetworkBehaviour
                 {
                     RPC_HideMemoryClue(rightHandSelectedObject.Id);
                     rightHandSelectedObject = null;
+                    rightHandState = (byte) FingerIKFlags.None;
+                }
+                else if (((byte) (input.rightControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Menu)) == (byte) RigInput.VrControllerButtons.Menu)
+                {
+                    showingMap = !showingMap;
+
+                    rightHandIndexConstraint.track =  gameplayMapController.indexPosition;
+                    rightHandMiddleConstraint.track = gameplayMapController.middlePosition;
+                    rightHandRingConstraint.track =   gameplayMapController.ringPosition;
+                    rightHandPinkyConstraint.track =  gameplayMapController.pinkyPosition;
+                    rightHandThumbConstraint.track =  gameplayMapController.thumbPosition;
                 }
 
                 // Update left hand figners state based on the grabbed object
-                rightHandState = fingersState;
 
                 rightHandIndexConstraint.Update();
                 rightHandMiddleConstraint.Update();
@@ -379,6 +417,42 @@ public class NetworkPlayerRig : NetworkBehaviour
         if (changed.Behaviour.playerRig != null)
         {
             changed.Behaviour.playerRig.UpdateRightHandConstraint(changed.Behaviour.rightHandState);
+        }
+    }    
+
+    public static void OnShowingMapChanged(Changed<NetworkPlayerRig> changed)
+    {
+        if (changed.Behaviour.showingMap)
+        {
+            changed.Behaviour.gameplayMapController.ShowMap();
+
+            NetworkRunner runner = FindObjectOfType<NetworkRunner>();
+
+            if (runner.IsServer || changed.Behaviour.HasInputAuthority)
+            {
+                if (runner.IsServer)
+                {
+                    byte fingersState = (byte)FingerIKFlags.Index | (byte)FingerIKFlags.Middle | (byte)FingerIKFlags.Ring
+                    | (byte)FingerIKFlags.Pinky | (byte)FingerIKFlags.Thumb;
+
+                    changed.Behaviour.rightHandState = fingersState;
+                }
+            }
+        }
+        else
+        {
+            changed.Behaviour.gameplayMapController.HideMap();
+
+            byte fingersState = (byte)FingerIKFlags.None;
+            changed.Behaviour.rightHandState = fingersState;
+        }        
+    }
+
+    public static void OnMapFloorChanged(Changed<NetworkPlayerRig> changed)
+    {
+        if (changed.Behaviour.showingMap)
+        {
+            changed.Behaviour.gameplayMapController.SwitchFloor();
         }
     }
 

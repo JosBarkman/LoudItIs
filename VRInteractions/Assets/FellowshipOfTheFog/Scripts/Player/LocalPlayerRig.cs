@@ -19,6 +19,7 @@ public struct RigInput : INetworkInput
     {
         None = 0x0,
         Trigger = 1 << 7,
+        Menu = 1 << 6,
     }
 
     public Vector3 position;
@@ -118,6 +119,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private UnityEngine.XR.InputDevice rightHardwareController;
 
     private CharacterSheet sheet = null;
+
+    private bool lastLeftMenuButtonPressed = false;
+    private bool lastRightMenuButtonPressed = false;
+    private bool lastRightTriggerButtonPressed = false;
+    private bool showingMap = false;
 
     #endregion
 
@@ -285,11 +291,13 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
             rigInput.leftControllerButtonsPressed |= (byte) (buttonPressed ? RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
 
             leftHardwareController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out buttonPressed);
-            if (buttonPressed && sheet != null)
+            if (buttonPressed && sheet != null && lastLeftMenuButtonPressed == false)
             {
                  leftHandCharacterDescription.transform.parent.gameObject.SetActive(!leftHandCharacterDescription.transform.parent.gameObject.activeInHierarchy);
                  leftHandCharacterDescription.UpdateDescription(sheet);
             }
+
+            lastLeftMenuButtonPressed = buttonPressed;
         }
 
         Debug.Log(string.Format("@Left Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.leftControllerButtonsPressed, 2).PadLeft(8, '0')));
@@ -307,15 +315,19 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         if (rightHardwareController != null)
         {
-            rightHardwareController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out buttonPressed);
-            rigInput.rightControllerButtonsPressed |= (byte)(buttonPressed ? RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
-
             rightHardwareController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out buttonPressed);
-            if (buttonPressed && sheet != null)
+            if (buttonPressed && lastRightMenuButtonPressed == false)
             {
-                rightHandCharacterDescription.transform.parent.gameObject.SetActive(!rightHandCharacterDescription.transform.parent.gameObject.activeInHierarchy);
-                rightHandCharacterDescription.UpdateDescription(sheet);
+                rigInput.rightControllerButtonsPressed |= (byte) RigInput.VrControllerButtons.Menu;
+                showingMap = !showingMap;
             }
+
+            lastRightMenuButtonPressed = buttonPressed;
+
+            rightHardwareController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out buttonPressed);
+            rigInput.rightControllerButtonsPressed |= (byte)((!showingMap && buttonPressed) || (showingMap && buttonPressed && !lastRightTriggerButtonPressed) ?
+                RigInput.VrControllerButtons.Trigger : RigInput.VrControllerButtons.None);
+            lastRightTriggerButtonPressed = buttonPressed;
         }
 
         Debug.Log(string.Format("@Right Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.rightControllerButtonsPressed, 2).PadLeft(8, '0')));
