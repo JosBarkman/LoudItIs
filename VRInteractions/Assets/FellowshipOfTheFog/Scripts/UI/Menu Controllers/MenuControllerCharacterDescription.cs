@@ -19,7 +19,10 @@ public class MenuControllerCharacterDescription : MonoBehaviour
     private Text characterNickname;
 
     [SerializeField]
-    private Text characterBackground;
+    private Text characterCommonBioInfo;
+
+    [SerializeField]
+    private Text characterPrivateInfo;
 
     [SerializeField]
     private Transform characterGoalsPanel;
@@ -41,40 +44,59 @@ public class MenuControllerCharacterDescription : MonoBehaviour
     {
         characterName.text = sheet.name.ToUpper();
         characterNickname.text = sheet.nickname.ToUpper();
-        characterBackground.text = sheet.background;
+        characterCommonBioInfo.text = sheet.commonBioInfo;
+        
+        if (characterPrivateInfo != null)
+        {
+            characterPrivateInfo.text = sheet.privateInfo;
+        }
 
         characterPortrait.sprite = sheet.portrait;
 
-        int i = 0;
-        // Update existing items
-        for (; i < goalItemList.Count && i < sheet.goals.Length; i++)
+        if (characterGoalsPanel != null)
         {
-            goalItemList[i].gameObject.SetActive(true);
-            goalItemList[i].SetContent(sheet.goals[i].goal);
-        }
+            int i = 0;
+            // Update existing items
+            for (; i < goalItemList.Count && i < sheet.goals.Length; i++)
+            {
+                goalItemList[i].gameObject.SetActive(true);
+                goalItemList[i].SetContent(sheet.goals[i].goal);
+            }
 
-        // Add new nedded items
-        for (; i < sheet.goals.Length; i++)
-        {
-            GameObject goal = Instantiate(goalItemPrefab, characterGoalsPanel);
-            ItemControllerGoal goalItem = goal.GetComponent<ItemControllerGoal>();
+            // Add new nedded items
+            for (; i < sheet.goals.Length; i++)
+            {
+                GameObject goal = Instantiate(goalItemPrefab, characterGoalsPanel);
+                ItemControllerGoal goalItem = goal.GetComponent<ItemControllerGoal>();
 
-            goalItem.SetContent(sheet.goals[i].goal);
-            goalItemList.Add(goalItem);
-        }
+                goalItem.SetContent(sheet.goals[i].goal);
+                goalItemList.Add(goalItem);
+            }
 
-        // Hide unused existing items
-        for (i = goalItemList.Count; i > sheet.goals.Length; i--)
-        {
-            goalItemList[i - 1].gameObject.SetActive(false);
+            // Hide unused existing items
+            for (i = goalItemList.Count; i > sheet.goals.Length; i--)
+            {
+                goalItemList[i - 1].gameObject.SetActive(false);
+            }
         }
 
         // Hack to ensure that the goal list resizes properly, prabably not best solution
         Canvas.ForceUpdateCanvases();
-        goalItemList[0].gameObject.SetActive(false);
-        goalItemList[0].gameObject.SetActive(true);
-        characterBackground.gameObject.SetActive(false);
-        characterBackground.gameObject.SetActive(true);
+
+        if (characterGoalsPanel != null)
+        {
+            goalItemList[0].gameObject.SetActive(false);
+            goalItemList[0].gameObject.SetActive(true);
+        }
+
+        characterCommonBioInfo.gameObject.SetActive(false);
+        characterCommonBioInfo.gameObject.SetActive(true);
+
+        if (characterPrivateInfo != null)
+        {
+            characterPrivateInfo.gameObject.SetActive(false);
+            characterPrivateInfo.gameObject.SetActive(true);
+        }
     }
 
     #endregion

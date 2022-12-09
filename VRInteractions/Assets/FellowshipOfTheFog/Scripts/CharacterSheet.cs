@@ -16,10 +16,12 @@ public class CharacterSheet : ScriptableObject
     public string nickname;
 
     [TextArea(3, 9)]
-    public string background;
-    
-    public Sprite portrait;
-    
+    public string commonBioInfo;
+
+    [TextArea(3, 9)]
+    public string privateInfo;
+
+    public Sprite portrait;    
     public CharacterGoal[] goals;
 
     [Header("Settings")]
