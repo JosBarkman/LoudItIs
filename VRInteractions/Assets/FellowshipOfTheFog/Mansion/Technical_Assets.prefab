@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8363116035999474260}
   - component: {fileID: 8261477869469603078}
   - component: {fileID: 5893046507294569829}
+  - component: {fileID: 6622420434609863551}
   m_Layer: 0
   m_Name: Time Events Controller
   m_TagString: Untagged
@@ -72,7 +73,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  events: []
+  events:
+  - {fileID: 6622420434609863551}
+--- !u!114 &6622420434609863551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728950259001898737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20bd8a5844a7f0f4088f8d6461331e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seconds: 600
+  theObject: {fileID: 4859765933906763300}
+  activeToDisabled: 0
 --- !u!1 &5684366687488980888
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,12 +403,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1d7d6dc87434bd4f9cb5899df27c3a9, type: 3}
+--- !u!1 &4859765933906763300 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8585688007618418703, guid: b1d7d6dc87434bd4f9cb5899df27c3a9, type: 3}
+  m_PrefabInstance: {fileID: 3771525678904886827}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4859765933906763308 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8585688007618418695, guid: b1d7d6dc87434bd4f9cb5899df27c3a9, type: 3}
   m_PrefabInstance: {fileID: 3771525678904886827}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4859765933906763300}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
