@@ -53,6 +53,9 @@ public class NetworkPlayerRig : NetworkBehaviour
     [HideInInspector]
     [Networked(OnChanged = "OnMapFloorChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool mapFloor { get; set; }
 
+    [HideInInspector, Capacity(32)]
+    [Networked(OnChanged = "OnCharacterNameChanged", OnChangedTargets = OnChangedTargets.InputAuthority)] public string characterName { get; set; }
+
     private NetworkObject leftHandSelectedObject = null;
     private NetworkObject rightHandSelectedObject = null;
 
@@ -93,6 +96,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     // This variables are only useful in the machine of the player controling this rig
     private LocalPlayerRig playerRig;
     private Speaker speaker;
+    public CharacterSheet sheet;
 
     [Header("IK Contraints")]
     [SerializeField]
@@ -101,6 +105,8 @@ public class NetworkPlayerRig : NetworkBehaviour
     private IKConstraint rightHandConstraint;
     [SerializeField]
     private IKConstraint headConstraint;
+
+    private NetworkManager manager;
     
     public IKConstraint leftHandIndexConstraint = new IKConstraint();
     public IKConstraint leftHandMiddleConstraint = new IKConstraint();
@@ -152,6 +158,7 @@ public class NetworkPlayerRig : NetworkBehaviour
         if (Object.HasInputAuthority)
         {
             playerRig = FindObjectOfType<LocalPlayerRig>();
+            manager = FindObjectOfType<NetworkManager>();
 
             rigVisuals.gameObject.SetActive(false);
 
@@ -205,12 +212,12 @@ public class NetworkPlayerRig : NetworkBehaviour
                 XRControllerState leftControllerState = new XRControllerState();
                 leftControllerState.selectInteractionState = new InteractionState();
 
-                leftControllerState.selectInteractionState.active = ((byte) (input.leftControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Trigger)) == (byte) RigInput.VrControllerButtons.Trigger;
+                leftControllerState.selectInteractionState.active = ((byte)(input.leftControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
 
                 leftHandXRController.currentControllerState = leftControllerState;
 
                 // Update left hand state
-                byte fingersState = (byte) FingerIKFlags.None;
+                byte fingersState = (byte)FingerIKFlags.None;
 
                 IXRSelectInteractable selectedInteractable = leftHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
@@ -269,7 +276,7 @@ public class NetworkPlayerRig : NetworkBehaviour
                         leftHandSelectedObject = null;
                     }
 
-                    leftHandState = (byte) FingerIKFlags.None;
+                    leftHandState = (byte)FingerIKFlags.None;
                 }
 
                 // Update left hand figners state based on the grabbed object
@@ -368,7 +375,7 @@ public class NetworkPlayerRig : NetworkBehaviour
                     }
                     else
                     {
-                        rightHandState = (byte) FingerIKFlags.None;
+                        rightHandState = (byte)FingerIKFlags.None;
                     }
                 }
 
@@ -395,6 +402,7 @@ public class NetworkPlayerRig : NetworkBehaviour
             talkingIcon.gameObject.SetActive(false);
         }
     }
+
 
     public override void Render()
     {
@@ -472,6 +480,15 @@ public class NetworkPlayerRig : NetworkBehaviour
         if (changed.Behaviour.showingMap)
         {
             changed.Behaviour.gameplayMapController.SwitchFloor();
+        }
+    }
+    public static void OnCharacterNameChanged(Changed<NetworkPlayerRig> changed)
+    {
+        // This should be always true because input authority should always have local rig
+        if (changed.Behaviour.playerRig != null)
+        {
+            CharacterSheet sheet = changed.Behaviour.manager.characters.Find(x => x.name == changed.Behaviour.characterName);
+            changed.Behaviour.playerRig.SetCharacter(sheet, false);
         }
     }
 

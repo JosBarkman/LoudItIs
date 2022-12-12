@@ -126,9 +126,13 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
     #region Public Methods
 
-    public void SetSpectator(bool vr)
+    public void SetSpectator()
     {
-        if (vr)
+        List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
+        SubsystemManager.GetInstances<XRDisplaySubsystem>(displaySubsystems);
+
+        // VRVRVRVRVRVRVRVRVRVR
+        if (displaySubsystems.Count != 0)
         {
             return;
         }
@@ -150,10 +154,13 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         rightFingers.UpdateWeights(righttHandFingerStateBitfield);
     }
 
-    public void SetCharacter(CharacterSheet sheet)
+    public void SetCharacter(CharacterSheet sheet, bool waitingRoom)
     {
-        transform.position = sheet.spawnPosition;
-        transform.rotation = Quaternion.Euler(sheet.spawnRotation);
+        if (!waitingRoom)
+        {
+            transform.position = sheet.spawnPosition;
+            transform.rotation = Quaternion.Euler(sheet.spawnRotation);
+        }
 
         leftHandVisuals.sharedMesh = sheet.handsMesh;
         leftHandVisuals.material = new Material(sheet.handsMaterial);
@@ -214,6 +221,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         if (devices.Count != 0)
         {
             rightHardwareController = devices[0];
+        }
+
+        if (FindObjectOfType<NetworkManager>().spectator)
+        {
+            SetSpectator();
         }
     }
 
