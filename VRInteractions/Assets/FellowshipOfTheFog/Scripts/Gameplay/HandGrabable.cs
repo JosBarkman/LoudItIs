@@ -102,7 +102,7 @@ public class HandGrabable : XRGrabInteractable
     public float angleOfAttackDegrees = 95.0f;
     public float distanceThreshold = .05f;
 
-    private Vector3 oldHandAttachPointLocalPosition;
+    private Vector3 oldHandAttachPointLocalPosition = Vector3.zero;
     private float angleOfAttackRadians = 0.0f;
 
     private SelectEnterEventArgs selectArgs = null;
@@ -201,7 +201,11 @@ public class HandGrabable : XRGrabInteractable
 
         if (doorHandling)
         {
-            args.interactorObject.GetAttachTransform(args.interactableObject).localPosition = oldHandAttachPointLocalPosition;
+            if (oldHandAttachPointLocalPosition != Vector3.zero)
+            {
+                args.interactorObject.GetAttachTransform(args.interactableObject).localPosition = oldHandAttachPointLocalPosition;
+            }
+
             selectArgs = null;
         }
     }
