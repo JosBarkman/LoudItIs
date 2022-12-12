@@ -2,18 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnlockDoorTimedEvent : MonoBehaviour, ITimedEvent
+public class UnlockDoorTimedEvent : TimedEvent
 {
     #region Properties
 
-    public float seconds { get; set; }
     public DoorLock door;
 
     #endregion
 
-    public void DefaultState() { }
+    public override void DefaultState() { }
 
-    public void Execute()
+    public override void Execute()
     {
         door.UnlockDoor();
     }

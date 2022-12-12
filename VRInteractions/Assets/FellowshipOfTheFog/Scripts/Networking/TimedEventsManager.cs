@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MansionTimedEventsController : NetworkBehaviour
+public class TimedEventsManager : NetworkBehaviour
 {
-
     #region Properties
 
     [Header("Settings")]
     [SerializeField]
-    private ITimedEvent[] events;
+    private TimedEvent[] events;
 
     [Networked, Capacity(8)]
     NetworkArray<TickTimer> timers => default;
@@ -59,5 +58,4 @@ public class MansionTimedEventsController : NetworkBehaviour
     }
 
     #endregion
-
 }
