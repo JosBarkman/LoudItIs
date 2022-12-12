@@ -10,13 +10,10 @@ public class MansionTimedEventsController : NetworkBehaviour
 
     [Header("Settings")]
     [SerializeField]
-    private float activationTimeInSeconds = 600.0f;
+    private ITimedEvent[] events;
 
-    [Header("External Components")]
-    [SerializeField]
-    private GameObject activationGameObject;
-
-    [Networked] private TickTimer timer { get; set; }
+    [Networked, Capacity(8)]
+    NetworkArray<TickTimer> timers => default;
 
     #endregion
 
@@ -26,26 +23,39 @@ public class MansionTimedEventsController : NetworkBehaviour
     {
         if (Runner.IsServer)
         {
-            // 10 minutes
-            timer = TickTimer.CreateFromSeconds(Runner, activationTimeInSeconds);
+            for (int i = 0; i < events.Length; i++)
+            {
+                timers.Set(0, TickTimer.CreateFromSeconds(Runner, events[i].seconds));
+            }
         }
 
-        activationGameObject.SetActive(timer.IsRunning ? false : true);
+        for (int i = 0; i < events.Length; i++)
+        {
+            if (timers.Get(i).IsRunning)
+            {
+                events[i].DefaultState();
+            }
+            else
+            {
+                events[i].Execute();
+            }
+        }
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (!timer.Expired(Runner))
+        for (int i = 0; i < events.Length; i++)
         {
-            return;
-        }
+            if (timers.Get(i).Expired(Runner))
+            {
+                if (Runner.IsServer)
+                {
+                    timers.Set(i, TickTimer.None);
+                }
 
-        if (Runner.IsServer)
-        {
-            timer = TickTimer.None;
+                events[i].Execute();
+            }
         }
-
-        activationGameObject.SetActive(true);
     }
 
     #endregion
