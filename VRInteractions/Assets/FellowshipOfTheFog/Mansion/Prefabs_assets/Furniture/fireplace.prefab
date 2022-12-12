@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 291584473009708361}
   - component: {fileID: 2589321027369806211}
   - component: {fileID: 9027368105975437725}
+  - component: {fileID: 7136944504289891033}
+  - component: {fileID: 1724213108834736709}
+  - component: {fileID: 5960391940597233334}
+  - component: {fileID: 1109022883153527156}
   m_Layer: 0
   m_Name: fireplace
   m_TagString: Untagged
@@ -95,5 +99,57 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 238.74797, y: 263.36307, z: 393.82294}
-  m_Center: {x: -51.30437, y: -36.619373, z: -2.3330522e-11}
+  m_Size: {x: 238.74799, y: 37.69307, z: 393.82297}
+  m_Center: {x: -51.304367, y: 71.02941, z: 9.249773e-12}
+--- !u!65 &7136944504289891033
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4102745937418127446}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 204.07123, y: 21.228697, z: 348.65198}
+  m_Center: {x: -33.96595, y: -157.6867, z: -0.37512603}
+--- !u!65 &1724213108834736709
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4102745937418127446}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 205.44057, y: 237.17982, z: 89.21454}
+  m_Center: {x: -34.65062, y: -38.36488, z: -124.37575}
+--- !u!65 &5960391940597233334
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4102745937418127446}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 205.44043, y: 231.07048, z: 85.73453}
+  m_Center: {x: -34.65054, y: -41.419586, z: 123.49727}
+--- !u!65 &1109022883153527156
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4102745937418127446}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 61.767746, y: 259.87207, z: 335.34735}
+  m_Center: {x: 37.18574, y: -38.36492, z: -2.181977}

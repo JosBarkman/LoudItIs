@@ -25,16 +25,22 @@ public class FingerTargetPositions
 
     public void Copy(FingerTargetPositions positions, Vector3 axis, Vector3 rotationAxis)
     {
-        attachPoint = new GameObject().transform;
-        attachPoint.parent = positions.attachPoint.parent;
-        attachPoint.localRotation = Quaternion.Euler(positions.attachPoint.localRotation * rotationAxis);
-        attachPoint.localPosition = Vector3.Scale(positions.attachPoint.localPosition, axis);
+        if (positions.attachPoint != null)
+        {
+            attachPoint = new GameObject().transform;
+            attachPoint.parent = positions.attachPoint.parent;
+            attachPoint.localRotation = Quaternion.Euler(positions.attachPoint.localRotation * rotationAxis);
+            attachPoint.localPosition = Vector3.Scale(positions.attachPoint.localPosition, axis);
+            attachPoint.localScale = positions.attachPoint.localScale;
+        }
 
         if (positions.indexIKPosition != null)
         {
             indexIKPosition = new GameObject().transform;
             indexIKPosition.parent = positions.indexIKPosition.parent;
             indexIKPosition.localPosition = Vector3.Scale(positions.indexIKPosition.localPosition, axis);
+            indexIKPosition.localRotation = positions.indexIKPosition.localRotation;
+            indexIKPosition.localScale = positions.indexIKPosition.localScale;
         }
 
         if (positions.middleIKPosition != null)
@@ -42,6 +48,8 @@ public class FingerTargetPositions
             middleIKPosition = new GameObject().transform;
             middleIKPosition.parent = positions.middleIKPosition.parent;
             middleIKPosition.localPosition = Vector3.Scale(positions.middleIKPosition.localPosition, axis);
+            middleIKPosition.localRotation = positions.middleIKPosition.localRotation;
+            middleIKPosition.localScale = positions.middleIKPosition.localScale;
         }
 
         if (positions.ringIKPosition != null)
@@ -49,6 +57,8 @@ public class FingerTargetPositions
             ringIKPosition = new GameObject().transform;
             ringIKPosition.parent = positions.ringIKPosition.parent;
             ringIKPosition.localPosition = Vector3.Scale(positions.ringIKPosition.localPosition, axis);
+            ringIKPosition.localRotation = positions.ringIKPosition.localRotation;
+            ringIKPosition.localScale = positions.ringIKPosition.localScale;
         }
 
         if (positions.pinkyIKPosition != null)
@@ -56,6 +66,8 @@ public class FingerTargetPositions
             pinkyIKPosition = new GameObject().transform;
             pinkyIKPosition.parent = positions.pinkyIKPosition.parent;
             pinkyIKPosition.localPosition = Vector3.Scale(positions.pinkyIKPosition.localPosition, axis);
+            pinkyIKPosition.localRotation = positions.pinkyIKPosition.localRotation;
+            pinkyIKPosition.localScale = positions.pinkyIKPosition.localScale;
         }
 
         if (positions.thumbIKPosition != null)
@@ -63,23 +75,44 @@ public class FingerTargetPositions
             thumbIKPosition = new GameObject().transform;
             thumbIKPosition.parent = positions.thumbIKPosition.parent;
             thumbIKPosition.localPosition = Vector3.Scale(positions.thumbIKPosition.localPosition, axis);
+            thumbIKPosition.localRotation = positions.thumbIKPosition.localRotation;
+            thumbIKPosition.localScale = positions.thumbIKPosition.localScale;
         }
     }
 }
 
 public class HandGrabable : XRGrabInteractable
 {
+    [Header("Settings")]
+    public bool useAttachPoint = true;
+    public bool doorHandling = false;
+    public bool leftHand = false;
+
     [Header("Hand Settings")]
-    public bool left = true;
     public Vector3 axis;
     public Vector3 rotationAxis;
 
     public FingerTargetPositions rightHandFignersPosition = new FingerTargetPositions();
     public FingerTargetPositions leftHandFignersPosition = new FingerTargetPositions();
 
+    [Header("Door Handling")]
+    public bool inverseHandHandling = true; 
+    public Transform temporalHandAttachPoint;
+    public Transform upAxisAttackTransform;
+    public float angleOfAttackDegrees = 95.0f;
+    public float distanceThreshold = .05f;
+
+    private Vector3 oldHandAttachPointLocalPosition;
+    private float angleOfAttackRadians = 0.0f;
+
+    private SelectEnterEventArgs selectArgs = null;
+    private float startingDistance = 0.0f;
+
     private void Start()
     {
-        if (left)
+        angleOfAttackRadians = angleOfAttackDegrees * Mathf.Deg2Rad;
+
+        if (leftHand)
         {
             rightHandFignersPosition.Copy(leftHandFignersPosition, axis, rotationAxis);
         }
@@ -89,17 +122,105 @@ public class HandGrabable : XRGrabInteractable
         }
     }
 
+    public void Update()
+    {
+        if (selectArgs == null)
+        {
+            return;
+        }
+
+        float radians = 1.0f;
+        float hand = -1.0f;
+
+        if (selectArgs.interactorObject.transform.CompareTag("LeftController"))
+        {
+            hand = 1.0f;
+        }
+
+        // Left controller interacts facing the green axis
+        // Right cotroller interacts facing the back of green axis
+        if (inverseHandHandling)
+        {
+            radians = hand;
+        }
+
+        // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
+        radians = Mathf.Acos(Vector3.Dot(selectArgs.interactorObject.transform.right * hand, upAxisAttackTransform.up * radians));
+
+        float currentDistance = Vector3.Distance(selectArgs.interactorObject.transform.position, upAxisAttackTransform.position);
+
+        Debug.Log(string.Format(@"Start distance: {0}, Current distance: {1}", startingDistance, currentDistance));
+
+        if (radians > angleOfAttackRadians || currentDistance >= startingDistance + distanceThreshold)
+        {
+            selectArgs.manager.SelectCancel(selectArgs.interactorObject, selectArgs.interactableObject);
+            selectArgs = null;
+            return;
+        }
+    }
+
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);
 
-        if (args.interactorObject.transform.CompareTag("LeftController"))
+        if (args.interactorObject.transform.CompareTag("LeftController") && useAttachPoint)
         {
             attachTransform = leftHandFignersPosition.attachPoint;
         }
-        else if (args.interactorObject.transform.CompareTag("RightController"))
+        else if (args.interactorObject.transform.CompareTag("RightController") && useAttachPoint)
         {
             attachTransform = rightHandFignersPosition.attachPoint;
+        }
+
+        if (!doorHandling)
+        {
+            return;
+        }
+
+        float radians = 1.0f;
+        float hand = -1.0f;
+
+        if (args.interactorObject.transform.CompareTag("LeftController"))
+        {
+            hand = 1.0f;
+        }
+
+        // Left controller interacts facing the green axis
+        // Right cotroller interacts facing the back of green axis
+        if (inverseHandHandling)
+        {
+            radians = hand;
+        }
+
+        // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
+        radians = Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * hand, upAxisAttackTransform.up * radians));
+
+        // Check conditions for selecting
+        // We use right becvause hand is rotated and red axis is facing down
+        if (radians > angleOfAttackRadians)
+        {
+            args.manager.SelectCancel(args.interactorObject, args.interactableObject);
+            return;
+        }
+
+        Transform handAttachTransform = args.interactorObject.GetAttachTransform(args.interactableObject);
+
+        oldHandAttachPointLocalPosition = handAttachTransform.localPosition;
+        handAttachTransform.position = temporalHandAttachPoint.position;
+
+        startingDistance = Vector3.Distance(args.interactorObject.transform.position, upAxisAttackTransform.position);
+
+        selectArgs = args;
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+
+        if (doorHandling)
+        {
+            args.interactorObject.GetAttachTransform(args.interactableObject).localPosition = oldHandAttachPointLocalPosition;
+            selectArgs = null;
         }
     }
 }
