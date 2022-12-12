@@ -13,9 +13,6 @@ public class RoleSelectionController : NetworkBehaviour
 {
     #region Properties
 
-    [Header("Settings")]
-    public List<CharacterSheet> characters = new List<CharacterSheet>();
-
     [Header("External components")]
     [SerializeField]
     private LocalPlayerRig playerRig;
@@ -26,6 +23,12 @@ public class RoleSelectionController : NetworkBehaviour
     [SerializeField]
     private GameObject defaultMenu;
 
+    [SerializeField]
+    private GameObject startGameDefaultMenu;
+
+    [SerializeField]
+    private GameObject startGameVrMenu;
+
     private NetworkManager manager;
 
     #endregion
@@ -35,9 +38,9 @@ public class RoleSelectionController : NetworkBehaviour
     [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_PickRoleAndCharacter([RpcTarget] PlayerRef targetPlayer, string characterName, float scale, RpcInfo info = default)
     {
-        CharacterSheet sheet = characters.Find(x => x.name == characterName);
+        CharacterSheet sheet = manager.characters.Find(x => x.name == characterName);
 
-        manager.SpawnCharacter(info.Source, sheet.prefab, scale);
+        manager.SpawnCharacter(info.Source, sheet, scale);
     }
 
     public void PickRoleAndCharacter(Role role, CharacterSheet sheet)
@@ -49,20 +52,39 @@ public class RoleSelectionController : NetworkBehaviour
             // We use playerref.none to target the rpc call to the server even though the target is already server, so this should not be necesary.
             RPC_PickRoleAndCharacter(PlayerRef.None, sheet.name, playerRig.headset.position.y / playerRig.xrOrigin.CameraYOffset);
 
-            playerRig.SetCharacter(sheet);            
+            playerRig.SetCharacter(sheet, true);
         }
         else
         {
-            playerRig.SetSpectator(vrMenu.activeInHierarchy);
+            playerRig.SetSpectator();
+            manager.spectator = true;
         }
 
-        // Bad
-        Cursor.lockState = CursorLockMode.Locked;
+        if (Runner.IsServer)
+        {
+            if (vrMenu.activeInHierarchy)
+            {
+                startGameVrMenu.SetActive(true);
+            }
+            else
+            {
+                startGameDefaultMenu.SetActive(true);
+            }
+        }
 
         vrMenu.SetActive(false);
         defaultMenu.SetActive(false);
 
         return;
+    }
+
+    public void StartGame()
+    {
+        // TODO: Hardcoded Scene
+        Runner.SetActiveScene(2);
+
+        // Bad
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     #endregion

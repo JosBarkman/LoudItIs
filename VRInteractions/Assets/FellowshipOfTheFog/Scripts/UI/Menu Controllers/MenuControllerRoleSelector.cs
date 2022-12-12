@@ -49,11 +49,8 @@ public class MenuControllerRoleSelector : MonoBehaviour
         spectatorRoleButton.onClick.AddListener(() =>
         {
             roleSelectionController.PickRoleAndCharacter(Role.Spectator, null);
-            gameObject.SetActive(false);
         });
-    }
-
-   
+    }   
 
     #endregion
 }
