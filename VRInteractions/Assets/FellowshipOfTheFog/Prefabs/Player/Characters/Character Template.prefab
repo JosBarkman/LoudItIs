@@ -4892,6 +4892,7 @@ MonoBehaviour:
     _value: 0
   _mapFloor:
     _value: 0
+  _characterName: 
   headset: {fileID: 933559444794426258}
   leftHand: {fileID: 7052011599952961889}
   rightHand: {fileID: 2835278240741333095}
@@ -4900,6 +4901,7 @@ MonoBehaviour:
   rightHandXRController: {fileID: 6386133909834726988}
   righttHandInteractor: {fileID: 0}
   gameplayMapController: {fileID: 4371538980719386485}
+  characterCanvas: {fileID: 3171989307149581790}
   talkingIcon: {fileID: 5058349022887931450}
   leftFingers:
     indexIKConstraint: {fileID: 3497318869191319725}
@@ -4914,6 +4916,7 @@ MonoBehaviour:
     pinkyIKConstraint: {fileID: 345366254870837447}
     thumbIKConstraint: {fileID: 1998621672540914056}
   rigVisuals: {fileID: 4052742519314676378}
+  sheet: {fileID: 0}
   leftHandConstraint:
     track: {fileID: 8729395204316400021}
     target: {fileID: 7491834881068107040}
@@ -5069,16 +5072,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6879842245427807675}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_LocalScale: {x: -0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 698704388949368253}
   - {fileID: 1143344582700947839}
   m_Father: {fileID: 8536437420547724223}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0.255}

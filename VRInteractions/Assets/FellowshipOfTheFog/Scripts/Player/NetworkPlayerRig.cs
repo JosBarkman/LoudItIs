@@ -85,6 +85,9 @@ public class NetworkPlayerRig : NetworkBehaviour
     private GameplayMapController gameplayMapController;
 
     [SerializeField]
+    private Canvas characterCanvas;
+
+    [SerializeField]
     private Image talkingIcon;
 
     public FingersIK leftFingers;
@@ -401,6 +404,8 @@ public class NetworkPlayerRig : NetworkBehaviour
         {
             talkingIcon.gameObject.SetActive(false);
         }
+
+        characterCanvas.transform.LookAt(Camera.main.transform, Vector3.up);
     }
 
 
