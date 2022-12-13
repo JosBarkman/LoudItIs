@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Sockets;
+using Photon.Voice.Unity;
 using System;
 using System.Collections.Generic;
 using Unity.XR.CoreUtils;
@@ -7,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using UnityEngine.SpatialTracking;
+using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -105,6 +107,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private TeleportationProvider teleportationProvider;
 
     [SerializeField]
+    private GameObject notification;
+
+    [SerializeField]
     private MenuControllerCharacterDescription leftHandCharacterDescription;
 
     [Header("IK Contraints")]
@@ -130,6 +135,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private bool lastRightMenuButtonPressed = false;
     private bool lastRightTriggerButtonPressed = false;
     private bool showingMap = false;
+
+    private Text notificationText;
+    private Recorder recorder;
 
     #endregion
 
@@ -202,8 +210,28 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         leftHandRayInteractor.raycastMask = 0;
         rightHandRayInteractor.raycastMask = 0;
+    }
 
-        //TODO: show ui;
+    public void ShowNotification(string notification)
+    {
+        this.notification.SetActive(true);
+
+        if (notificationText == null)
+        {
+            notificationText = this.notification.GetComponentInChildren<Text>();
+        }
+
+        notificationText.text = notification;
+    }
+
+    public void Mute()
+    {
+        recorder.RecordingEnabled = false;
+    }
+
+    public void UnMute()
+    {
+        recorder.RecordingEnabled = true;
     }
 
     #endregion
@@ -213,6 +241,10 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private void Awake()
     {
         runner = FindObjectOfType<NetworkRunner>();
+        notificationText = notification.GetComponentInChildren<Text>();
+        notification.SetActive(false);
+
+        recorder = FindObjectOfType<Recorder>();
 
         if (trackedPoseDriver == null)
         {

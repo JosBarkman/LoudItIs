@@ -15,7 +15,6 @@ public class EndingSequenceController : NetworkBehaviour
     private Dictionary<PlayerRef, bool> votes;
     private IEnumerable<PlayerRef> players;
 
-
     #endregion
 
     #region Public Methods

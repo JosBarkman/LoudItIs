@@ -536,7 +536,9 @@ public class NetworkPlayerRig : NetworkBehaviour
             return;
         }
 
+        playerRig.Mute();
         playerRig.TeleportAndLock(location, rotation);
+        playerRig.ShowNotification("Wait for your turn to speak");
     }
 
     #endregion
