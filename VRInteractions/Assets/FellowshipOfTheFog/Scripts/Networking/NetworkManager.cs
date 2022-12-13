@@ -22,6 +22,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     private NetworkRunner runner;
     private Recorder recorder;
+
     public bool spectator = false;
 
     public delegate void SessionListUpdatedEvent(List<SessionInfo> sessionInfos);
@@ -134,6 +135,16 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         OnSessionListUpdatedEvent?.Invoke(sessionList);
     }
 
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
+    {
+        if (runner.LocalPlayer != player)
+        {
+            return;
+        }
+
+        FindObjectOfType<RoleSelectionController>().ShowMenu();
+    }
+
     #endregion
 
     #region Unused INetworkRunnerCallbacks
@@ -155,8 +166,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {}
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) {}
-
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {}
 
     public void OnSceneLoadDone(NetworkRunner runner) {}
 

@@ -87,21 +87,7 @@ public class RoleSelectionController : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    #endregion
-
-    #region Unity Events
-
-    private void Awake()
-    {
-        manager = FindObjectOfType<NetworkManager>();
-
-        if (playerRig == null)
-        {
-            playerRig = FindObjectOfType<LocalPlayerRig>();
-        }
-    }
-
-    private void Start()
+    public void ShowMenu()
     {
         List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
         SubsystemManager.GetInstances<XRDisplaySubsystem>(displaySubsystems);
@@ -115,6 +101,20 @@ public class RoleSelectionController : NetworkBehaviour
         {
             vrMenu.SetActive(false);
             defaultMenu.SetActive(true);
+        }
+    }
+
+    #endregion
+
+    #region Unity Events
+
+    private void Awake()
+    {
+        manager = FindObjectOfType<NetworkManager>();
+
+        if (playerRig == null)
+        {
+            playerRig = FindObjectOfType<LocalPlayerRig>();
         }
     }
 
