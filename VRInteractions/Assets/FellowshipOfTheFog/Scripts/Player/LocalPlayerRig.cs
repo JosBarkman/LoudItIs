@@ -224,6 +224,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         notificationText.text = notification;
     }
 
+    public void HideNotification()
+    {
+        notification.SetActive(false);
+    }
+
     public void Mute()
     {
         recorder.RecordingEnabled = false;
