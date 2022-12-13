@@ -527,6 +527,18 @@ public class NetworkPlayerRig : NetworkBehaviour
         memories.HideMemory();
     }
 
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_TeleportAndLock(Vector3 location, Quaternion rotation)
+    {
+        // Just doublecheck
+        if (playerRig == null)
+        {
+            return;
+        }
+
+        playerRig.TeleportAndLock(location, rotation);
+    }
+
     #endregion
 
 }

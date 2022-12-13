@@ -96,6 +96,15 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private TrackedPoseDriver trackedPoseDriver;
 
     [SerializeField]
+    private XRRayInteractor leftHandRayInteractor;
+
+    [SerializeField]
+    private XRRayInteractor rightHandRayInteractor;
+
+    [SerializeField]
+    private TeleportationProvider teleportationProvider;
+
+    [SerializeField]
     private MenuControllerCharacterDescription leftHandCharacterDescription;
 
     [Header("IK Contraints")]
@@ -178,6 +187,25 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         return sheet;
     }
 
+    public void TeleportAndLock(Vector3 position, Quaternion rotation)
+    {
+        TeleportRequest request = new TeleportRequest()
+        {
+            destinationPosition = position,
+            destinationRotation = rotation,
+            matchOrientation = MatchOrientation.TargetUpAndForward
+        };
+
+        teleportationProvider.QueueTeleportRequest(request);
+
+        trackedPoseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationOnly;
+
+        leftHandRayInteractor.raycastMask = 0;
+        rightHandRayInteractor.raycastMask = 0;
+
+        //TODO: show ui;
+    }
+
     #endregion
 
     #region Unity Events
@@ -199,6 +227,21 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         if (leftHandCharacterDescription == null)
         {
             leftHandCharacterDescription = leftHand.GetComponentInChildren<MenuControllerCharacterDescription>();
+        }
+
+        if (leftHandRayInteractor == null)
+        {
+            leftHandRayInteractor = leftHand.GetComponentInChildren<XRRayInteractor>();
+        }
+
+        if (rightHandRayInteractor == null)
+        {
+            rightHandRayInteractor = rightHand.GetComponentInChildren<XRRayInteractor>();
+        }
+
+        if (teleportationProvider == null)
+        {
+            teleportationProvider = FindObjectOfType<TeleportationProvider>();
         }
     }
 

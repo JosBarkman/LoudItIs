@@ -10,7 +10,11 @@ public class EndingSequenceController : NetworkBehaviour
     [Header("Settings")]
     [SerializeField] private int requiredVotes = 3;
 
+    [SerializeField] private Transform[] endPositions;
+
     private Dictionary<PlayerRef, bool> votes;
+    private IEnumerable<PlayerRef> players;
+
 
     #endregion
 
@@ -32,14 +36,27 @@ public class EndingSequenceController : NetworkBehaviour
             votes.Add(player, true);
         }
 
-        Debug.Log("Votes: " + votes.Count);
-
         if (votes.Count < requiredVotes)
         {
             return;
         }
 
-        Debug.Log("PEPOPEPOSHY!");
+        players = Runner.ActivePlayers;
+
+        int i = 0;
+        foreach (PlayerRef activePlayer in players)
+        {
+            NetworkObject obj = Runner.GetPlayerObject(activePlayer);
+            if (obj != null)
+            {
+                NetworkPlayerRig rig = obj.GetComponentInChildren<NetworkPlayerRig>();
+                if (rig != null)
+                {
+                    rig.RPC_TeleportAndLock(endPositions[i].position, endPositions[i].rotation);
+                    i++;
+                }
+            }
+        }
     }
 
     #endregion
