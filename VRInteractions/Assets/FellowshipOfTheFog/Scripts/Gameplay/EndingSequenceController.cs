@@ -4,6 +4,8 @@ using UnityEngine;
 using Fusion;
 using UnityEngine.XR;
 using UnityEngine.InputSystem;
+using System.Linq;
+using System;
 
 public class EndingSequenceController : NetworkBehaviour
 {
@@ -22,8 +24,15 @@ public class EndingSequenceController : NetworkBehaviour
 
     private Dictionary<PlayerRef, bool> votes;
     private NetworkPlayerRig[] rigs;
+    private Queue<KeyValuePair<PlayerRef, PlayerRef>> votingQueue;
 
     private TickTimer[] timers = new TickTimer[5] { TickTimer.None, TickTimer.None, TickTimer.None, TickTimer.None, TickTimer.None };
+
+    private MenuControllerVotingMenu currentVotingMenu = null;
+
+    [Networked()]
+    [Capacity(16)]
+    private NetworkDictionary<PlayerRef, PlayerRef> playerVotes => default;
 
     #endregion
 
@@ -75,6 +84,11 @@ public class EndingSequenceController : NetworkBehaviour
         timers[4] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + (speakingTimeSeconds * 4));
     }
 
+    public void VotePlayer(PlayerRef player)
+    {
+        RPC_QueueVote(player);
+    }
+
     #endregion
 
     #region Unity Events
@@ -83,6 +97,7 @@ public class EndingSequenceController : NetworkBehaviour
     {
         votes = new Dictionary<PlayerRef, bool>();
         rigs = new NetworkPlayerRig[4];
+        votingQueue = new Queue<KeyValuePair<PlayerRef, PlayerRef>>();
 
         endGameVrMenu.SetActive(false);
         endGameDefaultMenu.SetActive(false);
@@ -99,9 +114,33 @@ public class EndingSequenceController : NetworkBehaviour
             Vote(Runner.LocalPlayer);
         }
 
+        if (currentVotingMenu != null)
+        {
+            // This no bueno, poor performance, but nmo changed event for networkdictionaries, sad :(
+            foreach (var player in Runner.ActivePlayers)
+            {
+                currentVotingMenu.UpdatePlayerVotes(player, playerVotes.Count(x => x.Value == player));
+            }
+        }
+
         if (!Runner.IsServer)
         {
             return;
+        }
+
+        // update player voting
+        // we dequeue one item per tick
+        if (votingQueue.Count != 0)
+        {
+            var item = votingQueue.Dequeue();
+            if (!playerVotes.ContainsKey(item.Key))
+            {
+                playerVotes.Add(item.Key, item.Value);
+            }
+            else
+            {
+                playerVotes.Set(item.Key, item.Value);
+            }
         }
 
         for (int i = 0; i < timers.Length - 1; i++)
@@ -145,12 +184,15 @@ public class EndingSequenceController : NetworkBehaviour
         if (displaySubsystems.Count != 0)
         {
             endGameVrMenu.SetActive(true);
+            currentVotingMenu = endGameVrMenu.GetComponentInChildren<MenuControllerVotingMenu>();
         }
         else
         {
             endGameDefaultMenu.SetActive(true);
+            currentVotingMenu = endGameDefaultMenu.GetComponentInChildren<MenuControllerVotingMenu>();
         }
 
+        Dictionary<PlayerRef, CharacterSheet> playerCharacters = new Dictionary<PlayerRef, CharacterSheet>();
         foreach (PlayerRef player in Runner.ActivePlayers)
         {
             NetworkObject obj = Runner.GetPlayerObject(player);
@@ -164,9 +206,17 @@ public class EndingSequenceController : NetworkBehaviour
             {
                 break;
             }
-            
-            Debug.Log("Player: " + player + ", Character: " + rig.character.name);
-        }        
+
+            playerCharacters.Add(player, rig.character);
+        }
+
+        currentVotingMenu.AddCharacterItems(playerCharacters);
+    }
+
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_QueueVote(PlayerRef target, RpcInfo info = default)
+    {
+        votingQueue.Enqueue(new KeyValuePair<PlayerRef, PlayerRef>(info.Source, target));
     }
 
     #endregion
