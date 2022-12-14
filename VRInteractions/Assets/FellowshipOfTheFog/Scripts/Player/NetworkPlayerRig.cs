@@ -37,6 +37,7 @@ public class NetworkPlayerRig : NetworkBehaviour
 
     [Header("Settings")]
     public float headFeetOffset;
+    public CharacterSheet character;
 
     [HideInInspector]
     [Networked()] public float networkedHeadFeetOffset { get; set; }
@@ -99,7 +100,8 @@ public class NetworkPlayerRig : NetworkBehaviour
     // This variables are only useful in the machine of the player controling this rig
     private LocalPlayerRig playerRig;
     private Speaker speaker;
-    public CharacterSheet sheet;
+    private NetworkManager manager;
+    private TickTimer muteTimer = TickTimer.None;
 
     [Header("IK Contraints")]
     [SerializeField]
@@ -109,7 +111,6 @@ public class NetworkPlayerRig : NetworkBehaviour
     [SerializeField]
     private IKConstraint headConstraint;
 
-    private NetworkManager manager;
     
     public IKConstraint leftHandIndexConstraint = new IKConstraint();
     public IKConstraint leftHandMiddleConstraint = new IKConstraint();
@@ -406,6 +407,13 @@ public class NetworkPlayerRig : NetworkBehaviour
         }
 
         characterCanvas.transform.LookAt(Camera.main.transform, Vector3.up);
+
+        if (muteTimer.Expired(Runner))
+        {
+            muteTimer = TickTimer.None;
+            playerRig.Mute();
+            playerRig.ShowNotification("Wait for the others to end their explanation");
+        }
     }
 
 
@@ -525,6 +533,42 @@ public class NetworkPlayerRig : NetworkBehaviour
         }
 
         memories.HideMemory();
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_TeleportAndLock(Vector3 location, Quaternion rotation)
+    {
+        // Just doublecheck
+        if (playerRig == null)
+        {
+            return;
+        }
+
+        playerRig.Mute();
+        playerRig.TeleportAndLock(location, rotation);
+        playerRig.ShowNotification("Wait for your turn to speak");
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_Unmute(float seconds)
+    {
+        // Just doublecheck
+        if (playerRig == null)
+        {
+            return;
+        }
+
+        playerRig.UnMute();
+
+        if (seconds != 0.0f)
+        {
+            playerRig.ShowNotification("You can speak");
+            muteTimer = TickTimer.CreateFromSeconds(Runner, seconds);
+        }
+        else
+        {
+            playerRig.HideNotification();
+        }
     }
 
     #endregion

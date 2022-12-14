@@ -2,6 +2,7 @@ using Fusion;
 using Fusion.Sockets;
 using Photon.Voice.Unity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -105,7 +106,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         networkPlayerObject.transform.localScale = Vector3.one * scale;
 
         NetworkPlayerRig networkRig = networkPlayerObject.GetComponentInChildren<NetworkPlayerRig>();
-        networkRig.sheet = sheet;
 
         networkRig.networkedHeadFeetOffset = networkRig.headFeetOffset * scale;
 
@@ -135,6 +135,16 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         OnSessionListUpdatedEvent?.Invoke(sessionList);
     }
 
+    private IEnumerator showRoleSelection()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            yield return null;
+        }
+
+        FindObjectOfType<RoleSelectionController>().ShowMenu();
+    }
+
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
     {
         if (runner.LocalPlayer != player)
@@ -142,7 +152,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             return;
         }
 
-        FindObjectOfType<RoleSelectionController>().ShowMenu();
+        StartCoroutine(showRoleSelection());
     }
 
     #endregion
