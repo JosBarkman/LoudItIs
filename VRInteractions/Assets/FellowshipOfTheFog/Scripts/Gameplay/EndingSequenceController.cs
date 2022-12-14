@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using UnityEngine.XR;
+using UnityEngine.InputSystem;
 
 public class EndingSequenceController : NetworkBehaviour
 {
@@ -14,9 +16,12 @@ public class EndingSequenceController : NetworkBehaviour
 
     [SerializeField] private Transform[] endPositions;
 
+    [Header("Settings")]
+    [SerializeField] private GameObject endGameVrMenu;
+    [SerializeField] private GameObject endGameDefaultMenu;
+
     private Dictionary<PlayerRef, bool> votes;
-    private IEnumerable<PlayerRef> players;
-    private NetworkPlayerRig[] rigs = new NetworkPlayerRig[4];
+    private NetworkPlayerRig[] rigs;
 
     private TickTimer[] timers = new TickTimer[5] { TickTimer.None, TickTimer.None, TickTimer.None, TickTimer.None, TickTimer.None };
 
@@ -45,10 +50,8 @@ public class EndingSequenceController : NetworkBehaviour
             return;
         }
 
-        players = Runner.ActivePlayers;
-
         int i = 0;
-        foreach (PlayerRef activePlayer in players)
+        foreach (PlayerRef activePlayer in Runner.ActivePlayers)
         {
             NetworkObject obj = Runner.GetPlayerObject(activePlayer);
             if (obj != null)
@@ -57,7 +60,9 @@ public class EndingSequenceController : NetworkBehaviour
                 if (rig != null)
                 {
                     rigs[i] = rig;
+
                     rig.RPC_TeleportAndLock(endPositions[i].position, endPositions[i].rotation);
+
                     i++;
                 }
             }
@@ -77,6 +82,10 @@ public class EndingSequenceController : NetworkBehaviour
     private void Start()
     {
         votes = new Dictionary<PlayerRef, bool>();
+        rigs = new NetworkPlayerRig[4];
+
+        endGameVrMenu.SetActive(false);
+        endGameDefaultMenu.SetActive(false);
     }
 
     #endregion
@@ -85,6 +94,11 @@ public class EndingSequenceController : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        if (Keyboard.current[Key.Space].isPressed)
+        {
+            Vote(Runner.LocalPlayer);
+        }
+
         if (!Runner.IsServer)
         {
             return;
@@ -99,7 +113,6 @@ public class EndingSequenceController : NetworkBehaviour
                 {
                     rigs[i].RPC_Unmute(speakingTimeSeconds);
                 }
-
             }
         }
 
@@ -113,7 +126,47 @@ public class EndingSequenceController : NetworkBehaviour
                     rigs[i].RPC_Unmute(0.0f);
                 }
             }
+
+            RPC_ShowVotingMenu();
         }
+    }
+
+    #endregion
+
+    #region RPCs
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_ShowVotingMenu()
+    {
+        List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
+        SubsystemManager.GetInstances<XRDisplaySubsystem>(displaySubsystems);
+
+        // VRVRVRVRVRVRVRVRVRVR
+        if (displaySubsystems.Count != 0)
+        {
+            endGameVrMenu.SetActive(true);
+        }
+        else
+        {
+            endGameDefaultMenu.SetActive(true);
+        }
+
+        foreach (PlayerRef player in Runner.ActivePlayers)
+        {
+            NetworkObject obj = Runner.GetPlayerObject(player);
+            if (obj == null)
+            {
+                break;
+            }
+
+            NetworkPlayerRig rig = obj.GetComponentInChildren<NetworkPlayerRig>();
+            if (rig == null)
+            {
+                break;
+            }
+            
+            Debug.Log("Player: " + player + ", Character: " + rig.character.name);
+        }        
     }
 
     #endregion

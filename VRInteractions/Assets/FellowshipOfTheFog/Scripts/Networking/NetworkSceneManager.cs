@@ -37,7 +37,7 @@ public class NetworkSceneManager : NetworkSceneManagerBase
                     {
                         playerCharacters[playerRef] = new PlayerData()
                         {
-                            sheet = rig.sheet,
+                            sheet = rig.character,
                             scale = obj.transform.localScale.x
                         };
                     }

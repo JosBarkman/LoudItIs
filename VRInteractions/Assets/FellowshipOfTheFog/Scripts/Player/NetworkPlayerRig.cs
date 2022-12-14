@@ -37,6 +37,7 @@ public class NetworkPlayerRig : NetworkBehaviour
 
     [Header("Settings")]
     public float headFeetOffset;
+    public CharacterSheet character;
 
     [HideInInspector]
     [Networked()] public float networkedHeadFeetOffset { get; set; }
@@ -97,7 +98,6 @@ public class NetworkPlayerRig : NetworkBehaviour
     private Transform rigVisuals;
 
     // This variables are only useful in the machine of the player controling this rig
-    public CharacterSheet sheet;
     private LocalPlayerRig playerRig;
     private Speaker speaker;
     private NetworkManager manager;

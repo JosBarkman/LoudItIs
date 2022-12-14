@@ -130,7 +130,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private UnityEngine.XR.InputDevice rightHardwareController;
 
     private CharacterSheet sheet = null;
-
+   
     private bool lastLeftMenuButtonPressed = false;
     private bool lastRightMenuButtonPressed = false;
     private bool lastRightTriggerButtonPressed = false;

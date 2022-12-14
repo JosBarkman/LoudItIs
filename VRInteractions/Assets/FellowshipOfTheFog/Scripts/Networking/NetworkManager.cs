@@ -106,7 +106,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         networkPlayerObject.transform.localScale = Vector3.one * scale;
 
         NetworkPlayerRig networkRig = networkPlayerObject.GetComponentInChildren<NetworkPlayerRig>();
-        networkRig.sheet = sheet;
 
         networkRig.networkedHeadFeetOffset = networkRig.headFeetOffset * scale;
 
