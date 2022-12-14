@@ -198,13 +198,13 @@ public class EndingSequenceController : NetworkBehaviour
             NetworkObject obj = Runner.GetPlayerObject(player);
             if (obj == null)
             {
-                break;
+                continue;
             }
 
             NetworkPlayerRig rig = obj.GetComponentInChildren<NetworkPlayerRig>();
             if (rig == null)
             {
-                break;
+                continue;
             }
 
             playerCharacters.Add(player, rig.character);
