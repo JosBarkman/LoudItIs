@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 8829686343157723403}
   - component: {fileID: 8829686343157723402}
   - component: {fileID: 8829686343157723397}
-  - component: {fileID: 8829686343157723396}
+  - component: {fileID: 3035273740035416951}
   m_Layer: 16
   m_Name: Right Hand Physics
   m_TagString: Untagged
@@ -350,7 +350,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &8829686343157723396
+--- !u!114 &3035273740035416951
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -362,7 +362,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff711bd4da4f4d4eb2d3d61a4e27a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mask:
+    serializedVersion: 2
+    m_Bits: 13313
   _target: {fileID: 0}
+  _hand: 1
+  _handEdges:
+  - {fileID: 8829686344736980261}
+  - {fileID: 8829686343117996314}
+  - {fileID: 8829686344829291992}
+  - {fileID: 8829686343249384013}
+  - {fileID: 8829686344559879216}
 --- !u!1 &8829686343249384012
 GameObject:
   m_ObjectHideFlags: 0

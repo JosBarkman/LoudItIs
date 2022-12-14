@@ -1748,7 +1748,7 @@ GameObject:
   - component: {fileID: 7410184157264449396}
   - component: {fileID: 7410184157264449399}
   - component: {fileID: 7410184157264449398}
-  - component: {fileID: 7410184157264449393}
+  - component: {fileID: 7867354714517831491}
   m_Layer: 15
   m_Name: Left Hand Physics
   m_TagString: Untagged
@@ -1836,7 +1836,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &7410184157264449393
+--- !u!114 &7867354714517831491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1848,7 +1848,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff711bd4da4f4d4eb2d3d61a4e27a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mask:
+    serializedVersion: 2
+    m_Bits: 13313
   _target: {fileID: 0}
+  _hand: 0
+  _handEdges:
+  - {fileID: 7410184155907530979}
+  - {fileID: 7410184156103553810}
+  - {fileID: 7410184156315258656}
+  - {fileID: 7410184155546078523}
+  - {fileID: 7410184155528772551}
 --- !u!1 &7410184157346743996
 GameObject:
   m_ObjectHideFlags: 0
