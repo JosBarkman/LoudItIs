@@ -412,7 +412,7 @@ public class NetworkPlayerRig : NetworkBehaviour
         {
             muteTimer = TickTimer.None;
             playerRig.Mute();
-            playerRig.ShowNotification("Wait for the others to end their explanation");
+            playerRig.ShowNotification("Wait for the others to end their explanation", muteTimer);
         }
     }
 
@@ -544,9 +544,10 @@ public class NetworkPlayerRig : NetworkBehaviour
             return;
         }
 
+        muteTimer = TickTimer.None;
         playerRig.Mute();
         playerRig.TeleportAndLock(location, rotation);
-        playerRig.ShowNotification("Wait for your turn to speak");
+        playerRig.ShowNotification("Wait for your turn to speak", muteTimer);
     }
 
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
@@ -562,12 +563,13 @@ public class NetworkPlayerRig : NetworkBehaviour
 
         if (seconds != 0.0f)
         {
-            playerRig.ShowNotification("You can speak");
             muteTimer = TickTimer.CreateFromSeconds(Runner, seconds);
+            playerRig.ShowNotification("You can speak", muteTimer);
         }
         else
         {
             playerRig.HideNotification();
+            playerRig.Unlock();
         }
     }
 

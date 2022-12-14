@@ -72,7 +72,6 @@ public class FingersIK
 /// </summary>
 public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 {
-
     #region Properties
 
     [Header("Components")]
@@ -107,7 +106,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private TeleportationProvider teleportationProvider;
 
     [SerializeField]
-    private GameObject notification;
+    private PlayerNotificationProvider notification;
 
     [SerializeField]
     private MenuControllerCharacterDescription leftHandCharacterDescription;
@@ -136,8 +135,10 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private bool lastRightTriggerButtonPressed = false;
     private bool showingMap = false;
 
-    private Text notificationText;
     private Recorder recorder;
+    private LayerMask previousLeftControllerLayerMask;
+    private LayerMask previousRightControllerLayerMask;
+    private TickTimer notificationTimer;
 
     #endregion
 
@@ -208,25 +209,30 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         trackedPoseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationOnly;
 
+        previousLeftControllerLayerMask = leftHandRayInteractor.raycastMask;
+        previousRightControllerLayerMask = rightHandRayInteractor.raycastMask;
+
         leftHandRayInteractor.raycastMask = 0;
         rightHandRayInteractor.raycastMask = 0;
     }
 
-    public void ShowNotification(string notification)
+    public void Unlock()
     {
-        this.notification.SetActive(true);
+        trackedPoseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
 
-        if (notificationText == null)
-        {
-            notificationText = this.notification.GetComponentInChildren<Text>();
-        }
+        leftHandRayInteractor.raycastMask = previousLeftControllerLayerMask;
+        rightHandRayInteractor.raycastMask = previousRightControllerLayerMask;
+    }
 
-        notificationText.text = notification;
+    public void ShowNotification(string notification, TickTimer timer)
+    {
+        notificationTimer = timer;
+        this.notification.Show(notification, timer.IsRunning, timer.RemainingTime(runner));
     }
 
     public void HideNotification()
     {
-        notification.SetActive(false);
+        notification.Hide();
     }
 
     public void Mute()
@@ -246,9 +252,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private void Awake()
     {
         runner = FindObjectOfType<NetworkRunner>();
-        notificationText = notification.GetComponentInChildren<Text>();
-        notification.SetActive(false);
-
         recorder = FindObjectOfType<Recorder>();
 
         if (trackedPoseDriver == null)
@@ -280,6 +283,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         {
             teleportationProvider = FindObjectOfType<TeleportationProvider>();
         }
+
+        if (notification == null)
+        {
+            notification = GetComponentInChildren<PlayerNotificationProvider>();
+        }
     }
 
     private void Start()
@@ -307,6 +315,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         {
             SetSpectator();
         }
+
+        notification.Hide();
+        notificationTimer = default;
     }
 
     private void Update()
@@ -322,6 +333,15 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         rightHandRingConstraint.Update();
         rightHandPinkyConstraint.Update();
         rightHandThumbConstraint.Update();
+
+        if (!notificationTimer.Expired(runner))
+        {
+            notification.UpdateTimer(notificationTimer.RemainingTime(runner));
+        }
+        else
+        {
+            notificationTimer = TickTimer.None;
+        }  
     }
 
     private void OnDestroy()
