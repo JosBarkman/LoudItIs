@@ -9,6 +9,11 @@ public class ItemControllerCharacterVoting : MonoBehaviour
 {
     #region Properties
 
+    [Header("Settings")]
+    [SerializeField] private Color minimumVotesColor = Color.red;
+    [SerializeField] private Color maximumVotesColor = Color.green;
+    [SerializeField] private float maximumVotes = 4.0f;
+
     [Header("Components")]
     [SerializeField] private Image characterPortrait;
     [SerializeField] private Text characterName;
@@ -32,6 +37,7 @@ public class ItemControllerCharacterVoting : MonoBehaviour
 
     public void UpdateVotes(int votes)
     {
+        this.votes.color = votes == 0 ? minimumVotesColor : Color.Lerp(minimumVotesColor, maximumVotesColor, votes / maximumVotes);
         this.votes.text = votes.ToString();
     }
 
