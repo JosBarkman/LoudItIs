@@ -59,7 +59,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebbb42a8e095c164baf15fdebe7059e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 455245138900053386, guid: ff999e4fb089d7742abdae655ffc62a9, type: 3}
+  voiceDetectionThreshold: 0.1
+  characters:
+  - {fileID: 11400000, guid: 9a6a3a9fa165b7a4c83536674d634b75, type: 2}
+  - {fileID: 11400000, guid: fdb6f434b10e7334d9001bfa39f15344, type: 2}
+  - {fileID: 11400000, guid: 1e731af5336b6df4f89524fc26badefd, type: 2}
+  - {fileID: 11400000, guid: 89508ee4e27dd514cb47f8c16876dcf1, type: 2}
+  spectator: 0
 --- !u!114 &1672725915743784896
 MonoBehaviour:
   m_ObjectHideFlags: 0

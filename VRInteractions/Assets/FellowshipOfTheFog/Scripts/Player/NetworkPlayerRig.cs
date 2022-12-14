@@ -37,6 +37,7 @@ public class NetworkPlayerRig : NetworkBehaviour
 
     [Header("Settings")]
     public float headFeetOffset;
+    public CharacterSheet character;
 
     [HideInInspector]
     [Networked()] public float networkedHeadFeetOffset { get; set; }
@@ -52,6 +53,9 @@ public class NetworkPlayerRig : NetworkBehaviour
 
     [HideInInspector]
     [Networked(OnChanged = "OnMapFloorChanged", OnChangedTargets = OnChangedTargets.All)] public NetworkBool mapFloor { get; set; }
+
+    [HideInInspector, Capacity(32)]
+    [Networked(OnChanged = "OnCharacterNameChanged", OnChangedTargets = OnChangedTargets.InputAuthority)] public string characterName { get; set; }
 
     private NetworkObject leftHandSelectedObject = null;
     private NetworkObject rightHandSelectedObject = null;
@@ -82,6 +86,9 @@ public class NetworkPlayerRig : NetworkBehaviour
     private GameplayMapController gameplayMapController;
 
     [SerializeField]
+    private Canvas characterCanvas;
+
+    [SerializeField]
     private Image talkingIcon;
 
     public FingersIK leftFingers;
@@ -93,6 +100,8 @@ public class NetworkPlayerRig : NetworkBehaviour
     // This variables are only useful in the machine of the player controling this rig
     private LocalPlayerRig playerRig;
     private Speaker speaker;
+    private NetworkManager manager;
+    private TickTimer muteTimer = TickTimer.None;
 
     [Header("IK Contraints")]
     [SerializeField]
@@ -101,6 +110,7 @@ public class NetworkPlayerRig : NetworkBehaviour
     private IKConstraint rightHandConstraint;
     [SerializeField]
     private IKConstraint headConstraint;
+
     
     public IKConstraint leftHandIndexConstraint = new IKConstraint();
     public IKConstraint leftHandMiddleConstraint = new IKConstraint();
@@ -152,6 +162,7 @@ public class NetworkPlayerRig : NetworkBehaviour
         if (Object.HasInputAuthority)
         {
             playerRig = FindObjectOfType<LocalPlayerRig>();
+            manager = FindObjectOfType<NetworkManager>();
 
             rigVisuals.gameObject.SetActive(false);
 
@@ -205,12 +216,12 @@ public class NetworkPlayerRig : NetworkBehaviour
                 XRControllerState leftControllerState = new XRControllerState();
                 leftControllerState.selectInteractionState = new InteractionState();
 
-                leftControllerState.selectInteractionState.active = ((byte) (input.leftControllerButtonsPressed & (byte) RigInput.VrControllerButtons.Trigger)) == (byte) RigInput.VrControllerButtons.Trigger;
+                leftControllerState.selectInteractionState.active = ((byte)(input.leftControllerButtonsPressed & (byte)RigInput.VrControllerButtons.Trigger)) == (byte)RigInput.VrControllerButtons.Trigger;
 
                 leftHandXRController.currentControllerState = leftControllerState;
 
                 // Update left hand state
-                byte fingersState = (byte) FingerIKFlags.None;
+                byte fingersState = (byte)FingerIKFlags.None;
 
                 IXRSelectInteractable selectedInteractable = leftHandInteractor.firstInteractableSelected;
                 if (selectedInteractable != null)
@@ -269,7 +280,7 @@ public class NetworkPlayerRig : NetworkBehaviour
                         leftHandSelectedObject = null;
                     }
 
-                    leftHandState = (byte) FingerIKFlags.None;
+                    leftHandState = (byte)FingerIKFlags.None;
                 }
 
                 // Update left hand figners state based on the grabbed object
@@ -368,7 +379,7 @@ public class NetworkPlayerRig : NetworkBehaviour
                     }
                     else
                     {
-                        rightHandState = (byte) FingerIKFlags.None;
+                        rightHandState = (byte)FingerIKFlags.None;
                     }
                 }
 
@@ -394,7 +405,17 @@ public class NetworkPlayerRig : NetworkBehaviour
         {
             talkingIcon.gameObject.SetActive(false);
         }
+
+        characterCanvas.transform.LookAt(Camera.main.transform, Vector3.up);
+
+        if (muteTimer.Expired(Runner))
+        {
+            muteTimer = TickTimer.None;
+            playerRig.Mute();
+            playerRig.ShowNotification("Wait for the others to end their explanation");
+        }
     }
+
 
     public override void Render()
     {
@@ -474,6 +495,15 @@ public class NetworkPlayerRig : NetworkBehaviour
             changed.Behaviour.gameplayMapController.SwitchFloor();
         }
     }
+    public static void OnCharacterNameChanged(Changed<NetworkPlayerRig> changed)
+    {
+        // This should be always true because input authority should always have local rig
+        if (changed.Behaviour.playerRig != null)
+        {
+            CharacterSheet sheet = changed.Behaviour.manager.characters.Find(x => x.name == changed.Behaviour.characterName);
+            changed.Behaviour.playerRig.SetCharacter(sheet, false);
+        }
+    }
 
     #endregion
 
@@ -503,6 +533,42 @@ public class NetworkPlayerRig : NetworkBehaviour
         }
 
         memories.HideMemory();
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_TeleportAndLock(Vector3 location, Quaternion rotation)
+    {
+        // Just doublecheck
+        if (playerRig == null)
+        {
+            return;
+        }
+
+        playerRig.Mute();
+        playerRig.TeleportAndLock(location, rotation);
+        playerRig.ShowNotification("Wait for your turn to speak");
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_Unmute(float seconds)
+    {
+        // Just doublecheck
+        if (playerRig == null)
+        {
+            return;
+        }
+
+        playerRig.UnMute();
+
+        if (seconds != 0.0f)
+        {
+            playerRig.ShowNotification("You can speak");
+            muteTimer = TickTimer.CreateFromSeconds(Runner, seconds);
+        }
+        else
+        {
+            playerRig.HideNotification();
+        }
     }
 
     #endregion

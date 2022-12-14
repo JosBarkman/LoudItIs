@@ -25,6 +25,7 @@ public class MenuControllerCharacterSelector : MonoBehaviour
     private MenuControllerCharacterDescription characterDescriptionController;
 
     private CharacterSheet currentCharacter = null;
+    private NetworkManager manager;
 
     #endregion
 
@@ -57,11 +58,13 @@ public class MenuControllerCharacterSelector : MonoBehaviour
         {
             characterDescriptionController = GetComponentInChildren<MenuControllerCharacterDescription>();
         }
+
+        manager = FindObjectOfType<NetworkManager>();
     }
 
     private void Start()
     {
-        foreach (CharacterSheet sheet in controller.roleSelectionController.characters)
+        foreach (CharacterSheet sheet in manager.characters)
         {
             GameObject portrait = Instantiate(characterPortraitItemPrefab, characterSelectorGrid);
             portrait.GetComponent<ItemControllerCharacterPortrait>().SetContent(sheet, () => {
@@ -69,7 +72,7 @@ public class MenuControllerCharacterSelector : MonoBehaviour
             });
         }
 
-        UpdateCharacter(controller.roleSelectionController.characters[0]); 
+        UpdateCharacter(manager.characters[0]); 
     }
 
     #endregion

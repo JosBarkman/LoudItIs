@@ -2,6 +2,7 @@ using Fusion;
 using Fusion.Sockets;
 using Photon.Voice.Unity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,8 +19,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField]
     private float voiceDetectionThreshold = .1f;
 
+    public List<CharacterSheet> characters = new List<CharacterSheet>();
+
     private NetworkRunner runner;
     private Recorder recorder;
+
+    public bool spectator = false;
 
     public delegate void SessionListUpdatedEvent(List<SessionInfo> sessionInfos);
     public event SessionListUpdatedEvent OnSessionListUpdatedEvent;
@@ -69,7 +74,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             PlayerCount = 10,
             // TODO: Magic number
             Scene = 1,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+            SceneManager = gameObject.AddComponent<NetworkSceneManager>()
         };
 
         await runner.StartGame(args);
@@ -82,20 +87,22 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         {
             GameMode = GameMode.Client,
             SessionName = info.Name,
+            SceneManager = gameObject.AddComponent<NetworkSceneManager>()
+
         };
 
         await runner.StartGame(args);
     }
 
-    public void SpawnCharacter(PlayerRef source, GameObject prefab, float scale)
+    public NetworkPlayerRig SpawnCharacter(PlayerRef source, CharacterSheet sheet, float scale)
     {
         if (!runner.IsServer)
         {
-            return;
+            return null;
         }
 
         // Position and rotation here doesn't matter as the networked player will track the local rig
-        NetworkObject networkPlayerObject = runner.Spawn(prefab, new Vector3(999.0f, 999.0f, 999.0f), Quaternion.identity, source);
+        NetworkObject networkPlayerObject = runner.Spawn(sheet.prefab, new Vector3(999.0f, 999.0f, 999.0f), Quaternion.identity, source);
         networkPlayerObject.transform.localScale = Vector3.one * scale;
 
         NetworkPlayerRig networkRig = networkPlayerObject.GetComponentInChildren<NetworkPlayerRig>();
@@ -103,6 +110,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         networkRig.networkedHeadFeetOffset = networkRig.headFeetOffset * scale;
 
         runner.SetPlayerObject(source, networkPlayerObject);
+        return networkRig;
     }
 
     #endregion
@@ -127,6 +135,26 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         OnSessionListUpdatedEvent?.Invoke(sessionList);
     }
 
+    private IEnumerator showRoleSelection()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            yield return null;
+        }
+
+        FindObjectOfType<RoleSelectionController>().ShowMenu();
+    }
+
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
+    {
+        if (runner.LocalPlayer != player)
+        {
+            return;
+        }
+
+        StartCoroutine(showRoleSelection());
+    }
+
     #endregion
 
     #region Unused INetworkRunnerCallbacks
@@ -148,8 +176,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {}
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) {}
-
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {}
 
     public void OnSceneLoadDone(NetworkRunner runner) {}
 

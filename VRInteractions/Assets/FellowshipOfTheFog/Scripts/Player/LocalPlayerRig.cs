@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Sockets;
+using Photon.Voice.Unity;
 using System;
 using System.Collections.Generic;
 using Unity.XR.CoreUtils;
@@ -7,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using UnityEngine.SpatialTracking;
+using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -96,6 +98,18 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private TrackedPoseDriver trackedPoseDriver;
 
     [SerializeField]
+    private XRRayInteractor leftHandRayInteractor;
+
+    [SerializeField]
+    private XRRayInteractor rightHandRayInteractor;
+
+    [SerializeField]
+    private TeleportationProvider teleportationProvider;
+
+    [SerializeField]
+    private GameObject notification;
+
+    [SerializeField]
     private MenuControllerCharacterDescription leftHandCharacterDescription;
 
     [Header("IK Contraints")]
@@ -116,19 +130,26 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private UnityEngine.XR.InputDevice rightHardwareController;
 
     private CharacterSheet sheet = null;
-
+   
     private bool lastLeftMenuButtonPressed = false;
     private bool lastRightMenuButtonPressed = false;
     private bool lastRightTriggerButtonPressed = false;
     private bool showingMap = false;
 
+    private Text notificationText;
+    private Recorder recorder;
+
     #endregion
 
     #region Public Methods
 
-    public void SetSpectator(bool vr)
+    public void SetSpectator()
     {
-        if (vr)
+        List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
+        SubsystemManager.GetInstances<XRDisplaySubsystem>(displaySubsystems);
+
+        // VRVRVRVRVRVRVRVRVRVR
+        if (displaySubsystems.Count != 0)
         {
             return;
         }
@@ -150,10 +171,13 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         rightFingers.UpdateWeights(righttHandFingerStateBitfield);
     }
 
-    public void SetCharacter(CharacterSheet sheet)
+    public void SetCharacter(CharacterSheet sheet, bool waitingRoom)
     {
-        transform.position = sheet.spawnPosition;
-        transform.rotation = Quaternion.Euler(sheet.spawnRotation);
+        if (!waitingRoom)
+        {
+            transform.position = sheet.spawnPosition;
+            transform.rotation = Quaternion.Euler(sheet.spawnRotation);
+        }
 
         leftHandVisuals.sharedMesh = sheet.handsMesh;
         leftHandVisuals.material = new Material(sheet.handsMaterial);
@@ -171,6 +195,50 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         return sheet;
     }
 
+    public void TeleportAndLock(Vector3 position, Quaternion rotation)
+    {
+        TeleportRequest request = new TeleportRequest()
+        {
+            destinationPosition = position,
+            destinationRotation = rotation,
+            matchOrientation = MatchOrientation.TargetUpAndForward
+        };
+
+        teleportationProvider.QueueTeleportRequest(request);
+
+        trackedPoseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationOnly;
+
+        leftHandRayInteractor.raycastMask = 0;
+        rightHandRayInteractor.raycastMask = 0;
+    }
+
+    public void ShowNotification(string notification)
+    {
+        this.notification.SetActive(true);
+
+        if (notificationText == null)
+        {
+            notificationText = this.notification.GetComponentInChildren<Text>();
+        }
+
+        notificationText.text = notification;
+    }
+
+    public void HideNotification()
+    {
+        notification.SetActive(false);
+    }
+
+    public void Mute()
+    {
+        recorder.RecordingEnabled = false;
+    }
+
+    public void UnMute()
+    {
+        recorder.RecordingEnabled = true;
+    }
+
     #endregion
 
     #region Unity Events
@@ -178,6 +246,10 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private void Awake()
     {
         runner = FindObjectOfType<NetworkRunner>();
+        notificationText = notification.GetComponentInChildren<Text>();
+        notification.SetActive(false);
+
+        recorder = FindObjectOfType<Recorder>();
 
         if (trackedPoseDriver == null)
         {
@@ -192,6 +264,21 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         if (leftHandCharacterDescription == null)
         {
             leftHandCharacterDescription = leftHand.GetComponentInChildren<MenuControllerCharacterDescription>();
+        }
+
+        if (leftHandRayInteractor == null)
+        {
+            leftHandRayInteractor = leftHand.GetComponentInChildren<XRRayInteractor>();
+        }
+
+        if (rightHandRayInteractor == null)
+        {
+            rightHandRayInteractor = rightHand.GetComponentInChildren<XRRayInteractor>();
+        }
+
+        if (teleportationProvider == null)
+        {
+            teleportationProvider = FindObjectOfType<TeleportationProvider>();
         }
     }
 
@@ -214,6 +301,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         if (devices.Count != 0)
         {
             rightHardwareController = devices[0];
+        }
+
+        if (FindObjectOfType<NetworkManager>().spectator)
+        {
+            SetSpectator();
         }
     }
 
