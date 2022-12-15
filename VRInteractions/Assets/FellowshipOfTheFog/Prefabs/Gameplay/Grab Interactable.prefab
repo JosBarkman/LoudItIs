@@ -391,7 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8585688007618418693}
   - component: {fileID: 8585688007618418695}
-  - component: {fileID: 8585688007618418694}
+  - component: {fileID: 1376453246631042960}
   - component: {fileID: 8585688007618418697}
   - component: {fileID: 1211239088951072899}
   - component: {fileID: 2267518430688139366}
@@ -440,9 +440,9 @@ MonoBehaviour:
     RawGuidValue: b1d7d6dc87434bd4f9cb5899df27c3a9
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 8585688007618418694}
+  - {fileID: 1376453246631042960}
   SimulationBehaviours: []
---- !u!114 &8585688007618418694
+--- !u!114 &1376453246631042960
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -451,7 +451,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8585688007618418703}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 1710889294, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
@@ -625,6 +625,13 @@ MonoBehaviour:
   upAxisAttackTransform: {fileID: 0}
   angleOfAttackDegrees: 95
   distanceThreshold: 0.05
+  currentPositions:
+    attachPoint: {fileID: 0}
+    indexIKPosition: {fileID: 0}
+    middleIKPosition: {fileID: 0}
+    ringIKPosition: {fileID: 0}
+    pinkyIKPosition: {fileID: 0}
+    thumbIKPosition: {fileID: 0}
 --- !u!114 &2267518430688139366
 MonoBehaviour:
   m_ObjectHideFlags: 0
