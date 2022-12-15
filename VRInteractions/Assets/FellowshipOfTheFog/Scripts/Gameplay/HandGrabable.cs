@@ -83,30 +83,41 @@ public class FingerTargetPositions
 
 public class HandGrabable : XRGrabInteractable
 {
+    #region Properties
+
     [Header("Settings")]
-    public bool useAttachPoint = true;
+    [SerializeField] private bool useAttachPoint = true;
     public bool doorHandling = false;
-    public bool leftHand = false;
+    [SerializeField] private bool leftHand = false;
 
     [Header("Hand Settings")]
-    public Vector3 axis;
-    public Vector3 rotationAxis;
+    [SerializeField] private Vector3 axis;
+    [SerializeField] private Vector3 rotationAxis;
 
-    public FingerTargetPositions rightHandFignersPosition = new FingerTargetPositions();
-    public FingerTargetPositions leftHandFignersPosition = new FingerTargetPositions();
+    [SerializeField]
+    private FingerTargetPositions rightHandFignersPosition = new FingerTargetPositions();
+    
+    [SerializeField]
+    private FingerTargetPositions leftHandFignersPosition = new FingerTargetPositions();
 
     [Header("Door Handling")]
-    public bool inverseHandHandling = true; 
-    public Transform temporalHandAttachPoint;
-    public Transform upAxisAttackTransform;
-    public float angleOfAttackDegrees = 95.0f;
-    public float distanceThreshold = .05f;
+    [SerializeField] private bool inverseHandHandling = true; 
+    [SerializeField] private Transform temporalHandAttachPoint;
+    [SerializeField] private Transform upAxisAttackTransform;
+    [SerializeField] private float angleOfAttackDegrees = 95.0f;
+    [SerializeField] private float distanceThreshold = .05f;
 
     private Vector3 oldHandAttachPointLocalPosition = Vector3.zero;
     private float angleOfAttackRadians = 0.0f;
 
     private SelectEnterEventArgs selectArgs = null;
     private float startingDistance = 0.0f;
+
+    public FingerTargetPositions currentPositions = null;
+
+    #endregion
+
+    #region Unity Events
 
     private void Start()
     {
@@ -131,8 +142,6 @@ public class HandGrabable : XRGrabInteractable
 
         float currentDistance = Vector3.Distance(selectArgs.interactorObject.transform.position, upAxisAttackTransform.position);
 
-        Debug.Log(string.Format(@"Start distance: {0}, Current distance: {1}", startingDistance, currentDistance));
-
         if (currentDistance >= startingDistance + distanceThreshold)
         {
             selectArgs.manager.SelectCancel(selectArgs.interactorObject, selectArgs.interactableObject);
@@ -145,13 +154,12 @@ public class HandGrabable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
 
-        if (args.interactorObject.transform.CompareTag("LeftController") && useAttachPoint)
+        bool leftController = args.interactorObject.transform.CompareTag("LeftController");
+        currentPositions = leftController ? leftHandFignersPosition : rightHandFignersPosition;
+
+        if (useAttachPoint)
         {
-            attachTransform = leftHandFignersPosition.attachPoint;
-        }
-        else if (args.interactorObject.transform.CompareTag("RightController") && useAttachPoint)
-        {
-            attachTransform = rightHandFignersPosition.attachPoint;
+            attachTransform = currentPositions.attachPoint;
         }
 
         if (!doorHandling)
@@ -162,7 +170,7 @@ public class HandGrabable : XRGrabInteractable
         float radians = 1.0f;
         float hand = -1.0f;
 
-        if (args.interactorObject.transform.CompareTag("LeftController"))
+        if (leftController)
         {
             hand = 1.0f;
         }
@@ -179,7 +187,7 @@ public class HandGrabable : XRGrabInteractable
 
         // Check conditions for selecting
         // We use right becvause hand is rotated and red axis is facing down
-        if (radians > angleOfAttackRadians)
+        if (radians > angleOfAttackRadians && angleOfAttackDegrees != 0.0f)
         {
             args.manager.SelectCancel(args.interactorObject, args.interactableObject);
             return;
@@ -209,4 +217,6 @@ public class HandGrabable : XRGrabInteractable
             selectArgs = null;
         }
     }
+
+    #endregion
 }
