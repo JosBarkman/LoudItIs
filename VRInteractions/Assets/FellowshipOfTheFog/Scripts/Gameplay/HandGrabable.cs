@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -100,19 +101,29 @@ public class HandGrabable : XRGrabInteractable
     [SerializeField]
     private FingerTargetPositions leftHandFignersPosition = new FingerTargetPositions();
 
+    [SerializeField]
+    private FingerTargetPositions secondaryRightHandFignersPosition = new FingerTargetPositions();
+
+    [SerializeField]
+    private FingerTargetPositions secondaryLeftHandFignersPosition = new FingerTargetPositions();
+
     [Header("Door Handling")]
     [SerializeField] private bool inverseHandHandling = true; 
+    [SerializeField] private bool doubleSide = false;
     [SerializeField] private Transform temporalHandAttachPoint;
     [SerializeField] private Transform upAxisAttackTransform;
     [SerializeField] private float angleOfAttackDegrees = 95.0f;
     [SerializeField] private float distanceThreshold = .05f;
+    [SerializeField] private GameObject secondaryCollider;
 
     private Vector3 oldHandAttachPointLocalPosition = Vector3.zero;
     private float angleOfAttackRadians = 0.0f;
 
     private SelectEnterEventArgs selectArgs = null;
     private float startingDistance = 0.0f;
+    private bool secondaryCollision;
 
+    [HideInInspector]
     public FingerTargetPositions currentPositions = null;
 
     #endregion
@@ -126,10 +137,18 @@ public class HandGrabable : XRGrabInteractable
         if (leftHand)
         {
             rightHandFignersPosition.Copy(leftHandFignersPosition, axis, rotationAxis);
+            if (doubleSide)
+            {
+                secondaryRightHandFignersPosition.Copy(secondaryLeftHandFignersPosition, axis, rotationAxis);
+            }
         }
         else
         {
             leftHandFignersPosition.Copy(rightHandFignersPosition, axis, rotationAxis);
+            if (doubleSide)
+            {
+                secondaryLeftHandFignersPosition.Copy(secondaryRightHandFignersPosition, axis, rotationAxis);
+            }
         }
     }
 
@@ -155,7 +174,15 @@ public class HandGrabable : XRGrabInteractable
         base.OnSelectEntered(args);
 
         bool leftController = args.interactorObject.transform.CompareTag("LeftController");
-        currentPositions = leftController ? leftHandFignersPosition : rightHandFignersPosition;
+
+        if (!secondaryCollision)
+        {
+            currentPositions = leftController ? leftHandFignersPosition : rightHandFignersPosition;
+        }
+        else
+        {
+            currentPositions = leftController ? secondaryLeftHandFignersPosition : secondaryRightHandFignersPosition;
+        }
 
         if (useAttachPoint)
         {
@@ -183,7 +210,8 @@ public class HandGrabable : XRGrabInteractable
         }
 
         // Left hand x axis points down while right hand x axis points up, that's why we have to inverse it
-        radians = Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * hand, upAxisAttackTransform.up * radians));
+        radians = Mathf.Acos(Vector3.Dot(args.interactorObject.transform.right * hand, 
+            (doubleSide && secondaryCollision ? upAxisAttackTransform.up : upAxisAttackTransform.up * -1.0f) * radians));
 
         // Check conditions for selecting
         // We use right becvause hand is rotated and red axis is facing down
