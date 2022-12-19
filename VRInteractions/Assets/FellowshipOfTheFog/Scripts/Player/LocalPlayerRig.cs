@@ -81,18 +81,6 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
     public XROrigin xrOrigin;
 
-    public FingersIK leftFingers;
-    public FingersIK rightFingers;
-
-    [SerializeField]
-    private Rig rightHandRigConstraints;
-
-    [SerializeField]
-    private SkinnedMeshRenderer leftHandVisuals;
-    
-    [SerializeField]
-    private SkinnedMeshRenderer rightHandVisuals;
-
     [SerializeField]
     private TrackedPoseDriver trackedPoseDriver;
 
@@ -103,6 +91,12 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     private XRRayInteractor rightHandRayInteractor;
 
     [SerializeField]
+    private SkinnedMeshRenderer leftHandVisuals;
+
+    [SerializeField]
+    private SkinnedMeshRenderer rightHandVisuals;
+
+    [SerializeField]
     private TeleportationProvider teleportationProvider;
 
     [SerializeField]
@@ -110,6 +104,9 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
     [SerializeField]
     private MenuControllerCharacterDescription leftHandCharacterDescription;
+
+    public FingersIK leftFingers;
+    public FingersIK rightFingers;  
 
     [Header("IK Contraints")]
     public IKConstraint leftHandIndexConstraint = new IKConstraint();
