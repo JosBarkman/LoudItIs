@@ -114,6 +114,7 @@ public class HandGrabable : XRGrabInteractable
     [SerializeField] private Transform upAxisAttackTransform;
     [SerializeField] private float angleOfAttackDegrees = 95.0f;
     [SerializeField] private float distanceThreshold = .05f;
+    [SerializeField] private GameObject primaryCollider;
     [SerializeField] private GameObject secondaryCollider;
 
     private Vector3 oldHandAttachPointLocalPosition = Vector3.zero;
@@ -175,13 +176,16 @@ public class HandGrabable : XRGrabInteractable
 
         bool leftController = args.interactorObject.transform.CompareTag("LeftController");
 
-        if (!secondaryCollision)
+        secondaryCollision = (args.interactorObject.transform.position - secondaryCollider.transform.position).sqrMagnitude <
+            (args.interactorObject.transform.position - primaryCollider.transform.position).sqrMagnitude;
+
+        if (secondaryCollision && doubleSide)
         {
-            currentPositions = leftController ? leftHandFignersPosition : rightHandFignersPosition;
+            currentPositions = leftController ? secondaryLeftHandFignersPosition : secondaryRightHandFignersPosition;
         }
         else
         {
-            currentPositions = leftController ? secondaryLeftHandFignersPosition : secondaryRightHandFignersPosition;
+            currentPositions = leftController ? leftHandFignersPosition : rightHandFignersPosition;
         }
 
         if (useAttachPoint)
