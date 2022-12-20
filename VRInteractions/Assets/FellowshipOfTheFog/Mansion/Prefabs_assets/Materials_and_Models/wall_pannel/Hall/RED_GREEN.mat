@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wall_PaperBlue_mat
+  m_Name: RED_GREEN
   m_Shader: {fileID: -6465566751694194690, guid: 8f713ba0e88714848a8e025834c5761e, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -105,6 +105,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Inverse: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -121,15 +122,18 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _brightness: 0.3
+    - _color_switch: 0
     - _scale: 1
     - _scale_floor: 0.57
     - _scale_wall: 1.5
+    - _wallSwitch: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _wall_color: {r: 0.25802776, g: 0.42318633, b: 0.4528302, a: 0}
+    - _wall_color: {r: 0.23994304, g: 0.3773585, b: 0.24757724, a: 0}
+    - _wall_color2: {r: 0.6431373, g: 0.23921569, b: 0.24313726, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4432932504278337356
 MonoBehaviour:
