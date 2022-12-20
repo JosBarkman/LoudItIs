@@ -45,16 +45,35 @@ public class DoorLock : NetworkBehaviour
 
     #region Private Methods
 
-    private void SetUnlocked()
-    {
+    private void SetUnlocked() {
+        if ( null == doorHandling ) {
+            Debug.LogWarning( $"{name} is trying to access HandGrabable variable doorHandling, but it was never set. Searching children..." );
+            GetGrabbables();
+
+            if ( null == doorHandling ) {
+                Debug.LogWarning( $"{name} No HandGrabable component found in children. Assign one in the inspector or add one." );
+                return;
+            }
+        }
+
         doorHandling.enabled = true;
     }
 
     private void SetLocked()
     {
+        if ( null == doorHandling ) {
+            Debug.LogWarning( $"{name} is trying to access HandGrabable variable doorHandling, but it was never set. Searching children..." );
+            GetGrabbables();
+
+            if ( null == doorHandling ) {
+                Debug.LogWarning( $"{name} No HandGrabable component found in children. Assign one in the inspector or add one." );
+                return;
+            }
+        }
+
         doorHandling.enabled = false;
     }
-
+    
     #endregion
 
     #region Unity Events
@@ -88,15 +107,7 @@ public class DoorLock : NetworkBehaviour
 
         if (doorHandling == null)
         {
-            HandGrabable[] doors = GetComponentsInChildren<HandGrabable>();
-
-            for (int i = 0; i < doors.Length && doorHandling == null; i++)
-            {
-                if (doors[i].doorHandling)
-                {
-                    doorHandling = doors[i];
-                }
-            }
+            GetGrabbables();
         }
 
         // In case that some joins the saesion later
@@ -124,6 +135,27 @@ public class DoorLock : NetworkBehaviour
         {
             changed.Behaviour.SetLocked();
         }        
+    }
+
+    #endregion
+
+    #region Auto-Assign Fields
+
+    private void GetGrabbables() {
+        HandGrabable[] doors = GetComponentsInChildren<HandGrabable>();
+
+        bool set = false;
+        for ( int i = 0; i < doors.Length && doorHandling == null; i++ ) {
+            if ( doors[i].doorHandling ) {
+                doorHandling = doors[i];
+                if ( set == true ) {
+                    Debug.Log( "Additional HandGrabable component detected in children." );
+                }
+                else {
+                    set = true;
+                }
+            }
+        }
     }
 
     #endregion
