@@ -22,9 +22,13 @@ public class TimedEventsManager : NetworkBehaviour
     {
         if (Runner.IsServer)
         {
+            if (events.Length > timers.Length)
+            {
+                Log.Error("Events lenght rgeater than timers");
+            }
             for (int i = 0; i < events.Length; i++)
             {
-                timers.Set(0, TickTimer.CreateFromSeconds(Runner, events[i].seconds));
+                timers.Set(i, TickTimer.CreateFromSeconds(Runner, events[i].seconds));
             }
         }
 
