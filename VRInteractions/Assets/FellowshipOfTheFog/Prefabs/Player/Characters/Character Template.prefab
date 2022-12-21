@@ -4885,6 +4885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   headFeetOffset: -1.600754
+  character: {fileID: 0}
   _networkedHeadFeetOffset: 0
   _leftHandState: 0
   _rightHandState: 0
@@ -4916,7 +4917,6 @@ MonoBehaviour:
     pinkyIKConstraint: {fileID: 345366254870837447}
     thumbIKConstraint: {fileID: 1998621672540914056}
   rigVisuals: {fileID: 4052742519314676378}
-  sheet: {fileID: 0}
   leftHandConstraint:
     track: {fileID: 8729395204316400021}
     target: {fileID: 7491834881068107040}
@@ -5058,6 +5058,7 @@ GameObject:
   - component: {fileID: 3171989307149581790}
   - component: {fileID: 2140159630310705523}
   - component: {fileID: 4221767349485220744}
+  - component: {fileID: 5120177477515517521}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5148,6 +5149,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5120177477515517521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6879842245427807675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c5fc68620af61249b1c27117a5b75c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6945310591583131436
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class MenuControllerVotingMenu : MonoBehaviour
     [SerializeField] private GameObject voteCharacterItemPrefab;
     [SerializeField] private Transform characterListParent;
 
-    private Dictionary<PlayerRef, ItemControllerCharacterVoting> characters;
+    private Dictionary<PlayerRef, ItemControllerCharacterVoting> characters = new Dictionary<PlayerRef, ItemControllerCharacterVoting>();
 
     [Header("External Components")]
     [SerializeField] private EndingSequenceController controller;
@@ -53,11 +53,6 @@ public class MenuControllerVotingMenu : MonoBehaviour
         {
             controller = FindObjectOfType<EndingSequenceController>();
         }
-    }
-
-    private void Start()
-    {
-        characters = new Dictionary<PlayerRef, ItemControllerCharacterVoting>();
     }
 
     #endregion

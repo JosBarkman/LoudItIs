@@ -139,7 +139,14 @@ public class EndingSequenceController : NetworkBehaviour
             }
             else
             {
-                playerVotes.Set(item.Key, item.Value);
+                if (playerVotes.Get(item.Key) == item.Value)
+                {
+                    playerVotes.Remove(item.Key);
+                }
+                else
+                {
+                    playerVotes.Set(item.Key, item.Value);
+                }
             }
         }
 
