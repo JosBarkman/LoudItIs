@@ -146,6 +146,8 @@ GameObject:
   - component: {fileID: 8261477869469603078}
   - component: {fileID: 5893046507294569829}
   - component: {fileID: 6622420434609863551}
+  - component: {fileID: 7135550155680144966}
+  - component: {fileID: 5808324748275933450}
   m_Layer: 0
   m_Name: Time Events Controller
   m_TagString: Untagged
@@ -224,6 +226,34 @@ MonoBehaviour:
   seconds: 600
   theObject: {fileID: 4859765933906763300}
   activeToDisabled: 0
+--- !u!114 &7135550155680144966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728950259001898737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7200868335cdf2c40895399052c4602a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seconds: 120
+  door: {fileID: 0}
+--- !u!114 &5808324748275933450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728950259001898737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7200868335cdf2c40895399052c4602a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seconds: 120
+  door: {fileID: 0}
 --- !u!1 &4752263938154451988
 GameObject:
   m_ObjectHideFlags: 0
@@ -2255,7 +2285,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 7012391936496039272}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cde2a6a94d5bc848b58159152439acc, type: 3}
   m_Name: 
