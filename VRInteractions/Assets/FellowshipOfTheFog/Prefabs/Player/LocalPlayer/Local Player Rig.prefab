@@ -387,7 +387,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.005
+    widthMultiplier: 0.01
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -398,8 +398,17 @@ LineRenderer:
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1.0000123
+        value: 1.0080142
+        inSlope: 0.030447783
+        outSlope: 0.030447783
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.1625103
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -930,7 +939,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.005
+    widthMultiplier: 0.01
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -941,8 +950,17 @@ LineRenderer:
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1.0000123
+        value: 1.0080142
+        inSlope: 0.030447783
+        outSlope: 0.030447783
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.1625103
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -3638,8 +3656,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5488477266073975185}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.025, y: 0, z: 0.015}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: 0.004, y: -0.009, z: 0.015}
+  m_LocalScale: {x: 0.155, y: 0.155, z: 0.155}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1757158597795297004}
@@ -3707,8 +3725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90e6db04699b01b41ade60ecba1475de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeSpeed: 6.6666665
-  _range: 0.1
+  _fadeSpeed: 7
+  _range: 0.23
   _mask:
     serializedVersion: 2
     m_Bits: 8193
