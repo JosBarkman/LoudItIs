@@ -52,7 +52,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 24bf61f107c365647a60145a8def5267, type: 2}
+  - {fileID: 2100000, guid: adf48cdd73520ce43974661e1783022c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -74,11 +74,11 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0.15}
-  - {x: 0, y: 0, z: -0.15}
+  - {x: 0, y: 0, z: 0.175}
+  - {x: 0, y: 0, z: -0.175}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.12
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -183,7 +183,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 24bf61f107c365647a60145a8def5267, type: 2}
+  - {fileID: 2100000, guid: adf48cdd73520ce43974661e1783022c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -205,11 +205,11 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -0.15, y: 0, z: 0}
-  - {x: 0.15, y: 0, z: 0}
+  - {x: -0.175, y: 0, z: 0}
+  - {x: 0.175, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.12
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -582,7 +582,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.018
+      scalar: 0.02
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5077,7 +5077,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 3e915b5c85756c448a740f563eeb097a, type: 2}
-  - {fileID: 2100000, guid: 24bf61f107c365647a60145a8def5267, type: 2}
+  - {fileID: 2100000, guid: adf48cdd73520ce43974661e1783022c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5461,8 +5461,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.0115
-      minScalar: 0.0085
+      scalar: 0.014
+      minScalar: 0.011
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -9955,7 +9955,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 079518633a72f7845843ab781f0da0e9, type: 2}
+  - {fileID: 2100000, guid: a688ad06a297e39439b9de297332804e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
