@@ -308,7 +308,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2742653397254737669}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -443,6 +443,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da54c1b0e48f927488d2e17c4af08d81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minimumVotesColor: {r: 1, g: 0, b: 0, a: 1}
+  maximumVotesColor: {r: 0, g: 1, b: 0, a: 1}
+  maximumVotes: 4
   characterPortrait: {fileID: 5563852519842150538}
   characterName: {fileID: 5636820626055359177}
   characterNickname: {fileID: 3719731171799124385}

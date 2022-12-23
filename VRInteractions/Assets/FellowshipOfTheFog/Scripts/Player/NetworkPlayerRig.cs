@@ -409,8 +409,6 @@ public class NetworkPlayerRig : NetworkBehaviour
             talkingIcon.gameObject.SetActive(false);
         }
 
-        characterCanvas.transform.LookAt(Camera.main.transform, Vector3.up);
-
         if (muteTimer.Expired(Runner))
         {
             muteTimer = TickTimer.None;
