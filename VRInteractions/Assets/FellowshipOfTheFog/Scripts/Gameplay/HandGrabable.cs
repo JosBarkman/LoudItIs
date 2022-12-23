@@ -174,19 +174,9 @@ public class HandGrabable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
 
-        bool leftController = args.interactorObject.transform.CompareTag("LeftController");
+        bool leftController = args.interactorObject.transform.CompareTag("LeftController");        
 
-        secondaryCollision = (args.interactorObject.transform.position - secondaryCollider.transform.position).sqrMagnitude <
-            (args.interactorObject.transform.position - primaryCollider.transform.position).sqrMagnitude;
-
-        if (secondaryCollision && doubleSide)
-        {
-            currentPositions = leftController ? secondaryLeftHandFignersPosition : secondaryRightHandFignersPosition;
-        }
-        else
-        {
-            currentPositions = leftController ? leftHandFignersPosition : rightHandFignersPosition;
-        }
+        currentPositions = leftController ? leftHandFignersPosition : rightHandFignersPosition;        
 
         if (useAttachPoint)
         {
@@ -196,6 +186,14 @@ public class HandGrabable : XRGrabInteractable
         if (!doorHandling)
         {
             return;
+        }
+
+        secondaryCollision = (args.interactorObject.transform.position - secondaryCollider.transform.position).sqrMagnitude <
+            (args.interactorObject.transform.position - primaryCollider.transform.position).sqrMagnitude;
+
+        if (secondaryCollision && doubleSide)
+        {
+            currentPositions = leftController ? secondaryLeftHandFignersPosition : secondaryRightHandFignersPosition;
         }
 
         float radians = 1.0f;
