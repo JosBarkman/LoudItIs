@@ -25,11 +25,6 @@ public class MenuControllerRoleSelector : MonoBehaviour
 
     #region Public Methods
 
-    public void ShowCharacterSelectorMenu()
-    {
-        characterSelectorController.gameObject.SetActive(true);
-    }
-
     public void SelectCharacter(CharacterSheet sheet)
     {
         roleSelectionController.PickRoleAndCharacter(Role.Character, sheet);

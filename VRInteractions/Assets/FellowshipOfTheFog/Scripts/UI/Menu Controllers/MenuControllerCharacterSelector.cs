@@ -51,6 +51,37 @@ public class MenuControllerCharacterSelector : MonoBehaviour
         portraits[sheet.name.Substring(0, 4)].SetDisabled(disabledCharacterMaterial);
     }
 
+    public void ShowMenu()
+    {
+        gameObject.SetActive(true);
+
+        string selectedCharacterName = "";
+
+        foreach (var item in controller.roleSelectionController.lockedCharacters)
+        {
+            if (item.Value)
+            {
+                portraits[item.Key].SetDisabled(disabledCharacterMaterial);
+            }
+            else if (selectedCharacterName == "")
+            {
+                selectedCharacterName = item.Key;
+            }
+        }
+
+        CharacterSheet selectedCharacter = manager.characters.Find(x =>
+            x.name.Substring(0, 4).Equals(selectedCharacterName)
+        );
+
+        UpdateCharacter(selectedCharacter);
+    }
+
+    public void HideMenu()
+    {
+        gameObject.SetActive(false);
+
+    }
+
     #endregion
 
     #region Unity Events
@@ -83,26 +114,6 @@ public class MenuControllerCharacterSelector : MonoBehaviour
                 UpdateCharacter(sheet);
             });
         }
-
-        string selectedCharacterName = "";
-
-        foreach (var item in controller.roleSelectionController.lockedCharacters)
-        {
-            if (item.Value)
-            {
-                portraits[item.Key].SetDisabled(disabledCharacterMaterial);
-            }
-            else if (selectedCharacterName == "")
-            {
-                selectedCharacterName = item.Key;
-            }
-        }
-
-        CharacterSheet selectedCharacter = manager.characters.Find(x =>
-            x.name.Substring(0, 4).Equals(selectedCharacterName)
-        );
-
-        UpdateCharacter(selectedCharacter); 
     }
 
     #endregion
