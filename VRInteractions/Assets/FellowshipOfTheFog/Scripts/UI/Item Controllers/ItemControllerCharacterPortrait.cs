@@ -26,6 +26,11 @@ public class ItemControllerCharacterPortrait : MonoBehaviour
         button.onClick.AddListener(action);
     }
 
+    public void SetDisabled()
+    {
+        button.interactable = false;
+    }
+
     #endregion
 
     #region Unity Events

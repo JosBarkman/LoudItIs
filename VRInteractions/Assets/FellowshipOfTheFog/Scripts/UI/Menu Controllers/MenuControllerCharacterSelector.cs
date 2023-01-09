@@ -26,6 +26,7 @@ public class MenuControllerCharacterSelector : MonoBehaviour
 
     private CharacterSheet currentCharacter = null;
     private NetworkManager manager;
+    private Dictionary<string, ItemControllerCharacterPortrait> portraits = new Dictionary<string, ItemControllerCharacterPortrait>();
 
     #endregion
 
@@ -41,6 +42,11 @@ public class MenuControllerCharacterSelector : MonoBehaviour
     {
         controller.SelectCharacter(currentCharacter);
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void DisableCharacter(CharacterSheet sheet)
+    {
+        portraits[sheet.name].SetDisabled();
     }
 
     #endregion
@@ -67,7 +73,11 @@ public class MenuControllerCharacterSelector : MonoBehaviour
         foreach (CharacterSheet sheet in manager.characters)
         {
             GameObject portrait = Instantiate(characterPortraitItemPrefab, characterSelectorGrid);
-            portrait.GetComponent<ItemControllerCharacterPortrait>().SetContent(sheet, () => {
+            ItemControllerCharacterPortrait portraitItem = portrait.GetComponent<ItemControllerCharacterPortrait>();
+
+            portraits.Add(sheet.name, portraitItem);
+
+            portraitItem.SetContent(sheet, () => {
                 UpdateCharacter(sheet);
             });
         }

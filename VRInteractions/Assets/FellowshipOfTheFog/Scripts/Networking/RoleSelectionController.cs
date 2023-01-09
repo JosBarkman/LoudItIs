@@ -29,17 +29,26 @@ public class RoleSelectionController : NetworkBehaviour
     [SerializeField]
     private GameObject startGameVrMenu;
 
+    private MenuControllerCharacterSelector currentCharacterSelector;
+
     private NetworkManager manager;
 
     #endregion
 
     #region Public Methods
 
-    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_PickRoleAndCharacter([RpcTarget] PlayerRef targetPlayer, string characterName, float scale, RpcInfo info = default)
     {
         CharacterSheet sheet = manager.characters.Find(x => x.name == characterName);
 
+        currentCharacterSelector.DisableCharacter(sheet);
+
+        if (!Runner.IsServer)
+        {
+            return;
+        }
+        
         manager.SpawnCharacter(info.Source, sheet, scale);
     }
 
@@ -96,11 +105,15 @@ public class RoleSelectionController : NetworkBehaviour
         {
             vrMenu.SetActive(true);
             defaultMenu.SetActive(false);
+
+            currentCharacterSelector = vrMenu.GetComponentInChildren<MenuControllerCharacterSelector>();
         }
         else
         {
             vrMenu.SetActive(false);
             defaultMenu.SetActive(true);
+
+            currentCharacterSelector = defaultMenu.GetComponentInChildren<MenuControllerCharacterSelector>();
         }
     }
 
