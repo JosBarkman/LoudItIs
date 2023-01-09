@@ -48,7 +48,7 @@ public class MenuControllerCharacterSelector : MonoBehaviour
 
     public void DisableCharacter(CharacterSheet sheet)
     {
-        portraits[sheet.name].SetDisabled(disabledCharacterMaterial);
+        portraits[sheet.name.Substring(0, 4)].SetDisabled(disabledCharacterMaterial);
     }
 
     #endregion
@@ -77,14 +77,32 @@ public class MenuControllerCharacterSelector : MonoBehaviour
             GameObject portrait = Instantiate(characterPortraitItemPrefab, characterSelectorGrid);
             ItemControllerCharacterPortrait portraitItem = portrait.GetComponent<ItemControllerCharacterPortrait>();
 
-            portraits.Add(sheet.name, portraitItem);
+            portraits.Add(sheet.name.Substring(0, 4), portraitItem);
 
             portraitItem.SetContent(sheet, () => {
                 UpdateCharacter(sheet);
             });
         }
 
-        UpdateCharacter(manager.characters[0]); 
+        string selectedCharacterName = "";
+
+        foreach (var item in controller.roleSelectionController.lockedCharacters)
+        {
+            if (item.Value)
+            {
+                portraits[item.Key].SetDisabled(disabledCharacterMaterial);
+            }
+            else if (selectedCharacterName == "")
+            {
+                selectedCharacterName = item.Key;
+            }
+        }
+
+        CharacterSheet selectedCharacter = manager.characters.Find(x =>
+            x.name.Substring(0, 4).Equals(selectedCharacterName)
+        );
+
+        UpdateCharacter(selectedCharacter); 
     }
 
     #endregion
