@@ -13,6 +13,9 @@ public class MenuControllerCharacterSelector : MonoBehaviour
     [SerializeField]
     private GameObject goalItemPrefab;
 
+    [SerializeField]
+    private Material disabledCharacterMaterial;
+
     [Header("Components")]
     [SerializeField]
     private Transform characterSelectorGrid;
@@ -46,7 +49,7 @@ public class MenuControllerCharacterSelector : MonoBehaviour
 
     public void DisableCharacter(CharacterSheet sheet)
     {
-        portraits[sheet.name].SetDisabled();
+        portraits[sheet.name].SetDisabled(disabledCharacterMaterial);
     }
 
     #endregion

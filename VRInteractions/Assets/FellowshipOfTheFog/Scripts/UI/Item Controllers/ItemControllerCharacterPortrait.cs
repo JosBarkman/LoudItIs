@@ -26,9 +26,12 @@ public class ItemControllerCharacterPortrait : MonoBehaviour
         button.onClick.AddListener(action);
     }
 
-    public void SetDisabled()
+    public void SetDisabled(Material disableMaterial)
     {
         button.interactable = false;
+        portrait.material = disableMaterial;
+
+        disableMaterial.SetTexture("_MainTex", portrait.sprite.texture);
     }
 
     #endregion
