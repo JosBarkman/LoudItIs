@@ -44,7 +44,6 @@ public class MenuControllerCharacterSelector : MonoBehaviour
     public void PickCurrentCharacter()
     {
         controller.SelectCharacter(currentCharacter);
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void DisableCharacter(CharacterSheet sheet)

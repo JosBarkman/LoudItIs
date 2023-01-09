@@ -33,24 +33,14 @@ public class RoleSelectionController : NetworkBehaviour
 
     private NetworkManager manager;
 
+    [HideInInspector]
+    [Networked]
+    [Capacity(4)]
+    public NetworkDictionary<string, NetworkBool> lockedCharacters => default;
+
     #endregion
 
     #region Public Methods
-
-    [Rpc(sources: RpcSources.All, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_PickRoleAndCharacter(string characterName, float scale, RpcInfo info = default)
-    {
-        CharacterSheet sheet = manager.characters.Find(x => x.name == characterName);
-
-        currentRoleSelector.DisableCharacter(sheet);
-
-        if (!Runner.IsServer)
-        {
-            return;
-        }
-        
-        manager.SpawnCharacter(info.Source, sheet, scale);
-    }
 
     public void PickRoleAndCharacter(Role role, CharacterSheet sheet)
     {
@@ -67,22 +57,19 @@ public class RoleSelectionController : NetworkBehaviour
         {
             playerRig.SetSpectator();
             manager.spectator = true;
-        }
 
-        if (Runner.IsServer)
-        {
-            if (vrMenu.activeInHierarchy)
+            if (Runner.IsServer)
             {
-                startGameVrMenu.SetActive(true);
-            }
-            else
-            {
-                startGameDefaultMenu.SetActive(true);
+                if (vrMenu.activeInHierarchy)
+                {
+                    startGameVrMenu.SetActive(true);
+                }
+                else
+                {
+                    startGameDefaultMenu.SetActive(true);
+                }
             }
         }
-
-        vrMenu.SetActive(false);
-        defaultMenu.SetActive(false);
 
         return;
     }
@@ -91,9 +78,6 @@ public class RoleSelectionController : NetworkBehaviour
     {
         // TODO: Hardcoded Scene
         Runner.SetActiveScene(2);
-
-        // Bad
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void ShowMenu()
@@ -128,6 +112,75 @@ public class RoleSelectionController : NetworkBehaviour
         if (playerRig == null)
         {
             playerRig = FindObjectOfType<LocalPlayerRig>();
+        }
+    }
+
+    #endregion
+
+    #region Fusion Events
+
+    public override void Spawned()
+    {
+        if (!Runner.IsServer)
+        {
+            return;
+        }
+
+        lockedCharacters.Clear();
+
+        foreach (var item in manager.characters)
+        {
+            lockedCharacters.Add(item.name.Substring(0, 4), false);
+        }
+    }
+
+    #endregion
+
+    #region RPC's
+
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_PickRoleAndCharacter(string characterName, float scale, RpcInfo info = default)
+    {
+        CharacterSheet sheet = manager.characters.Find(x => x.name == characterName);
+
+        currentRoleSelector.DisableCharacter(sheet);
+
+        if (!Runner.IsServer)
+        {
+            return;
+        }
+
+        if (lockedCharacters[sheet.name.Substring(0, 4)])
+        {
+            return;
+        }
+
+        manager.SpawnCharacter(info.Source, sheet, scale);
+        lockedCharacters.Set(sheet.name.Substring(0, 4), true);
+
+        RPC_CharacterSpawned(info.Source, true);
+
+        // show start game menu
+        if (info.Source == Runner.LocalPlayer)
+        {
+            if (vrMenu.activeInHierarchy)
+            {
+                startGameVrMenu.SetActive(true);
+            }
+            else
+            {
+                startGameDefaultMenu.SetActive(true);
+            }
+        }
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    public void RPC_CharacterSpawned([RpcTarget] PlayerRef target, NetworkBool spawned)
+    {
+        if (spawned)
+        {
+            vrMenu.SetActive(false);
+            defaultMenu.SetActive(false);
         }
     }
 
