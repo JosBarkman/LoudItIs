@@ -128,7 +128,10 @@ public class MenuControllerCharacterDescription : MonoBehaviour
                 }
             }
 
-            pickCharacterButton.interactable = true;
+            if (pickCharacterButton != null)
+            {
+                pickCharacterButton.interactable = true;
+            }
 
             // Hack to ensure that the goal list resizes properly, prabably not best solution
             Canvas.ForceUpdateCanvases();
