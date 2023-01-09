@@ -32,6 +32,11 @@ public class MenuControllerRoleSelector : MonoBehaviour
         roleSelectionController.PickRoleAndCharacter(Role.Character, sheet);
     }
 
+    public void DisableCharacter(CharacterSheet sheet)
+    {
+        characterSelectorController.DisableCharacter(sheet);
+    }
+
     #endregion
 
     #region Unity Events

@@ -29,7 +29,7 @@ public class RoleSelectionController : NetworkBehaviour
     [SerializeField]
     private GameObject startGameVrMenu;
 
-    private MenuControllerCharacterSelector currentCharacterSelector;
+    private MenuControllerRoleSelector currentRoleSelector;
 
     private NetworkManager manager;
 
@@ -38,11 +38,11 @@ public class RoleSelectionController : NetworkBehaviour
     #region Public Methods
 
     [Rpc(sources: RpcSources.All, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_PickRoleAndCharacter([RpcTarget] PlayerRef targetPlayer, string characterName, float scale, RpcInfo info = default)
+    public void RPC_PickRoleAndCharacter(string characterName, float scale, RpcInfo info = default)
     {
         CharacterSheet sheet = manager.characters.Find(x => x.name == characterName);
 
-        currentCharacterSelector.DisableCharacter(sheet);
+        currentRoleSelector.DisableCharacter(sheet);
 
         if (!Runner.IsServer)
         {
@@ -59,7 +59,7 @@ public class RoleSelectionController : NetworkBehaviour
         if (role == Role.Character)
         {
             // We use playerref.none to target the rpc call to the server even though the target is already server, so this should not be necesary.
-            RPC_PickRoleAndCharacter(PlayerRef.None, sheet.name, playerRig.headset.position.y / playerRig.xrOrigin.CameraYOffset);
+            RPC_PickRoleAndCharacter(sheet.name, playerRig.headset.position.y / playerRig.xrOrigin.CameraYOffset);
 
             playerRig.SetCharacter(sheet, true);
         }
@@ -106,14 +106,14 @@ public class RoleSelectionController : NetworkBehaviour
             vrMenu.SetActive(true);
             defaultMenu.SetActive(false);
 
-            currentCharacterSelector = vrMenu.GetComponentInChildren<MenuControllerCharacterSelector>();
+            currentRoleSelector = vrMenu.GetComponentInChildren<MenuControllerRoleSelector>();
         }
         else
         {
             vrMenu.SetActive(false);
             defaultMenu.SetActive(true);
 
-            currentCharacterSelector = defaultMenu.GetComponentInChildren<MenuControllerCharacterSelector>();
+            currentRoleSelector = defaultMenu.GetComponentInChildren<MenuControllerRoleSelector>();
         }
     }
 
