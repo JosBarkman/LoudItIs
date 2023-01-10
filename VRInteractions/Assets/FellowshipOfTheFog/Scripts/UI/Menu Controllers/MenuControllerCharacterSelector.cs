@@ -46,9 +46,14 @@ public class MenuControllerCharacterSelector : MonoBehaviour
         controller.SelectCharacter(currentCharacter);
     }
 
-    public void DisableCharacter(CharacterSheet sheet)
+    public void UpdateLockedCharacters()
     {
-        portraits[sheet.name.Substring(0, 4)].SetDisabled(disabledCharacterMaterial);
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        LockAndUnlockCharacters();
     }
 
     public void ShowMenu()
@@ -56,32 +61,13 @@ public class MenuControllerCharacterSelector : MonoBehaviour
         gameObject.SetActive(true);
 
         PopulateCharacterList();
-
-        string selectedCharacterName = "";
-
-        foreach (var item in controller.roleSelectionController.lockedCharacters)
-        {
-            if (item.Value)
-            {
-                portraits[item.Key].SetDisabled(disabledCharacterMaterial);
-            }
-            else if (selectedCharacterName == "")
-            {
-                selectedCharacterName = item.Key;
-            }
-        }
-
-        CharacterSheet selectedCharacter = manager.characters.Find(x =>
-            x.name.Substring(0, 4).Equals(selectedCharacterName)
-        );
-
-        UpdateCharacter(selectedCharacter);
+        LockAndUnlockCharacters();
+        UpdateCharacter(currentCharacter);
     }
 
     public void HideMenu()
     {
         gameObject.SetActive(false);
-
     }
 
     #endregion
@@ -100,11 +86,31 @@ public class MenuControllerCharacterSelector : MonoBehaviour
             GameObject portrait = Instantiate(characterPortraitItemPrefab, characterSelectorGrid);
             ItemControllerCharacterPortrait portraitItem = portrait.GetComponent<ItemControllerCharacterPortrait>();
 
-            portraits.Add(sheet.name.Substring(0, 4), portraitItem);
+            portraits.Add(sheet.name, portraitItem);
 
             portraitItem.SetContent(sheet, () => {
                 UpdateCharacter(sheet);
             });
+        }
+    }
+
+    private void LockAndUnlockCharacters()
+    {
+        foreach (var item in controller.roleSelectionController.lockedCharacters)
+        {
+            if (item.Value)
+            {
+                portraits[item.Key.ToString()].SetDisabled(disabledCharacterMaterial);
+
+                if (currentCharacter != null && currentCharacter.name.Equals(item.Key.ToString()))
+                {
+                    UpdateCharacter(null);
+                }
+            }
+            else
+            {
+                portraits[item.Key.ToString()].SetEnabled();
+            }
         }
     }
 

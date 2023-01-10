@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System;
 
 public class ItemControllerCharacterPortrait : MonoBehaviour
 {
@@ -32,6 +33,12 @@ public class ItemControllerCharacterPortrait : MonoBehaviour
         portrait.material = disableMaterial;
 
         disableMaterial.SetTexture("_MainTex", portrait.sprite.texture);
+    }
+
+    public void SetEnabled()
+    {
+        button.interactable = true;
+        portrait.material = null;        
     }
 
     #endregion

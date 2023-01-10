@@ -31,16 +31,16 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
     [SerializeField]
     private GameObject startGameVrMenu;
 
-    private MenuControllerRoleSelector currentRoleSelector;
+    private MenuControllerRoleSelector currentMenuRoleSelector;
 
     private NetworkManager manager;
 
     [HideInInspector]
     [Networked]
     [Capacity(4)]
-    public NetworkDictionary<string, NetworkBool> lockedCharacters => default;
+    public NetworkDictionary<NetworkString<_32>, NetworkBool> lockedCharacters => default;
 
-    private Queue<string> unlockCharactersQueue;
+    public Queue<KeyValuePair<string, bool>> characterLockQueue = new Queue<KeyValuePair<string, bool>>();
 
     #endregion
 
@@ -94,14 +94,14 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
             vrMenu.SetActive(true);
             defaultMenu.SetActive(false);
 
-            currentRoleSelector = vrMenu.GetComponentInChildren<MenuControllerRoleSelector>();
+            currentMenuRoleSelector = vrMenu.GetComponentInChildren<MenuControllerRoleSelector>();
         }
         else
         {
             vrMenu.SetActive(false);
             defaultMenu.SetActive(true);
 
-            currentRoleSelector = defaultMenu.GetComponentInChildren<MenuControllerRoleSelector>();
+            currentMenuRoleSelector = defaultMenu.GetComponentInChildren<MenuControllerRoleSelector>();
         }
     }
 
@@ -130,14 +130,13 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
             return;
         }
 
-        unlockCharactersQueue = new Queue<string>();
         Runner.AddCallbacks(this);
 
         lockedCharacters.Clear();
 
         foreach (var item in manager.characters)
         {
-            lockedCharacters.Add(item.name.Substring(0, 4), false);
+            lockedCharacters.Add(item.name, false);
         }
     }
 
@@ -148,9 +147,15 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
             return;
         }
 
-        while (unlockCharactersQueue.Count != 0)
+        if (characterLockQueue.Count != 0)
         {
-            lockedCharacters.Set(unlockCharactersQueue.Dequeue(), false);
+            while (characterLockQueue.Count != 0)
+            {
+                var item = characterLockQueue.Dequeue();
+                lockedCharacters.Set(item.Key, item.Value);
+            }
+
+            RPC_LockedCharacterChanged();
         }
     }
 
@@ -158,25 +163,23 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
 
     #region RPC's
 
-    [Rpc(sources: RpcSources.All, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_PickRoleAndCharacter(string characterName, float scale, RpcInfo info = default)
     {
-        CharacterSheet sheet = manager.characters.Find(x => x.name == characterName);
-
-        currentRoleSelector.DisableCharacter(sheet);
-
         if (!Runner.IsServer)
         {
             return;
         }
 
-        if (lockedCharacters[sheet.name.Substring(0, 4)])
+        CharacterSheet sheet = manager.characters.Find(x => x.name == characterName);
+
+        if (lockedCharacters[sheet.name])
         {
             return;
         }
 
         manager.SpawnCharacter(info.Source, sheet, scale);
-        lockedCharacters.Set(sheet.name.Substring(0, 4), true);
+        characterLockQueue.Enqueue(new KeyValuePair<string, bool>(sheet.name, true));
 
         RPC_CharacterSpawned(info.Source, true);
 
@@ -204,16 +207,25 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
         }
     }
 
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    public void RPC_LockedCharacterChanged()
+    {
+        if (currentMenuRoleSelector == null)
+        {
+            return;
+        }
+
+        currentMenuRoleSelector.UpdateLockedCharacters();
+    }
+
     #endregion
 
     #region Fusion Network Callbacks
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) { Debug.Log("AAAAAAAAA"); }
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {}
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) 
     {
-        Debug.Log("AAAAAAAAA");
-
         if (!runner.IsServer)
         {
             return;
@@ -233,7 +245,7 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
             return;
         }
 
-        unlockCharactersQueue.Enqueue(networkRig.character.name.Substring(0, 4));
+        characterLockQueue.Enqueue(new KeyValuePair<string, bool>(networkRig.character.name, false));
         runner.Despawn(networkPlayerObject);
     }
 

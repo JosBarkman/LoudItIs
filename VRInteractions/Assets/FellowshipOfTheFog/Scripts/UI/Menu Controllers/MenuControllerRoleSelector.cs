@@ -30,9 +30,29 @@ public class MenuControllerRoleSelector : MonoBehaviour
         roleSelectionController.PickRoleAndCharacter(Role.Character, sheet);
     }
 
-    public void DisableCharacter(CharacterSheet sheet)
+    public void UpdateLockedCharacters()
     {
-        characterSelectorController.DisableCharacter(sheet);
+        characterSelectorController.UpdateLockedCharacters();
+
+        LockActorButton();
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    private void LockActorButton()
+    {
+        bool characterAvailable = false;
+
+        var enumerator = roleSelectionController.lockedCharacters.GetEnumerator();
+
+        while (characterAvailable == false && enumerator.MoveNext())
+        {
+            characterAvailable = !enumerator.Current.Value;
+        }
+            
+        actorRoleButton.interactable = characterAvailable;
     }
 
     #endregion
@@ -54,19 +74,8 @@ public class MenuControllerRoleSelector : MonoBehaviour
             roleSelectionController.PickRoleAndCharacter(Role.Spectator, null);
         });
 
-        bool characterAvailable = false;
-        var enumerator = roleSelectionController.lockedCharacters.GetEnumerator();
-
-        while (characterAvailable == false && enumerator.MoveNext())
-        {
-            characterAvailable = !enumerator.Current.Value;
-        }
-
-        if (!characterAvailable)
-        {
-            actorRoleButton.interactable = false;
-        }
-    }   
+        LockActorButton();
+    }
 
     #endregion
 }
