@@ -18,8 +18,12 @@ public class DoorLock : NetworkBehaviour
     [Networked(OnChanged = "OnOpenChanegd", OnChangedTargets = OnChangedTargets.All)]
     public NetworkBool open { get; set; }
 
+    [Header("Components")]
     [SerializeField]
     private HandGrabable doorHandling = null;
+
+    [SerializeField]
+    private Rigidbody body = null;
 
     #endregion
 
@@ -57,6 +61,7 @@ public class DoorLock : NetworkBehaviour
         }
 
         doorHandling.enabled = true;
+        body.isKinematic = false;
     }
 
     private void SetLocked()
@@ -72,11 +77,20 @@ public class DoorLock : NetworkBehaviour
         }
 
         doorHandling.enabled = false;
+        body.isKinematic = true;
     }
-    
+
     #endregion
 
     #region Unity Events
+
+    private void Start()
+    {
+        if (body == null)
+        {
+            body = GetComponentInChildren<Rigidbody>();
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

@@ -24,6 +24,9 @@ public class NetworkSceneManager : NetworkSceneManagerBase
         IEnumerable<PlayerRef> players = Runner.ActivePlayers;
         Dictionary<PlayerRef, PlayerData> playerCharacters = new Dictionary<PlayerRef, PlayerData>();
 
+        RoleSelectionController lastSceneController;
+        Dictionary<string, bool> characters = new Dictionary<string, bool>();
+
         if (Runner.IsServer)
         {   
             foreach (PlayerRef playerRef in players)
@@ -43,6 +46,18 @@ public class NetworkSceneManager : NetworkSceneManagerBase
                     }
                 }
             }
+
+            RoleSelectionController[] controllers = activeScene.FindObjectsOfTypeInOrder<RoleSelectionController>();
+
+            if (controllers.Length != 0)
+            {
+                lastSceneController = controllers[0];
+
+                foreach (var item in lastSceneController.lockedCharacters)
+                {
+                    characters.Add(item.Key.ToString(), item.Value);
+                }
+            }            
         }
 
         yield return SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Single);
@@ -70,6 +85,13 @@ public class NetworkSceneManager : NetworkSceneManagerBase
                     NetworkPlayerRig rig = manager.SpawnCharacter(playerRef, playerCharacters[playerRef].sheet, playerCharacters[playerRef].scale);
                     rig.characterName = playerCharacters[playerRef].sheet.name;
                 }
+            }
+
+            RoleSelectionController newSceneController = loadedScene.FindObjectsOfTypeInOrder<RoleSelectionController>()[0];
+
+            foreach (var item in characters)
+            {
+                newSceneController.characterLockQueue.Enqueue(new KeyValuePair<string, bool>(item.Key, item.Value));
             }
         }
 
