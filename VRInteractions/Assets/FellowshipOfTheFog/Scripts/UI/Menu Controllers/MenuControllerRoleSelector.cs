@@ -12,6 +12,9 @@ public class MenuControllerRoleSelector : MonoBehaviour
     [SerializeField]
     private Button spectatorRoleButton;
 
+    [SerializeField]
+    private Button actorRoleButton;
+
     [Header("External controllers")]
     [SerializeField]
     private MenuControllerCharacterSelector characterSelectorController;
@@ -22,14 +25,34 @@ public class MenuControllerRoleSelector : MonoBehaviour
 
     #region Public Methods
 
-    public void ShowCharacterSelectorMenu()
-    {
-        characterSelectorController.gameObject.SetActive(true);
-    }
-
     public void SelectCharacter(CharacterSheet sheet)
     {
         roleSelectionController.PickRoleAndCharacter(Role.Character, sheet);
+    }
+
+    public void UpdateLockedCharacters()
+    {
+        characterSelectorController.UpdateLockedCharacters();
+
+        LockActorButton();
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    private void LockActorButton()
+    {
+        bool characterAvailable = false;
+
+        var enumerator = roleSelectionController.lockedCharacters.GetEnumerator();
+
+        while (characterAvailable == false && enumerator.MoveNext())
+        {
+            characterAvailable = !enumerator.Current.Value;
+        }
+            
+        actorRoleButton.interactable = characterAvailable;
     }
 
     #endregion
@@ -50,7 +73,9 @@ public class MenuControllerRoleSelector : MonoBehaviour
         {
             roleSelectionController.PickRoleAndCharacter(Role.Spectator, null);
         });
-    }   
+
+        LockActorButton();
+    }
 
     #endregion
 }

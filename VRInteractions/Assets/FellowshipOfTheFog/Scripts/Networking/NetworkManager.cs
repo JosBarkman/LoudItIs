@@ -117,19 +117,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     #region INetworkRunnerCallbacks
 
-    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
-    {
-        if (runner.IsServer)
-        {
-            NetworkObject networkPlayerObject = runner.GetPlayerObject(player);
-
-            if (networkPlayerObject != null)
-            {
-                runner.Despawn(networkPlayerObject);
-            }
-        }
-    }
-
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
         OnSessionListUpdatedEvent?.Invoke(sessionList);
@@ -152,12 +139,15 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             return;
         }
 
+        // Wait some frames for safety
         StartCoroutine(showRoleSelection());
     }
 
     #endregion
 
     #region Unused INetworkRunnerCallbacks
+
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {}
 
     public void OnConnectedToServer(NetworkRunner runner) {}
 

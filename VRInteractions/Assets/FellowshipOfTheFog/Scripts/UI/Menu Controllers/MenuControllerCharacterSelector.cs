@@ -13,6 +13,9 @@ public class MenuControllerCharacterSelector : MonoBehaviour
     [SerializeField]
     private GameObject goalItemPrefab;
 
+    [SerializeField]
+    private Material disabledCharacterMaterial;
+
     [Header("Components")]
     [SerializeField]
     private Transform characterSelectorGrid;
@@ -26,6 +29,7 @@ public class MenuControllerCharacterSelector : MonoBehaviour
 
     private CharacterSheet currentCharacter = null;
     private NetworkManager manager;
+    private Dictionary<string, ItemControllerCharacterPortrait> portraits = new Dictionary<string, ItemControllerCharacterPortrait>();
 
     #endregion
 
@@ -40,7 +44,74 @@ public class MenuControllerCharacterSelector : MonoBehaviour
     public void PickCurrentCharacter()
     {
         controller.SelectCharacter(currentCharacter);
-        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void UpdateLockedCharacters()
+    {
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        LockAndUnlockCharacters();
+    }
+
+    public void ShowMenu()
+    {
+        gameObject.SetActive(true);
+
+        PopulateCharacterList();
+        LockAndUnlockCharacters();
+        UpdateCharacter(currentCharacter);
+    }
+
+    public void HideMenu()
+    {
+        gameObject.SetActive(false);
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    private void PopulateCharacterList()
+    {
+        if (portraits.Count != 0)
+        {
+            return;
+        }
+
+        foreach (CharacterSheet sheet in manager.characters)
+        {
+            GameObject portrait = Instantiate(characterPortraitItemPrefab, characterSelectorGrid);
+            ItemControllerCharacterPortrait portraitItem = portrait.GetComponent<ItemControllerCharacterPortrait>();
+
+            portraits.Add(sheet.name, portraitItem);
+
+            portraitItem.SetContent(sheet, () => {
+                UpdateCharacter(sheet);
+            });
+        }
+    }
+
+    private void LockAndUnlockCharacters()
+    {
+        foreach (var item in controller.roleSelectionController.lockedCharacters)
+        {
+            if (item.Value)
+            {
+                portraits[item.Key.ToString()].SetDisabled(disabledCharacterMaterial);
+
+                if (currentCharacter != null && currentCharacter.name.Equals(item.Key.ToString()))
+                {
+                    UpdateCharacter(null);
+                }
+            }
+            else
+            {
+                portraits[item.Key.ToString()].SetEnabled();
+            }
+        }
     }
 
     #endregion
@@ -64,15 +135,7 @@ public class MenuControllerCharacterSelector : MonoBehaviour
 
     private void Start()
     {
-        foreach (CharacterSheet sheet in manager.characters)
-        {
-            GameObject portrait = Instantiate(characterPortraitItemPrefab, characterSelectorGrid);
-            portrait.GetComponent<ItemControllerCharacterPortrait>().SetContent(sheet, () => {
-                UpdateCharacter(sheet);
-            });
-        }
-
-        UpdateCharacter(manager.characters[0]); 
+        PopulateCharacterList();
     }
 
     #endregion
