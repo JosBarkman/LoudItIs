@@ -55,6 +55,8 @@ public class MenuControllerCharacterSelector : MonoBehaviour
     {
         gameObject.SetActive(true);
 
+        PopulateCharacterList();
+
         string selectedCharacterName = "";
 
         foreach (var item in controller.roleSelectionController.lockedCharacters)
@@ -84,6 +86,30 @@ public class MenuControllerCharacterSelector : MonoBehaviour
 
     #endregion
 
+    #region Private Methods
+
+    private void PopulateCharacterList()
+    {
+        if (portraits.Count != 0)
+        {
+            return;
+        }
+
+        foreach (CharacterSheet sheet in manager.characters)
+        {
+            GameObject portrait = Instantiate(characterPortraitItemPrefab, characterSelectorGrid);
+            ItemControllerCharacterPortrait portraitItem = portrait.GetComponent<ItemControllerCharacterPortrait>();
+
+            portraits.Add(sheet.name.Substring(0, 4), portraitItem);
+
+            portraitItem.SetContent(sheet, () => {
+                UpdateCharacter(sheet);
+            });
+        }
+    }
+
+    #endregion
+
     #region Unity Events
 
     private void Awake()
@@ -103,17 +129,7 @@ public class MenuControllerCharacterSelector : MonoBehaviour
 
     private void Start()
     {
-        foreach (CharacterSheet sheet in manager.characters)
-        {
-            GameObject portrait = Instantiate(characterPortraitItemPrefab, characterSelectorGrid);
-            ItemControllerCharacterPortrait portraitItem = portrait.GetComponent<ItemControllerCharacterPortrait>();
-
-            portraits.Add(sheet.name.Substring(0, 4), portraitItem);
-
-            portraitItem.SetContent(sheet, () => {
-                UpdateCharacter(sheet);
-            });
-        }
+        PopulateCharacterList();
     }
 
     #endregion
