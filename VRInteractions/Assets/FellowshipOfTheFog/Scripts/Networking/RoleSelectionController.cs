@@ -2,6 +2,8 @@ using Fusion;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.XR;
+using Fusion.Sockets;
+using System;
 
 public enum Role
 {
@@ -9,7 +11,7 @@ public enum Role
     Spectator = 1,
 }
 
-public class RoleSelectionController : NetworkBehaviour
+public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
 {
     #region Properties
 
@@ -37,6 +39,8 @@ public class RoleSelectionController : NetworkBehaviour
     [Networked]
     [Capacity(4)]
     public NetworkDictionary<string, NetworkBool> lockedCharacters => default;
+
+    private Queue<string> unlockCharactersQueue;
 
     #endregion
 
@@ -126,11 +130,27 @@ public class RoleSelectionController : NetworkBehaviour
             return;
         }
 
+        unlockCharactersQueue = new Queue<string>();
+        Runner.AddCallbacks(this);
+
         lockedCharacters.Clear();
 
         foreach (var item in manager.characters)
         {
             lockedCharacters.Add(item.name.Substring(0, 4), false);
+        }
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (!Runner.IsServer)
+        {
+            return;
+        }
+
+        while (unlockCharactersQueue.Count != 0)
+        {
+            lockedCharacters.Set(unlockCharactersQueue.Dequeue(), false);
         }
     }
 
@@ -183,6 +203,67 @@ public class RoleSelectionController : NetworkBehaviour
             defaultMenu.SetActive(false);
         }
     }
+
+    #endregion
+
+    #region Fusion Network Callbacks
+
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) { Debug.Log("AAAAAAAAA"); }
+
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) 
+    {
+        Debug.Log("AAAAAAAAA");
+
+        if (!runner.IsServer)
+        {
+            return;
+        }
+
+        NetworkObject networkPlayerObject = runner.GetPlayerObject(player);
+
+        if (networkPlayerObject == null)
+        {
+            return;
+        }
+
+        NetworkPlayerRig networkRig = networkPlayerObject.GetComponentInChildren<NetworkPlayerRig>();
+
+        if (networkRig == null)
+        {
+            return;
+        }
+
+        unlockCharactersQueue.Enqueue(networkRig.character.name.Substring(0, 4));
+        runner.Despawn(networkPlayerObject);
+    }
+
+    public void OnInput(NetworkRunner runner, NetworkInput input) {}
+
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {}
+
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {}
+
+    public void OnConnectedToServer(NetworkRunner runner) {}
+
+    public void OnDisconnectedFromServer(NetworkRunner runner) {}
+
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) {}
+
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {}
+
+    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) {}
+
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) {}
+
+    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) {}
+
+    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) {}
+
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) {}
+
+    public void OnSceneLoadDone(NetworkRunner runner) {}
+
+    public void OnSceneLoadStart(NetworkRunner runner) {}
 
     #endregion
 }
