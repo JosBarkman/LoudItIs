@@ -33,6 +33,13 @@ public class MenuControllerVotingMenu : MonoBehaviour
                 controller.VotePlayer(character.Key); 
             });
         }
+
+        Canvas.ForceUpdateCanvases();
+
+        var enumerator = this.characters.GetEnumerator();
+        enumerator.MoveNext();
+        enumerator.Current.Value.gameObject.SetActive(false);
+        enumerator.Current.Value.gameObject.SetActive(true);
     }
 
     public void UpdatePlayerVotes(PlayerRef player, int votes)
