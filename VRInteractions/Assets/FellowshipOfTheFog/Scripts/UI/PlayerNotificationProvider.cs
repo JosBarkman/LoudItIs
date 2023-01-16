@@ -21,6 +21,7 @@ public class PlayerNotificationProvider : MonoBehaviour
         gameObject.SetActive(true);
         notificationText.text = notification;
         timerText.gameObject.SetActive(timer);
+        notificationText.alignment = timer ? TextAnchor.LowerCenter : TextAnchor.MiddleCenter;
         UpdateTimer(seconds);
     }
 
