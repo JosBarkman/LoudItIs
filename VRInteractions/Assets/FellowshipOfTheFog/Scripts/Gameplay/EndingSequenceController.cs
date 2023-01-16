@@ -251,7 +251,7 @@ public class EndingSequenceController : NetworkBehaviour
         }
     }
 
-    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
     public void RPC_TeleportSpectator([RpcTarget] PlayerRef player, Vector3 position, Quaternion rotation)
     {
         FindObjectOfType<LocalPlayerRig>().TeleportSpectator(position, rotation);
