@@ -16,6 +16,7 @@ public class EndingSequenceController : NetworkBehaviour
     [SerializeField] private float initialSequenceWaitSeconds = 5.0f;
     [SerializeField] private float speakingTimeSeconds = 30.0f;
 
+    [SerializeField] private Transform spectatorsEndPosition;
     [SerializeField] private Transform[] endPositions;
 
     [Header("Settings")]
@@ -73,6 +74,10 @@ public class EndingSequenceController : NetworkBehaviour
                     i++;
                 }
             }
+            else
+            {
+                RPC_TeleportSpectator(activePlayer, spectatorsEndPosition.position, spectatorsEndPosition.rotation);
+            }
         }
 
         sequenceTimers[0] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds);
@@ -111,6 +116,11 @@ public class EndingSequenceController : NetworkBehaviour
         if (!Runner.IsServer)
         {
             return;
+        }
+
+        if (Keyboard.current[Key.Space].isPressed)
+        {
+            Vote(Runner.LocalPlayer);
         }
 
         // update player voting
@@ -239,6 +249,12 @@ public class EndingSequenceController : NetworkBehaviour
         {
             currentVotingMenu.UpdatePlayerVotes(players[i], votes[i]);
         }
+    }
+
+    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
+    public void RPC_TeleportSpectator([RpcTarget] PlayerRef player, Vector3 position, Quaternion rotation)
+    {
+        FindObjectOfType<LocalPlayerRig>().TeleportSpectator(position, rotation);
     }
 
     #endregion

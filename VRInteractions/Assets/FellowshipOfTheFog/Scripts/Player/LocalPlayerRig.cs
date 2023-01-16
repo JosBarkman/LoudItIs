@@ -213,6 +213,11 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
         rightHandRayInteractor.raycastMask = 0;
     }
 
+    public void TeleportSpectator(Vector3 position, Quaternion rotation)
+    {
+        Camera.main.transform.position = position;
+    }
+
     public void Unlock()
     {
         trackedPoseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
