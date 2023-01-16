@@ -216,6 +216,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
     public void TeleportSpectator(Vector3 position, Quaternion rotation)
     {
         Camera.main.transform.position = position;
+        Camera.main.transform.rotation = rotation;
     }
 
     public void Unlock()

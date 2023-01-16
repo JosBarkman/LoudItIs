@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class SpectatorCamera : MonoBehaviour
 {
-
     #region Properties
 
     [Header("Settings")]
