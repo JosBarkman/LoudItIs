@@ -216,7 +216,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7497032440160381909}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 588504428570959809}
+        m_TargetAssemblyTypeName: MenuControllerRoleSelector, Assembly-CSharp
+        m_MethodName: HideMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7497032440337999582
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,6 +903,14 @@ PrefabInstance:
     - target: {fileID: 199413963586924571, guid: 41cddfdaf80df69459dec98997ddee49, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0.7131783
+      objectReference: {fileID: 0}
+    - target: {fileID: 1800979097111333850, guid: 41cddfdaf80df69459dec98997ddee49, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7497032441109951899}
+    - target: {fileID: 1800979097111333850, guid: 41cddfdaf80df69459dec98997ddee49, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HideMenu
       objectReference: {fileID: 0}
     - target: {fileID: 1967700832862386438, guid: 41cddfdaf80df69459dec98997ddee49, type: 3}
       propertyPath: m_AnchorMax.y

@@ -37,6 +37,11 @@ public class MenuControllerRoleSelector : MonoBehaviour
         LockActorButton();
     }
 
+    public void HideMenu()
+    {
+        gameObject.SetActive(false);
+    }
+
     #endregion
 
     #region Private Methods

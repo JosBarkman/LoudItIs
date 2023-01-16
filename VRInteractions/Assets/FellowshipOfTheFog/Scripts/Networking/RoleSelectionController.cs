@@ -105,6 +105,7 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
             defaultMenu.SetActive(true);
 
             currentMenuRoleSelector = defaultMenu.GetComponentInChildren<MenuControllerRoleSelector>();
+
             vr = false;
         }
     }
