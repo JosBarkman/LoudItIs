@@ -8,13 +8,32 @@ public class SpectatorCamera : MonoBehaviour
     #region Properties
 
     [Header("Settings")]
-    public float horizontalSpeed = 0.15f;
-    public float verticalSpeed = 0.15f;
-    public float forwardSpeed = 0.15f;
 
-    public float horizontalRotation = 20.0f;
-    public float verticalRotation = 20.0f;
+    [SerializeField]
+    private float horizontalSpeed = 0.15f;
+    
+    [SerializeField]
+    private float verticalSpeed = 0.15f;
+    
+    [SerializeField]
+    private float forwardSpeed = 0.15f;
 
+    [SerializeField]
+    private float horizontalRotationSensivity = 20.0f;
+    
+    [SerializeField]
+    private float verticalRotationSensivity = 20.0f;
+
+    [SerializeField]
+    private float maxSpeed = 1.0f;
+
+    [SerializeField]
+    private float accelerationModifier = .1f;
+    
+    [SerializeField]
+    private float decelerationModifier = .1f;
+
+    private Vector3 movementSpeed = Vector3.zero;
     private PlayerInput input;
 
     #endregion
@@ -38,13 +57,21 @@ public class SpectatorCamera : MonoBehaviour
 
     private void Update()
     {
-        Vector3 translate = input.Spectator.Movement.ReadValue<Vector3>() * Time.deltaTime;
-        Vector2 rotation = input.Spectator.Rotation.ReadValue<Vector2>() * Time.deltaTime;
+        Vector3 translate = input.Spectator.Movement.ReadValue<Vector3>().normalized * Time.deltaTime;
 
-        transform.Translate(new Vector3(translate.x * horizontalSpeed, translate.y * verticalSpeed, translate.z * forwardSpeed));
+        Vector3 speed = new Vector3(translate.x * horizontalSpeed, translate.y * verticalSpeed, translate.z * forwardSpeed) * accelerationModifier;
+        movementSpeed += speed;
 
-        transform.Rotate(new Vector3(0.0f, rotation.x * horizontalRotation, 0.0f), Space.World);
-        transform.Rotate(new Vector3(rotation.y * verticalRotation, 0.0f, 0.0f), Space.Self);
+        movementSpeed = movementSpeed + movementSpeed * -1.0f * decelerationModifier;
+
+        movementSpeed = Vector3.ClampMagnitude(movementSpeed, maxSpeed);
+
+        transform.Translate(movementSpeed);
+
+        Vector2 rotation = input.Spectator.Rotation.ReadValue<Vector2>() * Time.deltaTime * horizontalRotationSensivity;
+
+        transform.Rotate(Vector3.up * rotation.x, Space.World);
+        transform.Rotate(Vector3.right * rotation.y, Space.Self);
     }
 
     #endregion
