@@ -16,23 +16,22 @@ public class EndingSequenceController : NetworkBehaviour
     [SerializeField] private float initialSequenceWaitSeconds = 5.0f;
     [SerializeField] private float speakingTimeSeconds = 30.0f;
 
+    [SerializeField] private Transform spectatorsEndPosition;
     [SerializeField] private Transform[] endPositions;
 
     [Header("Settings")]
     [SerializeField] private GameObject endGameVrMenu;
     [SerializeField] private GameObject endGameDefaultMenu;
 
-    private Dictionary<PlayerRef, bool> votes;
-    private NetworkPlayerRig[] rigs;
+    private Dictionary<PlayerRef, bool> startingSequenceVotes;
+    private Dictionary<PlayerRef, PlayerRef> playerActorVotes;
     private Queue<KeyValuePair<PlayerRef, PlayerRef>> votingQueue;
 
-    private TickTimer[] timers = new TickTimer[5] { TickTimer.None, TickTimer.None, TickTimer.None, TickTimer.None, TickTimer.None };
+    private NetworkPlayerRig[] rigs;
+
+    private TickTimer[] sequenceTimers = new TickTimer[5] { TickTimer.None, TickTimer.None, TickTimer.None, TickTimer.None, TickTimer.None };
 
     private MenuControllerVotingMenu currentVotingMenu = null;
-
-    [Networked()]
-    [Capacity(16)]
-    private NetworkDictionary<PlayerRef, PlayerRef> playerVotes => default;
 
     #endregion
 
@@ -45,16 +44,16 @@ public class EndingSequenceController : NetworkBehaviour
             return;
         }
 
-        if (votes.ContainsKey(player))
+        if (startingSequenceVotes.ContainsKey(player))
         {
-            votes.Remove(player);
+            startingSequenceVotes.Remove(player);
         }
         else
         {
-            votes.Add(player, true);
+            startingSequenceVotes.Add(player, true);
         }
 
-        if (votes.Count < requiredVotes)
+        if (startingSequenceVotes.Count < requiredVotes)
         {
             return;
         }
@@ -75,13 +74,17 @@ public class EndingSequenceController : NetworkBehaviour
                     i++;
                 }
             }
+            else
+            {
+                RPC_TeleportSpectator(activePlayer, spectatorsEndPosition.position, spectatorsEndPosition.rotation);
+            }
         }
 
-        timers[0] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds);
-        timers[1] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + speakingTimeSeconds);
-        timers[2] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + (speakingTimeSeconds * 2));
-        timers[3] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + (speakingTimeSeconds * 3));
-        timers[4] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + (speakingTimeSeconds * 4));
+        sequenceTimers[0] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds);
+        sequenceTimers[1] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + speakingTimeSeconds);
+        sequenceTimers[2] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + (speakingTimeSeconds * 2));
+        sequenceTimers[3] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + (speakingTimeSeconds * 3));
+        sequenceTimers[4] = TickTimer.CreateFromSeconds(Runner, initialSequenceWaitSeconds + (speakingTimeSeconds * 4));
     }
 
     public void VotePlayer(PlayerRef player)
@@ -95,9 +98,10 @@ public class EndingSequenceController : NetworkBehaviour
 
     private void Start()
     {
-        votes = new Dictionary<PlayerRef, bool>();
-        rigs = new NetworkPlayerRig[4];
+        startingSequenceVotes = new Dictionary<PlayerRef, bool>();
+        playerActorVotes = new Dictionary<PlayerRef, PlayerRef>();
         votingQueue = new Queue<KeyValuePair<PlayerRef, PlayerRef>>();
+        rigs = new NetworkPlayerRig[4];
 
         endGameVrMenu.SetActive(false);
         endGameDefaultMenu.SetActive(false);
@@ -109,52 +113,59 @@ public class EndingSequenceController : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (Keyboard.current[Key.Space].isPressed)
-        {
-            Vote(Runner.LocalPlayer);
-        }
-
-        if (currentVotingMenu != null)
-        {
-            // This no bueno, poor performance, but nmo changed event for networkdictionaries, sad :(
-            foreach (var player in Runner.ActivePlayers)
-            {
-                currentVotingMenu.UpdatePlayerVotes(player, playerVotes.Count(x => x.Value == player));
-            }
-        }
-
         if (!Runner.IsServer)
         {
             return;
+        }
+
+        if (Keyboard.current[Key.Space].isPressed)
+        {
+            Vote(Runner.LocalPlayer);
         }
 
         // update player voting
         // we dequeue one item per tick
         if (votingQueue.Count != 0)
         {
-            var item = votingQueue.Dequeue();
-            if (!playerVotes.ContainsKey(item.Key))
+            List<PlayerRef> players = new List<PlayerRef>();
+            List<int> newVotes = new List<int>();
+
+            for (int i = 0; i < votingQueue.Count; i++)
             {
-                playerVotes.Add(item.Key, item.Value);
-            }
-            else
-            {
-                if (playerVotes.Get(item.Key) == item.Value)
+                var item = votingQueue.Dequeue();
+                if (!playerActorVotes.ContainsKey(item.Key))
                 {
-                    playerVotes.Remove(item.Key);
+                    playerActorVotes.Add(item.Key, item.Value);
                 }
                 else
                 {
-                    playerVotes.Set(item.Key, item.Value);
+                    if (playerActorVotes[item.Key] == item.Value)
+                    {
+                        playerActorVotes.Remove(item.Key);
+                    }
+                    else
+                    {
+                        PlayerRef oldVote = playerActorVotes[item.Key];
+
+                        playerActorVotes[item.Key] = item.Value;
+
+                        players.Add(oldVote);
+                        newVotes.Add(playerActorVotes.Count(x => x.Value == oldVote));
+                    }
                 }
-            }
+
+                players.Add(item.Value);
+                newVotes.Add(playerActorVotes.Count(x => x.Value == item.Value));
+
+                RPC_VoteQueueProcessed(players.ToArray(), newVotes.ToArray());
+            }            
         }
 
-        for (int i = 0; i < timers.Length - 1; i++)
+        for (int i = 0; i < sequenceTimers.Length - 1; i++)
         {
-            if (timers[i].Expired(Runner))
+            if (sequenceTimers[i].Expired(Runner))
             {
-                timers[i] = TickTimer.None;
+                sequenceTimers[i] = TickTimer.None;
                 if (rigs[i] != null)
                 {
                     rigs[i].RPC_Unmute(speakingTimeSeconds);
@@ -162,9 +173,9 @@ public class EndingSequenceController : NetworkBehaviour
             }
         }
 
-        if (timers[4].Expired(Runner))
+        if (sequenceTimers[4].Expired(Runner))
         {
-            timers[4] = TickTimer.None;
+            sequenceTimers[4] = TickTimer.None;
             for (int i = 0; i < rigs.Length; i++)
             {
                 if (rigs[i] != null)
@@ -220,10 +231,30 @@ public class EndingSequenceController : NetworkBehaviour
         currentVotingMenu.AddCharacterItems(playerCharacters);
     }
 
-    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsServer)]
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_QueueVote(PlayerRef target, RpcInfo info = default)
     {
         votingQueue.Enqueue(new KeyValuePair<PlayerRef, PlayerRef>(info.Source, target));
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    public void RPC_VoteQueueProcessed(PlayerRef[] players, int[] votes)
+    {
+        if (currentVotingMenu == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            currentVotingMenu.UpdatePlayerVotes(players[i], votes[i]);
+        }
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    public void RPC_TeleportSpectator([RpcTarget] PlayerRef player, Vector3 position, Quaternion rotation)
+    {
+        FindObjectOfType<LocalPlayerRig>().TeleportSpectator(position, rotation);
     }
 
     #endregion

@@ -35,6 +35,8 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
 
     private NetworkManager manager;
 
+    private bool vr = false;
+
     [HideInInspector]
     [Networked]
     [Capacity(4)]
@@ -95,6 +97,7 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
             defaultMenu.SetActive(false);
 
             currentMenuRoleSelector = vrMenu.GetComponentInChildren<MenuControllerRoleSelector>();
+            vr = true;
         }
         else
         {
@@ -102,6 +105,8 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
             defaultMenu.SetActive(true);
 
             currentMenuRoleSelector = defaultMenu.GetComponentInChildren<MenuControllerRoleSelector>();
+
+            vr = false;
         }
     }
 
@@ -186,7 +191,7 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
         // show start game menu
         if (info.Source == Runner.LocalPlayer)
         {
-            if (vrMenu.activeInHierarchy)
+            if (vr)
             {
                 startGameVrMenu.SetActive(true);
             }

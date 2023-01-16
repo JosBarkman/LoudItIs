@@ -2,6 +2,7 @@ using Fusion;
 using Fusion.Sockets;
 using Photon.Voice.Unity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.XR.CoreUtils;
 using UnityEngine;
@@ -211,6 +212,21 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
 
         leftHandRayInteractor.raycastMask = 0;
         rightHandRayInteractor.raycastMask = 0;
+    }
+
+    public void TeleportSpectator(Vector3 position, Quaternion rotation)
+    {
+        Camera.main.transform.position = position;
+        Camera.main.transform.rotation = rotation;
+
+        notification.Show("Everyone is going to explain his version of the story, pay attention.", false, 0.0f);
+        StartCoroutine(hideTeleportNotification());
+    }
+
+    public IEnumerator hideTeleportNotification()
+    {
+        yield return new WaitForSeconds(5.0f);
+        notification.Hide();
     }
 
     public void Unlock()
