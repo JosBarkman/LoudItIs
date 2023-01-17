@@ -15,7 +15,7 @@ public class EndingPhoneInteractable : XRSimpleInteractable
 
     #region Unity Events
 
-    private void Awake()
+    protected override void Awake()
     {
         if (endingController == null)
         {
