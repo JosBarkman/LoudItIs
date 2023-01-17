@@ -68,10 +68,10 @@ public class SpectatorCamera : MonoBehaviour
 
         transform.Translate(movementSpeed);
 
-        Vector2 rotation = input.Spectator.Rotation.ReadValue<Vector2>() * Time.deltaTime * horizontalRotationSensivity;
+        Vector2 rotation = input.Spectator.Rotation.ReadValue<Vector2>() * Time.deltaTime;
 
-        transform.Rotate(Vector3.up * rotation.x, Space.World);
-        transform.Rotate(Vector3.right * rotation.y, Space.Self);
+        transform.Rotate(Vector3.up * rotation.x * horizontalRotationSensivity, Space.World);
+        transform.Rotate(Vector3.right * rotation.y * verticalRotationSensivity, Space.Self);
     }
 
     #endregion
