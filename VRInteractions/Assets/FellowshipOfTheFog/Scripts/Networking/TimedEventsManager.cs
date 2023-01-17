@@ -58,6 +58,10 @@ public class TimedEventsManager : NetworkBehaviour
 
                 events[i].Execute();
             }
+            else
+            {
+                events[i].UpdateEvent(timers.Get(i).RemainingTime(Runner) ?? 0.0f);
+            }
         }
     }
 

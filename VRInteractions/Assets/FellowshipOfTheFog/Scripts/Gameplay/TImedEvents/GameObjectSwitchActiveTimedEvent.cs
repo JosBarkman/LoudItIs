@@ -20,4 +20,9 @@ public class GameObjectSwitchActiveTimedEvent : TimedEvent
     {
         theObject.SetActive(!theObject.activeInHierarchy);
     }
+
+    public override void UpdateEvent(float remainignTime)
+    {
+        
+    }
 }
