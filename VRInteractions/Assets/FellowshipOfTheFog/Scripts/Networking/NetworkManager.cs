@@ -59,6 +59,11 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void HostSession(string sessionName, int maxCharacters)
     {
+        if (!runner.LobbyInfo.IsValid)
+        {
+            return;
+        }
+
         Dictionary<string, SessionProperty> properties = new Dictionary<string, SessionProperty>();
 
         // TODO: HARDCODED STRING VALUES
