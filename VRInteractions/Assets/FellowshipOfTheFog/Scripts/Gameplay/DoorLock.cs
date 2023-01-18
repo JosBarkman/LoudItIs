@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Fusion;
 
 public class DoorLock : NetworkBehaviour
@@ -25,6 +26,9 @@ public class DoorLock : NetworkBehaviour
     [SerializeField]
     private Rigidbody body = null;
 
+    [SerializeField]
+    private Text lockedDoorText;
+
     #endregion
 
     #region Public Methods
@@ -45,6 +49,11 @@ public class DoorLock : NetworkBehaviour
         }
     }
 
+    public void UpdateLockedDoorText(string text)
+    {
+        lockedDoorText.text = text;
+    }
+
     #endregion
 
     #region Private Methods
@@ -62,6 +71,11 @@ public class DoorLock : NetworkBehaviour
 
         doorHandling.enabled = true;
         body.isKinematic = false;
+
+        if (lockedDoorText != null)
+        {
+            lockedDoorText.gameObject.SetActive(false);
+        }
     }
 
     private void SetLocked()
@@ -78,17 +92,27 @@ public class DoorLock : NetworkBehaviour
 
         doorHandling.enabled = false;
         body.isKinematic = true;
+
+        if (lockedDoorText != null)
+        {
+            lockedDoorText.gameObject.SetActive(true);
+        }
     }
 
     #endregion
 
     #region Unity Events
 
-    private void Start()
+    private void Awake()
     {
         if (body == null)
         {
             body = GetComponentInChildren<Rigidbody>();
+        }
+
+        if (lockedDoorText == null)
+        {
+            lockedDoorText = GetComponentInChildren<Text>();
         }
     }
 

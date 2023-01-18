@@ -15,6 +15,7 @@ public abstract class TimedEvent : MonoBehaviour
 
     public abstract void Execute();
     public abstract void DefaultState();
+    public abstract void UpdateEvent(float remainignTime);
 
     #endregion
 }

@@ -2061,8 +2061,12 @@ MonoBehaviour:
   horizontalSpeed: 4
   verticalSpeed: 4
   forwardSpeed: 4
-  horizontalRotation: 140
-  verticalRotation: 140
+  horizontalRotationSensivity: 75
+  verticalRotationSensivity: 75
+  maxVerticalAngle: 65
+  maxSpeed: 1
+  accelerationModifier: 0.1
+  decelerationModifier: 0.1
 --- !u!114 &6093297183827854968
 MonoBehaviour:
   m_ObjectHideFlags: 0
