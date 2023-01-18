@@ -1,77 +1,109 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SpectatorCamera : MonoBehaviour
-{
+
+public class SpectatorCamera : MonoBehaviour {
     #region Properties
 
-    [Header("Settings")]
+    [Header( "Settings" )]
 
-    [SerializeField]
-    private float horizontalSpeed = 0.15f;
-    
-    [SerializeField]
-    private float verticalSpeed = 0.15f;
-    
-    [SerializeField]
-    private float forwardSpeed = 0.15f;
+    [SerializeField, Range( 1f, 4f )]
+    private float _horizontalSpeed = 10f / 3f;
 
-    [SerializeField]
-    private float horizontalRotationSensivity = 20.0f;
-    
-    [SerializeField]
-    private float verticalRotationSensivity = 20.0f;
+    [SerializeField, Range( 1f, 4f )]
+    private float _verticalSpeed = 10f / 3f;
 
-    [SerializeField]
-    private float maxSpeed = 1.0f;
+    [SerializeField, Range( 1f, 4f )]
+    private float _forwardSpeed = 10f / 3f;
 
-    [SerializeField]
-    private float accelerationModifier = .1f;
-    
-    [SerializeField]
-    private float decelerationModifier = .1f;
+    [SerializeField, Range( 0f, 1f )]
+    private float _horizontalRotationSensivity = 0.15f;
 
-    private Vector3 movementSpeed = Vector3.zero;
-    private PlayerInput input;
+    [SerializeField, Range( 0f, 1f )]
+    private float _verticalRotationSensivity = 0.125f;
+
+    [SerializeField, Range( 40f, 80f )]
+    private float _maxSpeed = 66.6667f;
+
+    [SerializeField, Range( 0f, .5f )]
+    private float _accelerationModifier = .15f;
+
+    [SerializeField, Range( 0f, .5f )]
+    private float _decelerationModifier = .15f;
+
+    private PlayerInput _playerInput;
+    private Vector3 _movementSpeed = Vector3.zero;
+    private Vector3 _movementInput = Vector3.zero;
+    private Vector2 _rotationInput = Vector2.zero;
+    private bool _sprintActivated = false;
+    private bool _stealthActivated = false;
 
     #endregion
 
+
+
     #region Unity Events
 
-    private void OnEnable()
-    {
-        if (input == null)
-        {
-            input = new PlayerInput();
+    private void OnEnable() {
+        if ( _playerInput == null ) {
+            _playerInput = new PlayerInput();
+            _playerInput.Spectator.Sprint.performed += OnSprint;
+            _playerInput.Spectator.Stealth.performed += OnStealth;
         }
 
-        input.Enable();
+        _playerInput.Enable();
     }
 
-    private void OnDisable()
-    {
-        input.Disable();
+
+    private void OnDisable() {
+        _playerInput.Spectator.Sprint.performed -= OnSprint;
+        _playerInput.Disable();
     }
 
-    private void Update()
-    {
-        Vector3 translate = input.Spectator.Movement.ReadValue<Vector3>().normalized * Time.deltaTime;
 
-        Vector3 speed = new Vector3(translate.x * horizontalSpeed, translate.y * verticalSpeed, translate.z * forwardSpeed) * accelerationModifier;
-        movementSpeed += speed;
+    public void OnSprint( InputAction.CallbackContext context ) {
+        if ( context.performed ) {
+            _sprintActivated = !_sprintActivated;
+        }
+    }
+    
 
-        movementSpeed = movementSpeed + movementSpeed * -1.0f * decelerationModifier;
+    public void OnStealth( InputAction.CallbackContext context ) {
+        if ( context.performed ) {
+            _stealthActivated = !_stealthActivated;
+        }
+    }
 
-        movementSpeed = Vector3.ClampMagnitude(movementSpeed, maxSpeed);
 
-        transform.Translate(movementSpeed);
+    private void Update() {
+        PlayerInput.SpectatorActions spectator = _playerInput.Spectator;
+        _movementInput = spectator.Movement.ReadValue<Vector3>().normalized * Time.smoothDeltaTime;
+        _rotationInput = spectator.Rotation.ReadValue<Vector2>();
+    }
 
-        Vector2 rotation = input.Spectator.Rotation.ReadValue<Vector2>() * Time.deltaTime;
 
-        transform.Rotate(Vector3.up * rotation.x * horizontalRotationSensivity, Space.World);
-        transform.Rotate(Vector3.right * rotation.y * verticalRotationSensivity, Space.Self);
+    private void FixedUpdate() {
+        Vector3 acceleration = new Vector3( _movementInput.x * _horizontalSpeed, _movementInput.y * _verticalSpeed, _movementInput.z * _forwardSpeed ) * _accelerationModifier;
+        if ( _stealthActivated ) {
+            _movementSpeed += acceleration / 3f;
+        }
+        else if ( _sprintActivated ) {
+            _movementSpeed += acceleration * 2.5f;
+        }
+        else {
+            _movementSpeed += acceleration;
+        }
+        _movementSpeed = Vector3.ClampMagnitude( _movementSpeed, _maxSpeed );
+        _movementInput = Vector3.zero;
+
+        transform.Translate( _movementSpeed );
+
+        transform.Rotate( Vector3.up * _rotationInput.x * _horizontalRotationSensivity, Space.World );
+        transform.Rotate( Vector3.right * _rotationInput.y * _verticalRotationSensivity, Space.Self );
+        _rotationInput = Vector2.zero;
+
+        _movementSpeed *= 1f - _decelerationModifier;
     }
 
     #endregion
