@@ -1,51 +1,74 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SpectatorCamera : MonoBehaviour
-{
 
+public class SpectatorCamera : MonoBehaviour {
     #region Properties
 
-    [Header("Settings")]
-    public float horizontalSpeed = 0.15f;
-    public float verticalSpeed = 0.15f;
-    public float forwardSpeed = 0.15f;
+    [Header( "Settings" )]
 
-    public float horizontalRotation = 20.0f;
-    public float verticalRotation = 20.0f;
+    [SerializeField, Range( 0f, 1f )]
+    private float _horizontalSpeed = 0.15f;
 
-    private PlayerInput input;
+    [SerializeField, Range( 0f, 1f )]
+    private float _verticalSpeed = 0.15f;
 
+    [SerializeField, Range( 0f, 1f )]
+    private float _forwardSpeed = 0.15f;
+
+    [SerializeField, Range( 10f, 30f )]
+    private float _horizontalRotationSensivity = 20.0f;
+
+    [SerializeField, Range( 10f, 30f )]
+    private float _verticalRotationSensivity = 20.0f;
+
+    [SerializeField, Range( .5f, 2f )]
+    private float _maxSpeed = 1.0f;
+
+    [SerializeField, Range( 0f, .5f )]
+    private float _accelerationModifier = .1f;
+
+    [SerializeField, Range( 0f, .5f )]
+    private float _decelerationModifier = .1f;
+
+    private Vector3 _movementSpeed = Vector3.zero;
+    private PlayerInput _input;
     #endregion
+
+
 
     #region Unity Events
 
-    private void OnEnable()
-    {
-        if (input == null)
-        {
-            input = new PlayerInput();
+    private void OnEnable() {
+        if ( _input == null ) {
+            _input = new PlayerInput();
         }
 
-        input.Enable();
+        _input.Enable();
     }
 
-    private void OnDisable()
-    {
-        input.Disable();
+
+    private void OnDisable() {
+        _input.Disable();
     }
 
-    private void Update()
-    {
-        Vector3 translate = input.Spectator.Movement.ReadValue<Vector3>() * Time.deltaTime;
-        Vector2 rotation = input.Spectator.Rotation.ReadValue<Vector2>() * Time.deltaTime;
 
-        transform.Translate(new Vector3(translate.x * horizontalSpeed, translate.y * verticalSpeed, translate.z * forwardSpeed));
+    private void FixedUpdate() {
+        Vector3 translate = _input.Spectator.Movement.ReadValue<Vector3>().normalized * Time.fixedDeltaTime;
 
-        transform.Rotate(new Vector3(0.0f, rotation.x * horizontalRotation, 0.0f), Space.World);
-        transform.Rotate(new Vector3(rotation.y * verticalRotation, 0.0f, 0.0f), Space.Self);
+        Vector3 speed = new Vector3( translate.x * _horizontalSpeed, translate.y * _verticalSpeed, translate.z * _forwardSpeed ) * _accelerationModifier;
+        _movementSpeed += speed;
+
+        _movementSpeed = _movementSpeed + _movementSpeed * -1.0f * _decelerationModifier;
+
+        _movementSpeed = Vector3.ClampMagnitude( _movementSpeed, _maxSpeed );
+
+        transform.Translate( _movementSpeed );
+
+        Vector2 rotation = _input.Spectator.Rotation.ReadValue<Vector2>() * Time.fixedDeltaTime;
+
+        transform.Rotate( Vector3.up * rotation.x * _horizontalRotationSensivity, Space.World );
+        transform.Rotate( Vector3.right * rotation.y * _verticalRotationSensivity, Space.Self );
     }
 
     #endregion

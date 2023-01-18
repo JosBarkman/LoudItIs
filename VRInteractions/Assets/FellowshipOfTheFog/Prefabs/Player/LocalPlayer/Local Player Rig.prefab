@@ -2167,8 +2167,11 @@ MonoBehaviour:
   horizontalSpeed: 4
   verticalSpeed: 4
   forwardSpeed: 4
-  horizontalRotation: 140
-  verticalRotation: 140
+  horizontalRotationSensivity: 75
+  verticalRotationSensivity: 75
+  maxSpeed: 1
+  accelerationModifier: 0.1
+  decelerationModifier: 0.1
 --- !u!114 &6093297183827854968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3725,8 +3728,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90e6db04699b01b41ade60ecba1475de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeSpeed: 7
-  _range: 0.23
+  _fadeSpeed: 7.5
+  _range: 0.15
   _mask:
     serializedVersion: 2
     m_Bits: 8193
