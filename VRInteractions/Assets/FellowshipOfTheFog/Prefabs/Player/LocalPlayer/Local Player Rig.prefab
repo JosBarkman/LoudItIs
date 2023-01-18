@@ -1967,8 +1967,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1757158597795297004}
   - component: {fileID: 1757158597795297005}
+  - component: {fileID: 3129961134703272983}
   - component: {fileID: 1757158597795296978}
-  - component: {fileID: 1435581342640878479}
   - component: {fileID: 6093297183827854968}
   - component: {fileID: 4220641903594086948}
   m_Layer: 11
@@ -2038,15 +2038,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1757158597795296978
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1757158597795296979}
-  m_Enabled: 1
---- !u!114 &1435581342640878479
+--- !u!114 &3129961134703272983
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2058,15 +2050,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a5549aadb0cfc943b7aa7c95d5b12ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalSpeed: 4
-  verticalSpeed: 4
-  forwardSpeed: 4
-  horizontalRotationSensivity: 75
-  verticalRotationSensivity: 75
-  maxVerticalAngle: 65
-  maxSpeed: 1
-  accelerationModifier: 0.1
-  decelerationModifier: 0.1
+  _horizontalSpeed: 3.3333333
+  _verticalSpeed: 3.3333333
+  _forwardSpeed: 3.3333333
+  _horizontalRotationSensivity: 0.15
+  _verticalRotationSensivity: 0.125
+  _maxSpeed: 66.6667
+  _accelerationModifier: 0.15
+  _decelerationModifier: 0.15
+--- !u!81 &1757158597795296978
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757158597795296979}
+  m_Enabled: 1
 --- !u!114 &6093297183827854968
 MonoBehaviour:
   m_ObjectHideFlags: 0
