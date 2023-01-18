@@ -16,12 +16,14 @@ public class EndingSequenceController : NetworkBehaviour
     [SerializeField] private float initialSequenceWaitSeconds = 5.0f;
     [SerializeField] private float speakingTimeSeconds = 30.0f;
 
+    [Header("Components")]
     [SerializeField] private Transform spectatorsEndPosition;
     [SerializeField] private Transform[] endPositions;
 
-    [Header("Settings")]
     [SerializeField] private GameObject endGameVrMenu;
     [SerializeField] private GameObject endGameDefaultMenu;
+
+    [SerializeField] private EndingPhoneInteractable phoneInteractable;
 
     private Dictionary<PlayerRef, bool> startingSequenceVotes;
     private Dictionary<PlayerRef, PlayerRef> playerActorVotes;
@@ -47,10 +49,12 @@ public class EndingSequenceController : NetworkBehaviour
         if (startingSequenceVotes.ContainsKey(player))
         {
             startingSequenceVotes.Remove(player);
+            RPC_NotifyEndSequenceVote(player, false);
         }
         else
         {
             startingSequenceVotes.Add(player, true);
+            RPC_NotifyEndSequenceVote(player, true);
         }
 
         if (startingSequenceVotes.Count < requiredVotes)
@@ -95,6 +99,14 @@ public class EndingSequenceController : NetworkBehaviour
     #endregion
 
     #region Unity Events
+
+    private void Awake()
+    {
+        if (phoneInteractable == null)
+        {
+            phoneInteractable = FindObjectOfType<EndingPhoneInteractable>();
+        }
+    }
 
     private void Start()
     {
@@ -255,6 +267,12 @@ public class EndingSequenceController : NetworkBehaviour
     public void RPC_TeleportSpectator([RpcTarget] PlayerRef player, Vector3 position, Quaternion rotation)
     {
         FindObjectOfType<LocalPlayerRig>().TeleportSpectator(position, rotation);
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    public void RPC_NotifyEndSequenceVote([RpcTarget] PlayerRef player, NetworkBool voted)
+    {
+        phoneInteractable.NotifyVote(voted);
     }
 
     #endregion
