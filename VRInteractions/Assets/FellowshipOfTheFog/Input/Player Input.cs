@@ -838,11 +838,29 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Value"",
+                    ""id"": ""03f57f70-24ba-4b04-b070-c9a8b9a9356e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Stealth"",
+                    ""type"": ""Value"",
+                    ""id"": ""a35fa73b-03c9-460c-b062-7c59a3b4dba6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": ""3D Vector"",
+                    ""name"": ""WASD"",
                     ""id"": ""bade2f4f-d7eb-42b8-bfb0-d5efccc79103"",
                     ""path"": ""3DVector(mode=1)"",
                     ""interactions"": """",
@@ -855,10 +873,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""339b64c3-2243-4f76-a21e-380a6f2a5afc"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -866,10 +884,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""cbecccff-628b-465c-a272-1d8975becf97"",
-                    ""path"": ""<Keyboard>/ctrl"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -880,7 +898,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -891,7 +909,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -902,7 +920,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -913,6 +931,83 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""ArrowKeys"",
+                    ""id"": ""b5c55771-a217-4507-8c08-703be4af402d"",
+                    ""path"": ""3DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""ff5b6e70-d768-42c5-a693-a3375d2fbab2"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""82eb6de8-9388-4ac9-b74e-1011f389c7c0"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""2e405634-a755-4ab8-b4b2-4bcd0fe13590"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""45924fc8-8b09-400f-88df-8ea5d1b4b1cc"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""forward"",
+                    ""id"": ""40a87504-cc31-445c-82cd-42750b14eed0"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""backward"",
+                    ""id"": ""ca2620fe-6607-4ea1-9fbf-106b1df44aaa"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -921,7 +1016,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""753990dd-e1bc-4035-b9c5-cac1d296cdbc"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": ""InvertVector2(invertX=false)"",
                     ""groups"": """",
@@ -932,10 +1027,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""bbad2cb7-c1a4-45be-a847-fcc6acadc94a"",
-                    ""path"": ""<Mouse>/delta/up"",
+                    ""path"": ""<Pointer>/delta/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -943,10 +1038,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""4f48ea45-c53b-429b-87a5-b1a94814a686"",
-                    ""path"": ""<Mouse>/delta/down"",
+                    ""path"": ""<Pointer>/delta/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -954,10 +1049,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""d763443a-c29d-41ed-a0a4-b07785d9873f"",
-                    ""path"": ""<Mouse>/delta/left"",
+                    ""path"": ""<Pointer>/delta/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -965,13 +1060,57 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""e02a8637-10d6-456a-8d62-206381d3a3c9"",
-                    ""path"": ""<Mouse>/delta/right"",
+                    ""path"": ""<Pointer>/delta/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a3ec02e-e839-4b0a-b682-4694daa85758"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d46b18a6-d72d-45e1-98db-c48170df9a1b"",
+                    ""path"": ""<XRController>/secondaryTouched"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Generic XR Controller"",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d075adf3-14a5-4520-bc84-02da2474667a"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Stealth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""22b788dc-f47d-4317-aa25-ff732f557663"",
+                    ""path"": ""*/{Secondary2DAxisClick}"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""Generic XR Controller"",
+                    ""action"": ""Stealth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1030,6 +1169,22 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""devicePath"": ""<XRController>{RightHand}"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""PC"",
+            ""bindingGroup"": ""PC"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Pointer>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -1093,6 +1248,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Spectator = asset.FindActionMap("Spectator", throwIfNotFound: true);
         m_Spectator_Movement = m_Spectator.FindAction("Movement", throwIfNotFound: true);
         m_Spectator_Rotation = m_Spectator.FindAction("Rotation", throwIfNotFound: true);
+        m_Spectator_Sprint = m_Spectator.FindAction("Sprint", throwIfNotFound: true);
+        m_Spectator_Stealth = m_Spectator.FindAction("Stealth", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1633,12 +1790,16 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private ISpectatorActions m_SpectatorActionsCallbackInterface;
     private readonly InputAction m_Spectator_Movement;
     private readonly InputAction m_Spectator_Rotation;
+    private readonly InputAction m_Spectator_Sprint;
+    private readonly InputAction m_Spectator_Stealth;
     public struct SpectatorActions
     {
         private @PlayerInput m_Wrapper;
         public SpectatorActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Spectator_Movement;
         public InputAction @Rotation => m_Wrapper.m_Spectator_Rotation;
+        public InputAction @Sprint => m_Wrapper.m_Spectator_Sprint;
+        public InputAction @Stealth => m_Wrapper.m_Spectator_Stealth;
         public InputActionMap Get() { return m_Wrapper.m_Spectator; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1654,6 +1815,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Rotation.started -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnRotation;
                 @Rotation.performed -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnRotation;
                 @Rotation.canceled -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnRotation;
+                @Sprint.started -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnSprint;
+                @Stealth.started -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnStealth;
+                @Stealth.performed -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnStealth;
+                @Stealth.canceled -= m_Wrapper.m_SpectatorActionsCallbackInterface.OnStealth;
             }
             m_Wrapper.m_SpectatorActionsCallbackInterface = instance;
             if (instance != null)
@@ -1664,6 +1831,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Rotation.started += instance.OnRotation;
                 @Rotation.performed += instance.OnRotation;
                 @Rotation.canceled += instance.OnRotation;
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
+                @Stealth.started += instance.OnStealth;
+                @Stealth.performed += instance.OnStealth;
+                @Stealth.canceled += instance.OnStealth;
             }
         }
     }
@@ -1693,6 +1866,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         {
             if (m_NoncontinuousMoveSchemeIndex == -1) m_NoncontinuousMoveSchemeIndex = asset.FindControlSchemeIndex("Noncontinuous Move");
             return asset.controlSchemes[m_NoncontinuousMoveSchemeIndex];
+        }
+    }
+    private int m_PCSchemeIndex = -1;
+    public InputControlScheme PCScheme
+    {
+        get
+        {
+            if (m_PCSchemeIndex == -1) m_PCSchemeIndex = asset.FindControlSchemeIndex("PC");
+            return asset.controlSchemes[m_PCSchemeIndex];
         }
     }
     public interface IXRIHeadActions
@@ -1758,5 +1940,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnRotation(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
+        void OnStealth(InputAction.CallbackContext context);
     }
 }

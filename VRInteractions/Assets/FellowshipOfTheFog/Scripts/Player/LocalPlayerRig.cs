@@ -400,7 +400,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
             lastLeftMenuButtonPressed = buttonPressed;
         }
 
-        Debug.Log(string.Format("@Left Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.leftControllerButtonsPressed, 2).PadLeft(8, '0')));
+        //Debug.Log(string.Format("@Left Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.leftControllerButtonsPressed, 2).PadLeft(8, '0')));
 
         if (rightHardwareController == null || (rightHardwareController != null && !rightHardwareController.isValid))
         {
@@ -430,7 +430,7 @@ public class LocalPlayerRig : MonoBehaviour, INetworkRunnerCallbacks
             lastRightTriggerButtonPressed = buttonPressed;
         }
 
-        Debug.Log(string.Format("@Right Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.rightControllerButtonsPressed, 2).PadLeft(8, '0')));
+        //Debug.Log(string.Format("@Right Button pressed: {0} / Bytefield: {1}", buttonPressed.ToString(), Convert.ToString(rigInput.rightControllerButtonsPressed, 2).PadLeft(8, '0')));
 
         input.Set(rigInput);
     }
