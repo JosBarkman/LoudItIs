@@ -17,16 +17,16 @@ public enum FingerIKFlags : byte
 [System.Serializable]
 public class FingerTargetPositions
 {
-    public Transform attachPoint;
-    public Transform indexIKPosition;
-    public Transform middleIKPosition;
-    public Transform ringIKPosition;
-    public Transform pinkyIKPosition;
-    public Transform thumbIKPosition;
+    public Transform attachPoint = null;
+    public Transform indexIKPosition = null;
+    public Transform middleIKPosition = null;
+    public Transform ringIKPosition = null;
+    public Transform pinkyIKPosition = null;
+    public Transform thumbIKPosition = null;
 
     public void Copy(FingerTargetPositions positions, Vector3 axis, Vector3 rotationAxis)
     {
-        if (positions.attachPoint != null)
+        if (positions.attachPoint != null && attachPoint == null)
         {
             attachPoint = new GameObject().transform;
             attachPoint.parent = positions.attachPoint.parent;
@@ -35,7 +35,7 @@ public class FingerTargetPositions
             attachPoint.localScale = positions.attachPoint.localScale;
         }
 
-        if (positions.indexIKPosition != null)
+        if (positions.indexIKPosition != null && indexIKPosition == null)
         {
             indexIKPosition = new GameObject().transform;
             indexIKPosition.parent = positions.indexIKPosition.parent;
@@ -44,7 +44,7 @@ public class FingerTargetPositions
             indexIKPosition.localScale = positions.indexIKPosition.localScale;
         }
 
-        if (positions.middleIKPosition != null)
+        if (positions.middleIKPosition != null && middleIKPosition == null)
         {
             middleIKPosition = new GameObject().transform;
             middleIKPosition.parent = positions.middleIKPosition.parent;
@@ -53,7 +53,7 @@ public class FingerTargetPositions
             middleIKPosition.localScale = positions.middleIKPosition.localScale;
         }
 
-        if (positions.ringIKPosition != null)
+        if (positions.ringIKPosition != null && ringIKPosition == null)
         {
             ringIKPosition = new GameObject().transform;
             ringIKPosition.parent = positions.ringIKPosition.parent;
@@ -62,7 +62,7 @@ public class FingerTargetPositions
             ringIKPosition.localScale = positions.ringIKPosition.localScale;
         }
 
-        if (positions.pinkyIKPosition != null)
+        if (positions.pinkyIKPosition != null && pinkyIKPosition == null)
         {
             pinkyIKPosition = new GameObject().transform;
             pinkyIKPosition.parent = positions.pinkyIKPosition.parent;
@@ -71,7 +71,7 @@ public class FingerTargetPositions
             pinkyIKPosition.localScale = positions.pinkyIKPosition.localScale;
         }
 
-        if (positions.thumbIKPosition != null)
+        if (positions.thumbIKPosition != null && thumbIKPosition == null)
         {
             thumbIKPosition = new GameObject().transform;
             thumbIKPosition.parent = positions.thumbIKPosition.parent;
