@@ -907,8 +907,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8000002, y: 0.041626517, z: 1.980311}
-  m_Center: {x: 0, y: 0.020000003, z: 1.0171837}
+  m_Size: {x: 0.8000002, y: 0.041626517, z: 1.9400849}
+  m_Center: {x: 0, y: 0.020000003, z: 0.9970708}
 --- !u!59 &7421635702967930958
 HingeJoint:
   m_ObjectHideFlags: 0
@@ -922,10 +922,10 @@ HingeJoint:
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
-  m_UseSpring: 0
+  m_UseSpring: 1
   m_Spring:
     spring: 0
-    damper: 1
+    damper: 2
     targetPosition: 0
   m_UseMotor: 0
   m_Motor:
@@ -1053,7 +1053,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_AttachTransform: {fileID: 0}
+  m_AttachTransform: {fileID: 504094271358773758}
   m_AttachEaseInTime: 0.15
   m_MovementType: 0
   m_VelocityDamping: 1
@@ -1128,7 +1128,7 @@ MonoBehaviour:
   temporalHandAttachPoint: {fileID: 5744798776872514090}
   upAxisAttackTransform: {fileID: 3257049200998461331}
   angleOfAttackDegrees: 0
-  distanceThreshold: 0.08
+  distanceThreshold: 0.2
   primaryCollider: {fileID: 1491554057201633662}
   secondaryCollider: {fileID: 6678339613628748517}
   currentPositions:
