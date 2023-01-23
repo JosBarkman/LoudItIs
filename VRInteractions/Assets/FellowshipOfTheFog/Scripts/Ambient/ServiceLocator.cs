@@ -11,6 +11,7 @@ namespace Services {
 
         public static void Subscribe( UnityEngine.Object pService ) {
             _services.Add( pService );
+            Console.WriteLine( $"Servive of type {pService.GetType()} subscribed." );
         }
 
         public static void UnSubscribe( UnityEngine.Object pService ) {

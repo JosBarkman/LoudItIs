@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class Window : MonoBehaviour {
+public class Fireplace : MonoBehaviour {
     public Vector3 NoiseOffset => _noiseOffset;
 
 
