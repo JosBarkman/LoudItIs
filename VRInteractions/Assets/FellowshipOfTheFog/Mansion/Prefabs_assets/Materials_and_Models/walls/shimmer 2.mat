@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: shimmer
+  m_Name: shimmer 2
   m_Shader: {fileID: -6465566751694194690, guid: 91189737828829f438d18026eac0e18e, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -83,7 +83,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _Arestovich: 0.8
+    - _Arestovich: 0.9
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -111,14 +111,14 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _brightness: 100
-    - _colorShiftSpeed: 0.3
+    - _colorShiftSpeed: 0.1
     - _maxDist: 10
-    - _minDist: 1.5
-    - _offsetSpeed: 0.2
+    - _minDist: 0.5
+    - _offsetSpeed: 0
     - _result: 0
     - _rotate: 0
-    - _scale: 4
-    - _scale2: 3
+    - _scale: 40
+    - _scale2: 10
     - _scale_floor: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
