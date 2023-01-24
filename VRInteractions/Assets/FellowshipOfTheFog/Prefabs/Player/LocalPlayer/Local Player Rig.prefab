@@ -1737,6 +1737,7 @@ GameObject:
   - component: {fileID: 2129375301}
   - component: {fileID: 8103935469110469759}
   - component: {fileID: -7864365256765157251}
+  - component: {fileID: 2307956522375802907}
   m_Layer: 11
   m_Name: Local Player Rig
   m_TagString: Player
@@ -1920,9 +1921,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af6bf904e410ee8479f9093d8830d1f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LocomotionProvider: {fileID: 2129375301, guid: f3d38bf371fb0e846a34e704153d49a5, type: 3}
+  m_LocomotionProvider: {fileID: 2129375301}
   m_MinHeight: 1
   m_MaxHeight: Infinity
+--- !u!114 &2307956522375802907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757158596838435862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95807903836b3a646b2c2b4746974a74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1757158597719171158
 GameObject:
   m_ObjectHideFlags: 0
@@ -3621,7 +3634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fadeSpeed: 7
-  _range: 0.23
+  _range: 0.19
   _mask:
     serializedVersion: 2
     m_Bits: 8193

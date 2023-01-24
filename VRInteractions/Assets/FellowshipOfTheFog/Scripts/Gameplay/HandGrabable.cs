@@ -188,12 +188,15 @@ public class HandGrabable : XRGrabInteractable
             return;
         }
 
-        secondaryCollision = (args.interactorObject.transform.position - secondaryCollider.transform.position).sqrMagnitude <
+        if (doubleSide)
+        {
+            secondaryCollision = (args.interactorObject.transform.position - secondaryCollider.transform.position).sqrMagnitude <
             (args.interactorObject.transform.position - primaryCollider.transform.position).sqrMagnitude;
 
-        if (secondaryCollision && doubleSide)
-        {
-            currentPositions = leftController ? secondaryLeftHandFignersPosition : secondaryRightHandFignersPosition;
+            if (secondaryCollision)
+            {
+                currentPositions = leftController ? secondaryLeftHandFignersPosition : secondaryRightHandFignersPosition;
+            }
         }
 
         float radians = 1.0f;
