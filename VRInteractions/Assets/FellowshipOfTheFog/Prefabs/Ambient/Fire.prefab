@@ -4862,6 +4862,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _noiseOffset: {x: 0, y: 0.2, z: 0}
+  _flickerRange: 0.3
+  _flickerSpeed: 1.25
+  _randomFlickerSpeed: {x: 0, y: 0.6}
 --- !u!1 &8034556033525454878
 GameObject:
   m_ObjectHideFlags: 0
@@ -9695,7 +9698,7 @@ GameObject:
   - component: {fileID: 3367654594548810195}
   - component: {fileID: 5120914421430371168}
   m_Layer: 0
-  m_Name: Light
+  m_Name: FlickeringLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
