@@ -2482,7 +2482,7 @@ PrefabInstance:
     - target: {fileID: 231966969431981730, guid: 339139892284e494c8b66943f1240e36, type: 3}
       propertyPath: NetworkedBehaviours.Array.data[0]
       value: 
-      objectReference: {fileID: 3142110852281043615}
+      objectReference: {fileID: 0}
     - target: {fileID: 231966969431981730, guid: 339139892284e494c8b66943f1240e36, type: 3}
       propertyPath: NetworkedBehaviours.Array.data[1]
       value: 
@@ -2569,41 +2569,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 339139892284e494c8b66943f1240e36, type: 3}
---- !u!1 &1261121503097056457 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1412758679301233044, guid: 339139892284e494c8b66943f1240e36, type: 3}
+--- !u!4 &1930839174592902771 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1788193090476557102, guid: 339139892284e494c8b66943f1240e36, type: 3}
   m_PrefabInstance: {fileID: 151794022324467037}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1135807452741880881
+--- !u!1 &2230628990341341878 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2085042264435234795, guid: 339139892284e494c8b66943f1240e36, type: 3}
+  m_PrefabInstance: {fileID: 151794022324467037}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6843183516560853697
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261121503097056457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectInterest: 1
-  DefaultInterestGroups: []
-  DestroyWhenStateAuthorityLeaves: 0
-  AllowStateAuthorityOverride: 1
-  AoiPositionSource: {fileID: 0}
-  Flags: 2561
-  NetworkGuid:
-    RawGuidValue: 931e4f7f79ca458aa773d710f17a4ccc
-  NestedObjects: []
-  NetworkedBehaviours: []
-  SimulationBehaviours: []
---- !u!114 &3142110852281043615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261121503097056457}
+  m_GameObject: {fileID: 2230628990341341878}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6561e024da73b244a40dd6152ea366b, type: 3}
@@ -2615,19 +2597,14 @@ MonoBehaviour:
   _open:
     _value: 0
   doorHandling: {fileID: 7250635643374266788}
-  body: {fileID: 0}
+  body: {fileID: 7588297804286925877}
   lockedDoorText: {fileID: 0}
---- !u!4 &1930839174592902771 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1788193090476557102, guid: 339139892284e494c8b66943f1240e36, type: 3}
-  m_PrefabInstance: {fileID: 151794022324467037}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5138756534819163478 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4993295771767961611, guid: 339139892284e494c8b66943f1240e36, type: 3}
   m_PrefabInstance: {fileID: 151794022324467037}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2230628990341341878}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1710889294, guid: e725a070cec140c4caffb81624c8c787, type: 3}
@@ -2638,12 +2615,17 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7387074816869047545, guid: 339139892284e494c8b66943f1240e36, type: 3}
   m_PrefabInstance: {fileID: 151794022324467037}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2230628990341341878}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f452cd3495b7de4ab38043ed2f61e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &7588297804286925877 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 7733889464267401576, guid: 339139892284e494c8b66943f1240e36, type: 3}
+  m_PrefabInstance: {fileID: 151794022324467037}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &162160343865336213
 PrefabInstance:
   m_ObjectHideFlags: 0
