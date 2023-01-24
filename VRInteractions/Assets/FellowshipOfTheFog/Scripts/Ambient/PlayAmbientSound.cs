@@ -6,7 +6,10 @@ public class PlayAmbientSound : MonoBehaviour {
     private float _checkCooldown = 0.09f;
 
     [SerializeField]
-    private Vector2 _minMaxDistance = new Vector2( 0.55f, 6.7f );
+    private Vector2 _minMaxDistanceWindow = new Vector2( 0.55f, 6.7f );
+
+    [SerializeField]
+    private Vector2 _minMaxDistanceFireplace = new Vector2( 2.4f, 7.6f );
 
     [SerializeField]
     private AudioSource[] _windowAudioPlayers = null;
@@ -149,8 +152,8 @@ public class PlayAmbientSound : MonoBehaviour {
 
 
     private void SetWindowVolume( float pClosestDistance ) {
-        float distance = Mathf.Clamp( pClosestDistance, _minMaxDistance.x, _minMaxDistance.y );
-        float audioStrength = 1f - ( ( distance - _minMaxDistance.x ) / ( _minMaxDistance.y - _minMaxDistance.x ) );
+        float distance = Mathf.Clamp( pClosestDistance, _minMaxDistanceWindow.x, _minMaxDistanceWindow.y );
+        float audioStrength = 1f - ( ( distance - _minMaxDistanceWindow.x ) / ( _minMaxDistanceWindow.y - _minMaxDistanceWindow.x ) );
 
         // The first audio source is excluded since it has to always be present
         for ( int i = 1; i < _windowAudio.Length; ++i ) {
@@ -161,8 +164,8 @@ public class PlayAmbientSound : MonoBehaviour {
 
 
     private void SetFireplaceVolume( float pClosestDistance ) {
-        float distance = Mathf.Clamp( pClosestDistance, _minMaxDistance.x, _minMaxDistance.y );
-        float audioStrength = 1f - ( ( distance - _minMaxDistance.x ) / ( _minMaxDistance.y - _minMaxDistance.x ) );
+        float distance = Mathf.Clamp( pClosestDistance, _minMaxDistanceFireplace.x, _minMaxDistanceFireplace.y );
+        float audioStrength = 1f - ( ( distance - _minMaxDistanceFireplace.x ) / ( _minMaxDistanceFireplace.y - _minMaxDistanceFireplace.x ) );
 
         for ( int i = 0; i < _fireplaceAudio.Length; ++i ) {
             AudioWrapper audioWrapper = _fireplaceAudio[i];
