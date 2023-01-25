@@ -36,7 +36,6 @@ public class NetworkPlayerRig : NetworkBehaviour
     #region Properties
 
     [Header("Settings")]
-    public float headFeetOffset;
     public CharacterSheet character;
 
     [HideInInspector]

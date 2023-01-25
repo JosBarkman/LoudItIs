@@ -27,6 +27,7 @@ public class CharacterSheet : ScriptableObject
     public CharacterGoal[] goals;
 
     [Header("Settings")]
+    public float cameraYOffset;
     public GameObject prefab;
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;

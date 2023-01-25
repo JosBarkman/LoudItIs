@@ -112,7 +112,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
         NetworkPlayerRig networkRig = networkPlayerObject.GetComponentInChildren<NetworkPlayerRig>();
 
-        networkRig.networkedHeadFeetOffset = networkRig.headFeetOffset * scale;
+        networkRig.networkedHeadFeetOffset = -1.0f * (sheet.cameraYOffset * scale);
 
         runner.SetPlayerObject(source, networkPlayerObject);
         return networkRig;

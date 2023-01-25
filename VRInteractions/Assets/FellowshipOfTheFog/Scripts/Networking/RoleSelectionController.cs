@@ -55,7 +55,7 @@ public class RoleSelectionController : NetworkBehaviour, INetworkRunnerCallbacks
         if (role == Role.Character)
         {
             // We use playerref.none to target the rpc call to the server even though the target is already server, so this should not be necesary.
-            RPC_PickRoleAndCharacter(sheet.name, playerRig.headset.position.y / playerRig.xrOrigin.CameraYOffset);
+            RPC_PickRoleAndCharacter(sheet.name, playerRig.headset.position.y / sheet.cameraYOffset);
 
             playerRig.SetCharacter(sheet, true);
         }
